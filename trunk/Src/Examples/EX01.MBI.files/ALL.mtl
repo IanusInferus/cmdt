@@ -1,0 +1,83 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub 01 (2) to come 
+#
+newmtl Material__16
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_BC01.gif
+#
+newmtl Material__17
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_BC02.gif
+#
+# Multi/Sub 01 done 
+#
+# Multi/Sub 04_-_Default (10) to come 
+#
+newmtl Material__153
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_GD01.GIF
+#
+newmtl Material__154
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_GD02.GIF
+#
+newmtl Material__155
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_GD03.GIF
+#
+newmtl Material__156
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_GD04.GIF
+#
+newmtl Material__157
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_LD01.gif
+#
+newmtl Material__158
+Ka  0.6 0.6 0.6
+Kd  0.6 0.6 0.6
+Ks  0.9 0.9 0.9
+d  1.0
+Ns  0.0
+illum 2
+map_Kd ALL_LD02.gif
+#
+# Multi/Sub 04_-_Default done 
+#
+# EOF
