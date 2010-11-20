@@ -1,0 +1,2091 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Firefly.Core
+</name>
+</assembly>
+<members>
+<member name="M:Firefly.Texting.Txt.GetEncoding(System.String)">
+	<summary>已重载。检查UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码的BOM，如果失败，返回系统默认编码(GB2312会被替换为GB18030)。</summary>
+</member><member name="M:Firefly.Texting.Txt.GetEncoding(System.String,System.Text.Encoding)">
+	<summary>已重载。检查UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码的BOM，如果失败，返回默认编码。</summary>
+</member><member name="M:Firefly.Texting.Txt.CreateTextReader(System.String,System.Text.Encoding,System.Boolean)">
+	<param name="DetectEncodingFromByteOrderMarks">如果为真，将检查UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码的BOM。</param>
+</member><member name="M:Firefly.Texting.Txt.ReadFile(System.String,System.Text.Encoding,System.Boolean)">
+	<param name="DetectEncodingFromByteOrderMarks">如果为真，将检查UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码的BOM。</param>
+</member><member name="M:Firefly.Texting.Txt.CreateTextWriter(System.String,System.Text.Encoding,System.Boolean)">
+	<param name="WithByteOrderMarks">如果为真，将为UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码写入BOM。</param>
+</member><member name="M:Firefly.Texting.Txt.WriteFile(System.String,System.Text.Encoding,System.String,System.Boolean)">
+	<param name="WithByteOrderMarks">如果为真，将为UTF-16(FF FE)、GB18030(84 31 95 33)、UTF-8(EF BB BF)、UTF-32(FF FE 00 00)、UTF-16B(FE FF)、UTF-32B(00 00 FE FF)这六种编码写入BOM。</param>
+</member><member name="T:Firefly.UniHanDatabase">
+	<summary>
+ 本类用于遍历UniHan数据库。
+ </summary>
+	<remarks>
+ UniHan数据库可从如下地址获取。
+ ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip
+
+ Unicode委员会的技术报告可从如下地址获取。
+ Unicode Standard Annex #38
+ http://www.unicode.org/reports/tr38/
+ </remarks>
+</member><member name="P:Firefly.Texting.LOC.FontLib">
+	<summary>字库。不要修改该字库，可以考虑创建LOC的新实例，以使得LOC的内部状态正常。</summary>
+</member><member name="P:Firefly.Texting.LOC.GlyphMap">
+	<summary>字形图。不要修改该字形图，可以考虑创建LOC的新实例，以使得LOC的内部状态正常。</summary>
+</member><member name="P:Firefly.Texting.LOC.CharGlyphDict">
+	<summary>字符码点-字形号映射。不要修改，可以考虑创建LOC的新实例，以使得LOC的内部状态正常。</summary>
+</member><member name="P:Firefly.Texting.LOC.Text">
+	<summary>文本。不要修改该文本，可以考虑创建LOC的新实例，以使得LOC的内部状态正常。</summary>
+</member><member name="M:Firefly.Texting.LOC.#ctor(Firefly.Texting.FontLib,Firefly.Texting.GlyphMap,System.Collections.Generic.Dictionary{Firefly.TextEncoding.CharCode,System.Int32},Firefly.TextEncoding.CharCode[][])">
+	<summary>已重载。创建新的图形文本类。</summary>
+</member><member name="M:Firefly.Texting.LOC.GenerateLOC(Firefly.Texting.FontLib,Firefly.TextEncoding.CharCode[][])">
+	<summary>生成图形文本文件。生成32位BMP。若需其他BMP，可仿照此函数生成。所有字库字符大小不得大于最大的字符宽度和高度。</summary>
+</member><member name="M:Firefly.Texting.LOC.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。从流读取图形文本文件。</summary>
+</member><member name="M:Firefly.Texting.LOC.WriteToFile(Firefly.ZeroPositionStreamPasser,System.Boolean)">
+	<summary>写入图形文本文件到流。</summary>
+</member><member name="T:Firefly.Texting.LOC">
+	<summary>图形文本文件类</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.GlyphCount">
+	<summary>字形数量。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.GlyphWidth">
+	<summary>字形的最大宽度。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.GlyphHeight">
+	<summary>字形的高度。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.WidthTable">
+	<summary>字形宽度表。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.Bmp">
+	<summary>图片。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.NumGlyphInLine">
+	<summary>每行的字形数。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.Width">
+	<summary>图片宽度。</summary>
+</member><member name="P:Firefly.Texting.GlyphMap.Height">
+	<summary>图片高度。</summary>
+</member><member name="M:Firefly.Texting.GlyphMap.#ctor(System.Int32,System.Int32,System.Int32,Firefly.Imaging.Bmp)">
+	<summary>已重载。构造字形图片。自动创建默认的宽度表，且所有值均初始化为GlyphWidth。如果传入空的Bmp，会自动按GlyphCount创建适当大小的32位Bmp。</summary>
+</member><member name="M:Firefly.Texting.GlyphMap.#ctor(System.Int32,System.Int32,System.Int32,System.Byte[],Firefly.Imaging.Bmp)">
+	<summary>已重载。构造字形图片。如果传入空的Bmp，会自动按GlyphCount创建适当大小的32位Bmp。</summary>
+</member><member name="M:Firefly.Texting.GlyphMap.GetGlyphVirtualBox(System.Int32)">
+	<summary>获取字形的正方形位置。</summary>
+</member><member name="M:Firefly.Texting.GlyphMap.GetGlyphPhysicalBox(System.Int32)">
+	<summary>获取字形的正方形位置。</summary>
+</member><member name="T:Firefly.Texting.GlyphMap">
+	<summary>字形图片。</summary>
+</member><member name="P:Firefly.Texting.GlyphText.FontLib">
+	<summary>字库。</summary>
+</member><member name="P:Firefly.Texting.GlyphText.Text">
+	<summary>文本。</summary>
+</member><member name="P:Firefly.Texting.GlyphText.GlyphWidth">
+	<summary>字形的默认宽度(最大宽度)。</summary>
+</member><member name="P:Firefly.Texting.GlyphText.GlyphHeight">
+	<summary>字形的高度。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.#ctor(Firefly.Texting.FontLib,System.Int32,System.Int32,Firefly.TextEncoding.CharCode[][])">
+	<summary>已重载。从字库、默认字形大小和文本码点创建实例。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.#ctor(System.Int32,System.Int32,System.String[])">
+	<summary>已重载。从默认字形大小和文本创建实例。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.#ctor(Firefly.Texting.LOC)">
+	<summary>已重载。从图形文本文件创建实例。若图形文本文件不包含FontLib或GlyphMap，则会抛出异常。</summary>
+</member><member name="T:Firefly.Texting.GlyphText.DrawGlyph">
+	<summary>为字符添加字形。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.DrawGlyphForAllChar(Firefly.Texting.GlyphText.DrawGlyph)">
+	<summary>已重载。使用指定字体为所有无字形非控制Unicode字符添加字形。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.DrawGlyphForAllChar(System.Drawing.Font)">
+	<summary>已重载。使用指定字体为所有无字形非控制Unicode字符添加字形。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.GenerateLOC">
+	<summary>生成图形文本文件。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.GetBitmap(System.Int32,System.Int32,System.Collections.Generic.Dictionary{System.String,System.String})">
+	<summary>绘制CharInfo表示的文本。</summary>
+</member><member name="M:Firefly.Texting.GlyphText.Parse(System.Int32)">
+	<summary>得到字符文字的普通字符串，只有已映射有Unicode的字符才会转换。</summary>
+</member><member name="T:Firefly.Texting.GlyphText">
+	<summary>图形文本类</summary>
+</member><member name="M:Firefly.Texting.FontLib.#ctor">
+	<summary>已重载。构造空字库。</summary>
+</member><member name="M:Firefly.Texting.FontLib.#ctor(System.Collections.Generic.ICollection{Firefly.TextEncoding.CharCode})">
+	<summary>已重载。从字符码点构造字库。后面的字符若与前面重复，不会覆盖。</summary>
+</member><member name="M:Firefly.Texting.FontLib.#ctor(System.Collections.Generic.IList{Firefly.TextEncoding.CharCode},System.Collections.Generic.IList{Firefly.Glyphing.IGlyph})">
+	<summary>已重载。从字符码点和字形构造字库。后面的字符若与前面重复，不会覆盖。</summary>
+	<remarks>字符码点和字形的数量要一致。</remarks>
+</member><member name="P:Firefly.Texting.FontLib.CharCount">
+	<summary>字符数量。</summary>
+</member><member name="P:Firefly.Texting.FontLib.CharCodes">
+	<summary>字符码点。</summary>
+</member><member name="M:Firefly.Texting.FontLib.GetDict">
+	<summary>字符码点-字形映射。</summary>
+</member><member name="M:Firefly.Texting.FontLib.GetUnicodeDict">
+	<summary>获得Unicode-字符码点映射。</summary>
+</member><member name="M:Firefly.Texting.FontLib.GetCodeDict">
+	<summary>获得自定义码点-字符码点映射。</summary>
+</member><member name="M:Firefly.Texting.FontLib.LookupWithUnicode(System.Int32)">
+	<summary>从Unicode查找字符码点。</summary>
+</member><member name="M:Firefly.Texting.FontLib.LookupWithCode(System.Int32)">
+	<summary>从自定义码点查找字符码点。</summary>
+</member><member name="M:Firefly.Texting.FontLib.LookupWithChar(System.String)">
+	<summary>从字符(UTF-16B)查找字符码点。</summary>
+</member><member name="M:Firefly.Texting.FontLib.Add(Firefly.TextEncoding.CharCode)">
+	<summary>添加字符，仅码点。后面的字符若与前面重复，不会覆盖。</summary>
+</member><member name="M:Firefly.Texting.FontLib.Add(Firefly.TextEncoding.CharCode,Firefly.Glyphing.IGlyph)">
+	<summary>添加字符，从码点和字形。后面的字符若与前面重复，不会覆盖。</summary>
+</member><member name="M:Firefly.Texting.FontLib.Remove(Firefly.TextEncoding.CharCode)">
+	<summary>移除字符。</summary>
+</member><member name="M:Firefly.Texting.FontLib.RemoveMany(System.Collections.Generic.IEnumerable{Firefly.TextEncoding.CharCode})">
+	<summary>移除字符。</summary>
+</member><member name="P:Firefly.Texting.FontLib.Item(Firefly.TextEncoding.CharCode)">
+	<summary>获取或设置指定字形。</summary>
+</member><member name="P:Firefly.Texting.FontLib.HasGlyph(Firefly.TextEncoding.CharCode)">
+	<summary>指示指定字符码点是否存在字形。</summary>
+</member><member name="M:Firefly.Texting.FontLib.GetEncodingString">
+	<summary>获取字库中的所有Unicode字符。</summary>
+</member><member name="T:Firefly.Texting.FontLib">
+	<summary>字库，字符码点到字形的映射。</summary>
+</member><member name="T:Firefly.Texting.HanziVariantTableGen">
+	<summary>
+ 简繁日汉字异体对应表生成器
+ </summary>
+	<remarks>
+ 本类按照UniHan数据库生成简繁日汉字异体对应表。
+ ftp://ftp.unicode.org/Public/UNIDATA/Unihan.zip
+ http://www.unicode.org/reports/tr38/
+ 
+ 所有涉及的汉字仅在以下三级常用汉字中选取
+ U+4E00..U+9FA5   : CJK Unified Ideographs
+ U+9FA6..U+9FBB   : CJK Unified Ideographs (4.1)
+ U+9FBC..U+9FC3   : CJK Unified Ideographs (5.1)
+ 
+ 简体字规范(GN):
+ 现代汉语通用字表
+ http://www.china-language.gov.cn/wenziguifan/shanghi/014.htm
+ 修改了12个错字，《现代汉语通用字表》的错字
+ http://www.pkucn.com/viewthread.php?tid=226484&amp;extra=page%3D1
+ 
+ 繁体字规范(TN)：
+ 常用国字标准字体表 次常用国字标准字体表(暂缺)
+ 代替方案为以下字集取并集
+ CNS 11643-1992第一字面字
+ 台湾国小字表
+ http://hanzi.unihan.com.cn/Coolhanzi/#down_paper
+ 
+ 日体字规范(JN)：
+ 日本常用漢字表
+ http://bjkoro.net/chinese/joyokanji.html
+ 字数明显不足，使用J0中所有有字源异体关系的字在J0中编号最小的。
+ 
+ 简体字源(G):
+ G0 GB2312-80
+ G1 GB12345-90 with 58 Hong Kong and 92 Korean "Idu" characters
+ G7 General Purpose Hanzi List for Modern Chinese Language, and General List of Simplified Hanzi
+ 
+ 繁体字源(T):
+ T1 CNS 11643-1992, plane 1
+ T2 CNS 11643-1992, plane 2
+ 
+ 日体字源(J):
+ J0 JIS X 0208:1990
+ J1 JIS X 0212:1990
+ 
+ 为了校正一些UniHan中未包含的繁简多一对应和多一对应别字，添加了下表的资料。
+ 簡繁轉換別字表
+ http://input.foruto.com/ccc/data/proof/02.htm
+ 但是，从中去除了不用的二简字(少量仍通用的未去除，如挨捱)、G源异体字(如昆仑崑崙、家私傢俬、村邨、借藉)，并对排序进行了调整。
+ 
+ 
+ 简日转换表优先使用中日简化字对照表(费锦昌)数据
+ http://www.pkucn.com/viewthread.php?tid=166825&amp;page=1&amp;authorid=70246
+ 
+ 
+ 落入到三个规范的字认为是该字源的规范字。
+ 落入到三个字源的字认为是该字源的常用字。
+ 
+ 两个字g、t(可能是一个字)，若g(-G，t(-T，g(-t.kSimplifiedVariant，t(-g.kTraditionalVariant，则两者是繁简异体字。
+ 两个字j、t(可能是一个字)，若j(-J，t(-T，t(-j.kZVariant，则两者是繁日异体字。
+ 两个字g、j(可能是一个字)，若存在t(-T，(g、t是一一对应繁简异体字或同一个字，j、t是一一对应繁日异体字或同一个字)或(g、t是一一对应繁简异体字或同一个字，j、t是一多对应繁日异体字或同一个字)或(g、t是一多对应繁简异体字或同一个字，j、t是一一对应繁日异体字或同一个字)，或g(-G，j(-J，g(-j.kSimplifiedVariant，j(-g.kTraditionalVariant，或g(-j.kTraditionalVariant，j(-g.kSimplifiedVariant，则称两者是简日异体字。
+ 三种关系统称字源异体字。
+ 
+ 字源异体字中，只做规范字-&gt;规范字、非规范字-&gt;非规范字的转换，不做规范字-&gt;非规范字、非规范字-&gt;规范字的转换。
+ 且对于非规范字，需要参考在其他字源中，是否一个是规范字，一个不是规范字，如果是，则也不转换。
+ 
+ 在此规则下，一些字由于不在标准中出现，转换会出现问题，比如日本常用字表中无“丑”字(子丑寅卯)，仅有“醜”字，则在GJ、JG转换中，不会像GT、TG中那样出现丑丑转换，而仅有丑醜转换。
+ 如果发生此类错误，则需要在生成的转换表中加入此类字。不过这同样意味着，在一一对应转换时，丑醜转换不会进行。
+ 
+ </remarks>
+</member><member name="M:Firefly.Texting.HanziConverter.TableConvert(System.String,System.Collections.Generic.Dictionary{Firefly.TextEncoding.Char32,Firefly.TextEncoding.Char32})">
+	<summary>表转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.TableConvertOneOnOne(System.String,System.Collections.Generic.Dictionary{Firefly.TextEncoding.Char32,Firefly.TextEncoding.Char32},System.Collections.Generic.Dictionary{Firefly.TextEncoding.Char32,Firefly.TextEncoding.Char32})">
+	<summary>表转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.BuildTable(Firefly.TextEncoding.Char32[],Firefly.TextEncoding.Char32[])">
+	<summary>构造转换表</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.BuildTableOneOnOne(Firefly.TextEncoding.Char32[],Firefly.TextEncoding.Char32[])">
+	<summary>构造转换表，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.BuildSet(Firefly.TextEncoding.Char32[],Firefly.TextEncoding.Char32[])">
+	<summary>构造转换集</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.G2T(System.String)">
+	<summary>简繁转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.T2G(System.String)">
+	<summary>繁简转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.T2J(System.String)">
+	<summary>繁日转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.J2T(System.String)">
+	<summary>日繁转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.G2J(System.String)">
+	<summary>简日转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.J2G(System.String)">
+	<summary>日简转换</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.G2TOneOnOne(System.String)">
+	<summary>简繁转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.T2GOneOnOne(System.String)">
+	<summary>繁简转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.T2JOneOnOne(System.String)">
+	<summary>繁日转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.J2TOneOnOne(System.String)">
+	<summary>日繁转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.G2JOneOnOne(System.String)">
+	<summary>简日转换，仅一一对应</summary>
+</member><member name="M:Firefly.Texting.HanziConverter.J2GOneOnOne(System.String)">
+	<summary>日简转换，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.G2T_Dict">
+	<summary>简繁转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.T2G_Dict">
+	<summary>繁简转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.T2J_Dict">
+	<summary>繁日转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.J2T_Dict">
+	<summary>日繁转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.G2J_Dict">
+	<summary>简日转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.J2G_Dict">
+	<summary>日简转换表，仅一一对应</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.G2T_Set">
+	<summary>简繁转换表集</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.T2G_Set">
+	<summary>繁简转换表集</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.T2J_Set">
+	<summary>繁日转换表集</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.J2T_Set">
+	<summary>日繁转换表集</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.G2J_Set">
+	<summary>简日转换表集</summary>
+</member><member name="P:Firefly.Texting.HanziConverter.J2G_Set">
+	<summary>日简转换表集</summary>
+</member><member name="T:Firefly.Texting.HanziConverter">
+	<summary>简繁日汉字转换器</summary>
+</member><member name="F:Firefly.TextEncoding.StringCode.Unicode">
+	<summary>Unicode字符串。</summary>
+</member><member name="F:Firefly.TextEncoding.StringCode.Code">
+	<summary>码点形式的自定义码点。</summary>
+</member><member name="F:Firefly.TextEncoding.StringCode.CodeLength">
+	<summary>自定义码点的字节长度。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.#ctor">
+	<summary>已重载。创建字符码点值对的实例。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.#ctor(System.String,System.Int32,System.Int32)">
+	<summary>已重载。创建字符码点值对的实例。</summary>
+	<param name="UniStr">Unicode字符串，空字符串表示不存在。</param>
+	<param name="Code">自定义码点，-1表示不存在。</param>
+	<param name="CodeLength">自定义码点的字节长度，只能为-1、0、1、2、3、4。其中-1表示不明确，0表示码点不存在。</param>
+	<remarks></remarks>
+</member><member name="M:Firefly.TextEncoding.StringCode.#ctor(Firefly.TextEncoding.Char32,System.Int32,System.Int32)">
+	<summary>已重载。创建字符码点值对的实例。</summary>
+	<param name="UniChar">Unicode字符，-1表示不存在。</param>
+	<param name="Code">自定义码点，-1表示不存在。</param>
+	<param name="CodeLength">自定义码点的字节长度，只能为-1、0、1、2、3、4。其中-1表示不明确，0表示码点不存在。</param>
+	<remarks></remarks>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromNothing">
+	<summary>创建字符码点值对的实例。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromUniStr(System.String)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="UniStr">Unicode字符串。</param>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromUniChar(Firefly.TextEncoding.Char32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="UniChar">Unicode字符。</param>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromUnicode(System.Int32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="Unicode">Unicode码。</param>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromCode(System.Int32,System.Int32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="Code">自定义码点，-1表示不存在。</param>
+	<param name="CodeLength">自定义码点的字节长度，只能为-1、0、1、2、3、4。其中-1表示不明确，0表示码点不存在。</param>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromCodeString(System.String)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="CodeString">自定义码点的字符串形式，""表示不存在。</param>
+</member><member name="M:Firefly.TextEncoding.StringCode.FromCharCode(Firefly.TextEncoding.CharCode)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="CharCode">CharCode字符串。</param>
+</member><member name="P:Firefly.TextEncoding.StringCode.Character">
+	<summary>字符。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.IsControlChar">
+	<summary>指示是否是控制符。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.IsNewLine">
+	<summary>指示是否是换行符。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.IsCodeMappable">
+	<summary>指示是否已建立映射。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.HasUnicode">
+	<summary>指示Unicode是否存在。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.HasCode">
+	<summary>指示自定义码点是否存在。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.ToString">
+	<summary>生成显示用字符串。</summary>
+</member><member name="P:Firefly.TextEncoding.StringCode.CodeString">
+	<summary>自定义码点的字符串形式。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.Equals(Firefly.TextEncoding.StringCode)">
+	<summary>比较两个字符码点是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.Equals(System.Object)">
+	<summary>比较两个字符码点是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.GetHashCode">
+	<summary>获取字符码点的HashCode。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCode.op_Implicit(Firefly.TextEncoding.CharCode)~Firefly.TextEncoding.StringCode">
+	<summary>转换CharCode到StringCode。</summary>
+</member><member name="T:Firefly.TextEncoding.StringCode">
+	<summary>字符串码点值对，可用于码点转换。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCodeString.FromCharCodeString(Firefly.TextEncoding.CharCode[])">
+	<summary>转换CharCode()到StringCode()。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCodeString.FromString32(Firefly.TextEncoding.Char32[])">
+	<summary>转换UTF-32字符串到StringCode()。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCodeString.FromString16(System.String)">
+	<summary>转换UTF-16 Big-Endian字符串到UTF-32字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.StringCodeString.ToString16(Firefly.TextEncoding.StringCode[])">
+	<summary>转换UTF-32字符串到UTF-16 Big-Endian字符串。</summary>
+</member><member name="T:Firefly.TextEncoding.StringCodeString">
+	<summary>字符码点值对字符串。</summary>
+</member><member name="P:Firefly.TextEncoding.Char32.Value">
+	<summary>UTF-32值。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.ToDisplayString">
+	<summary>生成显示用字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.ToString">
+	<summary>已重载。将UTF-16 Big-Endian转换成Unicode(UTF-32)。</summary>
+</member><member name="P:Firefly.TextEncoding.Char32.IsControlChar">
+	<summary>指示是否是控制符。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.ToString(Firefly.TextEncoding.Char32)">
+	<summary>已重载。将Unicode(UTF-32)转换成UTF-16 Big-Endian。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.FromString(System.String)">
+	<summary>将UTF-16 Big-Endian转换成Unicode(UTF-32)。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Implicit(Firefly.TextEncoding.Char32)~System.Int32">
+	<summary>转换UTF-32字符到32位整数。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Implicit(System.Int32)~Firefly.TextEncoding.Char32">
+	<summary>转换32位整数到UTF-32字符。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Implicit(System.Char)~Firefly.TextEncoding.Char32">
+	<summary>转换UTF-16 Big-Endian字符到UTF-32字符。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Explicit(Firefly.TextEncoding.Char32)~System.Char">
+	<summary>转换Uncode(UTF-32)字符到转换UTF-16 Big-Endian字符。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Explicit(System.String)~Firefly.TextEncoding.Char32">
+	<summary>转换UTF-16 Big-Endian字符串到UTF-32字符。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.op_Implicit(Firefly.TextEncoding.Char32)~System.String">
+	<summary>转换UTF-32字符到转换UTF-16 Big-Endian字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.Equals(Firefly.TextEncoding.Char32)">
+	<summary>比较两个字符是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.Equals(System.Object)">
+	<summary>比较两个字符是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.GetHashCode">
+	<summary>获取字符的HashCode。</summary>
+</member><member name="M:Firefly.TextEncoding.Char32.CompareTo(Firefly.TextEncoding.Char32)">
+	<summary>比较两个字符的大小。</summary>
+</member><member name="T:Firefly.TextEncoding.Char32">
+	<summary>UTF-32字符。</summary>
+</member><member name="M:Firefly.TextEncoding.String32.ChrQ(System.Int32)">
+	<summary>UTF-32数值转到UTF-32字符。</summary>
+</member><member name="M:Firefly.TextEncoding.String32.AscQ(Firefly.TextEncoding.Char32)">
+	<summary>UTF-32字符转到UTF-32数值。</summary>
+</member><member name="M:Firefly.TextEncoding.String32.FromUTF16B(System.String)">
+	<summary>转换UTF-16 Big-Endian字符串到Uncode(UTF-32)字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.String32.ToUTF16B(Firefly.TextEncoding.Char32[])">
+	<summary>转换Uncode(UTF-32)字符串到UTF-16 Big-Endian字符串。</summary>
+</member><member name="T:Firefly.TextEncoding.String32">
+	<summary>UTF-32字符串，即Char32()。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.ChrW(System.Int16)">
+	<summary>UTF-16数值转到UTF-16字符。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.ChrW(System.UInt16)">
+	<summary>UTF-16数值转到UTF-16字符。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.ChrW(System.Int32)">
+	<summary>UTF-32数值转到UTF-16字符。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.AscW(System.Char)">
+	<summary>UTF-16字符转到UTF-16数值。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.ToUTF32(System.String)">
+	<summary>转换UTF-16 Big-Endian字符串到Uncode(UTF-32)字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.FromUTF32(Firefly.TextEncoding.Char32[])">
+	<summary>转换Uncode(UTF-32)字符串到UTF-16 Big-Endian字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.UnifyNewLineToCrLf(System.String)">
+	<summary>统一换行符为回车换行。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.UnifyNewLineToLf(System.String)">
+	<summary>统一换行符为换行。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.TrimStart(System.String,Firefly.TextEncoding.Char32)">
+	<summary>从当前 String 对象移除数组中指定的一个字符的所有前导匹配项。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.TrimEnd(System.String,Firefly.TextEncoding.Char32)">
+	<summary>从当前 String 对象移除数组中指定的一个字符的所有尾部匹配项。</summary>
+</member><member name="M:Firefly.TextEncoding.String16.Trim(System.String,Firefly.TextEncoding.Char32)">
+	<summary>从当前 String 对象移除一个指定字符的所有前导匹配项和尾部匹配项。</summary>
+</member><member name="T:Firefly.TextEncoding.String16">
+	<summary>UTF-16字符串，即String。</summary>
+</member><member name="T:Firefly.TextEncoding.MultiByteEncoding.InternalEncoder">
+	<summary>辅助类，仅仅是为了是使用跨缓冲区多次GetBytes的.Net内部的类正常。</summary>
+</member><member name="T:Firefly.TextEncoding.MultiByteEncoding.InternalDecoder">
+	<summary>辅助类，仅仅是为了是使用跨缓冲区多次GetChars的.Net内部的类正常。</summary>
+</member><member name="M:Firefly.StreamEx.#ctor">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.StreamEx.#ctor(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.StreamEx.#ctor(System.String,System.IO.FileMode,System.IO.FileAccess)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.StreamEx.#ctor(System.IO.Stream)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.StreamEx.ReadByte">
+	<summary>读取字节。</summary>
+</member><member name="M:Firefly.StreamEx.WriteByte(System.Byte)">
+	<summary>写入字节。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt16">
+	<summary>读取Int16。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt32">
+	<summary>读取Int32。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt64">
+	<summary>读取Int64。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt16(System.Int16)">
+	<summary>写入Int16。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt32(System.Int32)">
+	<summary>写入Int32。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt64(System.Int64)">
+	<summary>写入Int64。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt16BigEndian">
+	<summary>读取Int16，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt32BigEndian">
+	<summary>读取Int32，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt64BigEndian">
+	<summary>读取Int64，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt16BigEndian(System.Int16)">
+	<summary>写入Int16，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt32BigEndian(System.Int32)">
+	<summary>写入Int32，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt64BigEndian(System.Int64)">
+	<summary>写入Int64，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.ReadUInt16">
+	<summary>读取UInt16。</summary>
+</member><member name="M:Firefly.StreamEx.WriteUInt16(System.UInt16)">
+	<summary>写入UInt16。</summary>
+</member><member name="M:Firefly.StreamEx.ReadUInt16BigEndian">
+	<summary>读取UInt16，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.WriteUInt16BigEndian(System.UInt16)">
+	<summary>写入UInt16，高位优先字节序。</summary>
+</member><member name="M:Firefly.StreamEx.ReadString(System.Int32,System.Text.Encoding)">
+	<summary>读取\0字节结尾的字符串(UTF-16等不适用)。</summary>
+</member><member name="M:Firefly.StreamEx.WriteString(System.String,System.Int32,System.Text.Encoding)">
+	<summary>写入\0字节结尾的字符串(UTF-16等不适用)。</summary>
+</member><member name="M:Firefly.StreamEx.ReadStringWithNull(System.Int32,System.Text.Encoding)">
+	<summary>读取包括\0字节的字符串(如UTF-16)。</summary>
+</member><member name="M:Firefly.StreamEx.ReadSimpleString(System.Int32)">
+	<summary>读取ASCII字符串。</summary>
+</member><member name="M:Firefly.StreamEx.WriteSimpleString(System.String,System.Int32)">
+	<summary>写入ASCII字符串。</summary>
+</member><member name="M:Firefly.StreamEx.WriteSimpleString(System.String)">
+	<summary>写入ASCII字符串。</summary>
+</member><member name="M:Firefly.StreamEx.ReadSimpleStringWithNull(System.Int32)">
+	<summary>读取ASCII字符串(包括\0)。</summary>
+</member><member name="M:Firefly.StreamEx.ReadSingle">
+	<summary>读取单精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.WriteSingle(System.Single)">
+	<summary>写入单精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.ReadFloat32">
+	<summary>读取单精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.WriteFloat32(System.Single)">
+	<summary>写入单精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.ReadDouble">
+	<summary>读取双精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.WriteDouble(System.Double)">
+	<summary>写入双精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.ReadFloat64">
+	<summary>读取双精度浮点数。</summary>
+</member><member name="M:Firefly.StreamEx.WriteFloat64(System.Double)">
+	<summary>写入双精度浮点数。</summary>
+</member><member name="P:Firefly.StreamEx.CanRead">
+	<summary>指示当前流是否支持读取。</summary>
+</member><member name="P:Firefly.StreamEx.CanSeek">
+	<summary>指示当前流是否支持定位。</summary>
+</member><member name="P:Firefly.StreamEx.CanWrite">
+	<summary>指示当前流是否支持写入。</summary>
+</member><member name="M:Firefly.StreamEx.Flush">
+	<summary>强制同步缓冲数据。</summary>
+</member><member name="M:Firefly.StreamEx.Close">
+	<summary>关闭流。</summary>
+	<remarks>对继承者的说明：该方法调用Dispose()，不要覆盖该方法，而应覆盖Dispose(Boolean)</remarks>
+</member><member name="P:Firefly.StreamEx.Length">
+	<summary>用字节表示的流的长度。</summary>
+</member><member name="P:Firefly.StreamEx.Position">
+	<summary>流的当前位置。</summary>
+</member><member name="M:Firefly.StreamEx.Seek(System.Int64,System.IO.SeekOrigin)">
+	<summary>设置流的当前位置。</summary>
+</member><member name="M:Firefly.StreamEx.SetLength(System.Int64)">
+	<summary>设置流的长度。</summary>
+</member><member name="M:Firefly.StreamEx.Read(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。读取到字节数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。</param>
+</member><member name="M:Firefly.StreamEx.Read(System.Byte[])">
+	<summary>已重载。读取到字节数组。</summary>
+</member><member name="M:Firefly.StreamEx.Read(System.Int32)">
+	<summary>已重载。读取字节数组。</summary>
+</member><member name="M:Firefly.StreamEx.Write(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。写入字节数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始将字节复制到当前流。</param>
+</member><member name="M:Firefly.StreamEx.Write(System.Byte[])">
+	<summary>已重载。写入字节数组。</summary>
+</member><member name="M:Firefly.StreamEx.ReadInt32Array(System.Int32)">
+	<summary>读取Int32数组。</summary>
+</member><member name="M:Firefly.StreamEx.WriteInt32Array(System.Int32[])">
+	<summary>写入Int32数组。</summary>
+</member><member name="M:Firefly.StreamEx.ReadToStream(Firefly.StreamEx,System.Int64)">
+	<summary>读取到外部流。</summary>
+</member><member name="M:Firefly.StreamEx.WriteFromStream(Firefly.StreamEx,System.Int64)">
+	<summary>从外部流写入。</summary>
+</member><member name="M:Firefly.StreamEx.SaveAs(System.String)">
+	<summary>保存到文件。</summary>
+</member><member name="M:Firefly.StreamEx.DisposeManagedResource">
+	<summary>释放托管对象或间接非托管对象(Stream等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.StreamEx.DisposeUnmanagedResource">
+	<summary>释放直接非托管对象(Handle等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.StreamEx.Dispose(System.Boolean)">
+	<summary>释放流的资源。请优先覆盖DisposeManagedResource、DisposeUnmanagedResource、DisposeNullify方法。如果你直接保存非托管对象(Handle等)，请覆盖Finalize方法，并在其中调用Dispose(False)。</summary>
+</member><member name="M:Firefly.StreamEx.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.StreamEx.StreamAdapter">
+	<summary>扩展流适配器类</summary>
+	<remarks>用于安全保存StreamEx的Stream形式。</remarks>
+</member><member name="T:Firefly.StreamEx.UnsafeStreamAdapter">
+	<summary>扩展流适配器类-适配非安全流</summary>
+	<remarks>用于安全保存StreamEx的Stream形式。</remarks>
+</member><member name="T:Firefly.StreamEx">
+	<summary>
+ 扩展流类
+ </summary>
+	<remarks>
+ 请显式调用Close或Dispose来关闭流。
+ 如果调用了ToStream或转换到了Stream，并放弃了StreamEx，StreamEx也不会消失，因为使用了一个继承自Stream的Adapter来持有StreamEx的引用。
+ 本类与System.IO.StreamReader等类不兼容。这些类使用了ReadByte返回的结束标志-1等。本类会在位置超过文件长度时读取会抛出异常。
+ 本类主要用于封装System.IO.MemoryStream和System.IO.FileStream，对其他流可能抛出无法预期的异常。
+ 一切的异常都由调用者来处理。
+ </remarks>
+</member><member name="T:Firefly.Packaging.PCK">
+	<summary>PCK文件流类</summary>
+	<remarks>
+ 用于打开和创建盟军2的PCK文件
+ </remarks>
+</member><member name="M:Firefly.PartialStreamEx.#ctor(Firefly.StreamEx,System.Int64,System.Int64,System.Boolean)">
+	<summary>已重载。初始化新实例。</summary>
+	<param name="BaseLength">文件的最大大小</param>
+	<remarks>BaseLength不能小于Length。</remarks>
+</member><member name="M:Firefly.PartialStreamEx.#ctor(Firefly.StreamEx,System.Int64,System.Int64,System.Int64,System.Boolean)">
+	<summary>已重载。初始化新实例。</summary>
+	<param name="BaseLength">文件的最大大小</param>
+	<param name="Length">初始大小</param>
+	<remarks>BaseLength不能小于Length。</remarks>
+</member><member name="M:Firefly.PartialStreamEx.ReadByte">
+	<summary>读取字节。</summary>
+</member><member name="M:Firefly.PartialStreamEx.WriteByte(System.Byte)">
+	<summary>写入字节。</summary>
+</member><member name="P:Firefly.PartialStreamEx.Length">
+	<summary>用字节表示的流的长度。</summary>
+</member><member name="P:Firefly.PartialStreamEx.BasePosition">
+	<summary>用字节表示的流在基流中的的偏移位置。</summary>
+</member><member name="P:Firefly.PartialStreamEx.BaseLength">
+	<summary>用字节表示的流的最大长度。</summary>
+</member><member name="P:Firefly.PartialStreamEx.Position">
+	<summary>流的当前位置。</summary>
+</member><member name="M:Firefly.PartialStreamEx.SetLength(System.Int64)">
+	<summary>设置流的长度，不得大于最大大小。</summary>
+</member><member name="M:Firefly.PartialStreamEx.Read(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。读取到字节数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。</param>
+</member><member name="M:Firefly.PartialStreamEx.Write(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。写入字节数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始将字节复制到当前流。</param>
+</member><member name="T:Firefly.PartialStreamEx">
+	<summary>
+ 局部扩展流类，用于表示一个流上的固定开始位置和长度的流，可以递归表示
+ </summary>
+	<remarks>注意：一切的异常都由你来处理。</remarks>
+</member><member name="F:Firefly.Packaging.PackageBase.FileList">
+	<summary>全部文件的集合。</summary>
+</member><member name="F:Firefly.Packaging.PackageBase.IndexOfFile">
+	<summary>文件到文件编号的映射。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.#ctor">
+	<summary>已重载。默认构照函数。请手动初始化BaseStream。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。打开或创建文件包。</summary>
+</member><member name="P:Firefly.Packaging.PackageBase.Root">
+	<summary>文件根。</summary>
+</member><member name="P:Firefly.Packaging.PackageBase.Files">
+	<summary>全部文件的集合。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.PushFile(Firefly.Packaging.FileDB)">
+	<summary>把文件FileDB放入根目录FileDB。若根目录FileDB不存在，则空的根目录会自动创建。在加入一个FileDB时，调用该方法，使得它被加入到FileList、IndexOfFile中，以及PushFileToDir到根目录FileDB中。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.PushFile(Firefly.Packaging.FileDB,Firefly.Packaging.FileDB)">
+	<summary>将文件FileDB放入文件夹的FileDB。在加入一个FileDB时，调用该方法，使得它被加入到FileList、IndexOfFile中，以及PushFileToDir到文件夹FileDB中。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.PushFileToDir(Firefly.Packaging.FileDB,Firefly.Packaging.FileDB)">
+	<summary>将文件FileDB放入文件夹的FileDB。请只在PushFile中调用。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.TryGetFileDB(System.String)">
+	<summary>尝试按路径取得FileDB。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.GuessExtensionFromMagicIdentifier(System.Int32,System.String)">
+	<summary>从文件头标识符猜测文件扩展名。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractInner(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>从包中解出一个文件。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Extract(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。从包中解出一个文件。该函数不再可覆盖，请覆盖ExtractInner。调用ExtractInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Extract(Firefly.Packaging.FileDB)">
+	<summary>已重载。从包中解出一个文件。调用Extract(ByVal File As FileDB, ByVal sp As ZeroPositionStreamPasser)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractSingleInner(Firefly.Packaging.FileDB,System.String)">
+	<summary>从包中解出一个文件。应优先考虑覆盖ExtractInner。默认实现调用Extract(ByVal File As FileDB, ByVal sp As ZeroPositionStreamPasser)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractSingle(Firefly.Packaging.FileDB,System.String)">
+	<summary>从包中解出一个文件。默认实现调用ExtractSingleInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Extract(Firefly.Packaging.FileDB,System.String,System.String)">
+	<summary>已重载。从包中解出一个文件或一个文件夹。调用ExtractSingle和ExtractMultiple。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractMultipleInner(Firefly.Packaging.FileDB[],System.String[])">
+	<summary>从包中解出多个文件或文件夹。应优先考虑覆盖ExtractInner或ExtractSingleInner。默认实现调用Extract(ByVal File As FileDB, ByVal Path As String, Optional ByVal Mask As String = "*")。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractMultiple(Firefly.Packaging.FileDB[],System.String[])">
+	<summary>已重载。从包中解出多个文件或文件夹。调用ExtractMultipleInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ExtractMultiple(Firefly.Packaging.FileDB[],System.String[],System.String)">
+	<summary>已重载。从包中解出多个文件或文件夹。调用ExtractMultipleInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Replace(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。替换包中的一个文件。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Replace(Firefly.Packaging.FileDB,System.String)">
+	<summary>已重载。替换包中的一个文件。Replace(ByVal File As FileDB, ByVal sp As ZeroPositionStreamPasser)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Replace(Firefly.Packaging.FileDB,System.Byte[])">
+	<summary>已重载。替换包中的一个文件。调用Replace(ByVal File As FileDB, ByVal sp As ZeroPositionStreamPasser)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ReplaceMultipleInner(Firefly.Packaging.FileDB[],System.String[])">
+	<summary>替换包中的多个文件。默认实现调用Replace(ByVal File As FileDB, ByVal Path As String)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.ReplaceMultiple(Firefly.Packaging.FileDB[],System.String[])">
+	<summary>替换包中的多个文件。调用ReplaceMultipleInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Close">
+	<summary>关闭包。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.DisposeManagedResource">
+	<summary>释放托管对象或间接非托管对象(Stream等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.DisposeUnmanagedResource">
+	<summary>释放直接非托管对象(Handle等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Dispose(System.Boolean)">
+	<summary>释放流的资源。请优先覆盖DisposeManagedResource、DisposeUnmanagedResource、DisposeNullify方法。如果你直接保存非托管对象(Handle等)，请覆盖Finalize方法，并在其中调用Dispose(False)。</summary>
+</member><member name="M:Firefly.Packaging.PackageBase.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.Packaging.PackageBase">
+	<summary>
+ 文件包基类
+ 
+ 
+ 给继承者的说明：
+ 
+ 如果文件包支持写入，应
+ (1)在加入一个FileDB时，调用PushFile方法，使得它被加入到FileList、IndexOfFile中，以及PushFileToDir到根目录FileDB中，若根目录FileDB不存在，则空的根目录会自动创建
+ 
+ 请使用PackageRegister来注册文件包类型。
+ 应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
+ 并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
+ </summary>
+</member><member name="P:Firefly.Packaging.FileDB.Name">
+	<summary>文件名</summary>
+</member><member name="P:Firefly.Packaging.FileDB.Type">
+	<summary>文件类型：文件 文件夹</summary>
+</member><member name="P:Firefly.Packaging.FileDB.Length">
+	<summary>文件长度</summary>
+</member><member name="P:Firefly.Packaging.FileDB.Address">
+	<summary>文件地址</summary>
+</member><member name="P:Firefly.Packaging.FileDB.TitleName">
+	<summary>显示用文件名，如果为空会返回Name</summary>
+</member><member name="T:Firefly.Packaging.FileDB">
+	<summary>文件信息</summary>
+</member><member name="T:Firefly.Packaging.FileDBAddressComparer">
+	<summary>文件信息开始地址比较器</summary>
+</member><member name="T:Firefly.Packaging.PackageRegister.PackageOpen">
+	<summary>打开文件包。</summary>
+</member><member name="T:Firefly.Packaging.PackageRegister.PackageCreate">
+	<summary>创建新的文件包。</summary>
+</member><member name="M:Firefly.Packaging.PackageRegister.Register(System.String,Firefly.Packaging.PackageRegister.PackageOpen,Firefly.Packaging.PackageRegister.PackageCreate)">
+	<summary>
+ 注册一个包类型
+ </summary>
+	<param name="Filter">
+ 文件包文件名筛选器，应按照“Package File(*.Package)|*.Package”的格式书写。
+ </param>
+</member><member name="T:Firefly.Packaging.PackageRegister">
+	<summary>
+ 注册文件包类型
+ 至少应该包含打开
+ </summary>
+</member><member name="T:Firefly.Setting.Ini">
+	<summary>INI控制类</summary>
+	<remarks>
+ 本类管理INI文件
+ 注意 本类初始化时会从文件读取数据,但没有文件也可
+ 注意 相同的键只保留后者
+ 注意 写函数
+
+ 注意 本类的字符串支持字符转义
+ @ 在字符串前可取消字符转义
+ { } 可用表示多行文字 此时自动禁止转义 {必须在有等号那行 }必须是那行的最后一个除空格以外的字符
+ $ 在字符串前表示字符串的值从后面的外部文件得到 此时自动禁止转义
+ 若@{$连用只有前面的起作用
+ ; # // 用作单行注释
+ /* */ 用作多行注释
+ 没有等号和节格式的行不处理 不推荐作为注释
+ \a 与响铃（警报）\u0007 匹配 
+ \b 与退格符 \u0008 匹配
+ \t 与 Tab 符 \u0009 匹配 
+ \r 与回车符 \u000D 匹配
+ \v 与垂直 Tab 符 \u000B 匹配
+ \f 与换页符 \u000C 匹配
+ \n 与换行符 \u000A 匹配
+ \x?? 与 Chr(??) 匹配
+ \x2F 与 左斜杠符 / 匹配
+ \x5C 与 右斜杠符 \ 匹配
+
+ 本类使用ReadValue来读值 如果没有读出返回False  用New INI(FILE_NAME)得到的实例会自动调用此函数
+ 本类使用WriteValue来写入值到内存
+ 本类使用ReadFromFile将从文件添入值 如果没有文件可用返回False
+ 本类使用WriteToFile将所有改变写入文件 如果没有写入返回False
+ </remarks>
+</member><member name="T:Firefly.Setting.IniLocalization">
+	<summary>INI本地化类</summary>
+	<remarks>
+ 本类管理以INI形式存储的本地化字符串
+ 需要的本地化文件格式样例如下：
+ 
+ Program.en.ini
+ [en]
+ Text1 = Hello
+ Text2 = Welldone
+ Text3 = Color
+ 
+ [en-GB]
+ Text3 = Colour
+ 
+ Program.zh-CN.ini
+ [zh-CN]
+ Text1 = 你好
+ Text2 = 棒极了
+ Text3 = 颜色
+ 
+ </remarks>
+</member><member name="M:Firefly.Imaging.Gif.GifImageBlock.SetControl(System.Int16)">
+	<param name="DelayTime">单位为0.01s</param>
+</member><member name="M:Firefly.Imaging.Gif.GifImageBlock.SetControl(System.Int16,System.Byte)">
+	<param name="DelayTime">单位为0.01s</param>
+</member><member name="T:Firefly.Imaging.Gif">
+	<summary>基本Gif文件类</summary>
+	<remarks>用于GIF89a，但忽略无用功能</remarks>
+</member><member name="M:Firefly.FileNameHandling.GetFileName(System.String)">
+	<summary>获得文件名</summary>
+</member><member name="M:Firefly.FileNameHandling.GetMainFileName(System.String)">
+	<summary>获得主文件名</summary>
+</member><member name="M:Firefly.FileNameHandling.GetExtendedFileName(System.String)">
+	<summary>获得扩展文件名</summary>
+</member><member name="M:Firefly.FileNameHandling.GetFileDirectory(System.String)">
+	<summary>获得文件路径中的文件夹部分</summary>
+</member><member name="M:Firefly.FileNameHandling.GetRelativePath(System.String,System.String)">
+	<summary>获得相对路径</summary>
+</member><member name="M:Firefly.FileNameHandling.GetReducedPath(System.String)">
+	<summary>获得精简路径</summary>
+</member><member name="M:Firefly.FileNameHandling.GetDirectoryPathWithoutTailingSeparator(System.String)">
+	<summary>获得没有结尾分隔符的文件夹路径</summary>
+</member><member name="M:Firefly.FileNameHandling.GetDirectoryPathWithTailingSeparator(System.String)">
+	<summary>获得有结尾分隔符的文件夹路径，如果文件夹为空，则返回空</summary>
+</member><member name="M:Firefly.FileNameHandling.GetAbsolutePath(System.String,System.String)">
+	<summary>获得绝对路径</summary>
+</member><member name="M:Firefly.FileNameHandling.PopFirstDir(System.String@)">
+	<summary>取出路径的第一个文件夹名</summary>
+</member><member name="M:Firefly.FileNameHandling.GetPath(System.String,System.String)">
+	<summary>构成路径</summary>
+</member><member name="M:Firefly.FileNameHandling.ChangeExtension(System.String,System.String)">
+	<summary>更换扩展名</summary>
+</member><member name="M:Firefly.FileNameHandling.IsMatchFileMask(System.String,System.String)">
+	<summary>判断文件名是否符合通配符</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetDifference(System.Int16[],System.Int16)">
+	<summary>已重载。得到数组的差分，用Sum参数放在Value最后来凑齐</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetDifference(System.UInt16[],System.UInt16)">
+	<summary>已重载。得到数组的差分，用Sum参数放在Value最后来凑齐</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetDifference(System.Int32[],System.Int32)">
+	<summary>已重载。得到数组的差分，用Sum参数放在Value最后来凑齐</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetDifference(System.Int64[],System.Int64)">
+	<summary>已重载。得到数组的差分，用Sum参数放在Value最后来凑齐</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetSummation(System.Int16,System.Int16[])">
+	<summary>已重载。得到数组的求和，是GetDifference的逆运算</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetSummation(System.UInt16,System.UInt16[])">
+	<summary>已重载。得到数组的求和，是GetDifference的逆运算</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetSummation(System.Int32,System.Int32[])">
+	<summary>已重载。得到数组的求和，是GetDifference的逆运算</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetSummation(System.Int64,System.Int64[])">
+	<summary>已重载。得到数组的求和，是GetDifference的逆运算</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifference(System.Int16[],System.Int16)">
+	<summary>已重载。得到地址列的差分，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifference(System.UInt16[],System.UInt16)">
+	<summary>已重载。得到地址列的差分，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifference(System.Int32[],System.Int32)">
+	<summary>已重载。得到地址列的差分，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifference(System.Int64[],System.Int64)">
+	<summary>已重载。得到地址列的差分，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressSummation(System.Int16,System.Int16[])">
+	<summary>已重载。得到地址列的求和，是GetAddressDifference的逆运算，长度为0则Address置为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressSummation(System.UInt16,System.UInt16[])">
+	<summary>已重载。得到地址列的求和，是GetAddressDifference的逆运算，长度为0则Address置为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressSummation(System.Int32,System.Int32[])">
+	<summary>已重载。得到地址列的求和，是GetAddressDifference的逆运算，长度为0则Address置为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressSummation(System.Int64,System.Int64[])">
+	<summary>已重载。得到地址列的求和，是GetAddressDifference的逆运算，长度为0则Address置为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifferenceUnordered(System.Int16[],System.Int16)">
+	<summary>已重载。得到地址列的对应的长度，地址列可以乱序，但必须完备，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifferenceUnordered(System.UInt16[],System.UInt16)">
+	<summary>已重载。得到地址列的对应的长度，地址列可以乱序，但必须完备，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifferenceUnordered(System.Int32[],System.Int32)">
+	<summary>已重载。得到地址列的对应的长度，地址列可以乱序，但必须完备，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="M:Firefly.FileLengthUtility.GetAddressDifferenceUnordered(System.Int64[],System.Int64)">
+	<summary>已重载。得到地址列的对应的长度，地址列可以乱序，但必须完备，用Length参数放在Address最后来凑齐，Address为0表示长度为0</summary>
+</member><member name="T:Firefly.Indexer">
+	<summary>
+ 离散索引器，用于表示离散整数区间，并提供遍历离散整数区间的函数与枚举器支持。
+ 支持使用For Each语法遍历区间内的所有点。
+ </summary>
+</member><member name="T:Firefly.Range">
+	<summary>范围，离散索引器描述器，用于表示离散索引器中的一段连续整数区间</summary>
+</member><member name="M:Firefly.DirectIntConvert.CID(System.Int32)">
+	<summary>Int32-&gt;Int16</summary>
+</member><member name="M:Firefly.DirectIntConvert.CID(System.Int64)">
+	<summary>Int64-&gt;Int32</summary>
+</member><member name="M:Firefly.DirectIntConvert.EID(System.Int16)">
+	<summary>Int16-&gt;Int32</summary>
+</member><member name="M:Firefly.DirectIntConvert.EID(System.Int32)">
+	<summary>Int32-&gt;Int64</summary>
+</member><member name="M:Firefly.DirectIntConvert.CSU(System.SByte)">
+	<summary>SByte-&gt;Byte</summary>
+</member><member name="M:Firefly.DirectIntConvert.CSU(System.Int16)">
+	<summary>Int16-&gt;UInt16</summary>
+</member><member name="M:Firefly.DirectIntConvert.CSU(System.Int32)">
+	<summary>Int32-&gt;UInt32</summary>
+</member><member name="M:Firefly.DirectIntConvert.CSU(System.Int64)">
+	<summary>Int64-&gt;UInt64</summary>
+</member><member name="M:Firefly.DirectIntConvert.CUS(System.Byte)">
+	<summary>Byte-&gt;SByte</summary>
+</member><member name="M:Firefly.DirectIntConvert.CUS(System.UInt16)">
+	<summary>UInt16-&gt;Int16</summary>
+</member><member name="M:Firefly.DirectIntConvert.CUS(System.UInt32)">
+	<summary>UInt32-&gt;Int32</summary>
+</member><member name="M:Firefly.DirectIntConvert.CUS(System.UInt64)">
+	<summary>UInt64-&gt;Int64</summary>
+</member><member name="T:Firefly.DirectIntConvert">
+	<summary>
+ 直接整数转换
+ </summary>
+	<remarks></remarks>
+</member><member name="T:Firefly.CRC32">
+	<summary>CRC32类</summary>
+	<remarks>
+ 按照IEEE-802标准，参考RFC3385。
+ </remarks>
+</member><member name="T:Firefly.Imaging.ColorSpace">
+	<summary>
+ 各颜色空间中点的互相转换。
+ </summary>
+</member><member name="F:Firefly.Imaging.Bmp.Identifier">
+	<summary>标志符。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.FileSize">
+	<summary>文件大小。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.BitmapDataOffset">
+	<summary>位图数据偏移量。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.Width">
+	<summary>宽度。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.Height">
+	<summary>高度。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.BitsPerPixel">
+	<summary>位深度。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.Compression">
+	<summary>压缩方式。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.BitmapDataSize">
+	<summary>位图数据大小。</summary>
+</member><member name="P:Firefly.Imaging.Bmp.Palette">
+	<summary>调色板。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.#ctor(System.Int32,System.Int32,System.Int16)">
+	<summary>新建内存流Bmp</summary>
+	<param name="BitsPerPixel">Bmp位数：可以取1、4、8、15、16、24、32</param>
+</member><member name="M:Firefly.Imaging.Bmp.#ctor(System.String,System.Int32,System.Int32,System.Int16)">
+	<summary>新建文件流Bmp</summary>
+	<param name="BitsPerPixel">Bmp位数：可以取1、4、8、15、16、24、32</param>
+</member><member name="M:Firefly.Imaging.Bmp.Open(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。从流打开一个位图。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.Open(System.String)">
+	<summary>已重载。从文件打开一个位图。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.Close">
+	<summary>关闭。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.ToBitmap">
+	<summary>转换为System.Drawing.Bitmap。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SaveTo(Firefly.ZeroPositionStreamPasser)">
+	<summary>保存到流。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.GetPixel(System.Int32,System.Int32)">
+	<summary>获得像素点。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SetPixel(System.Int32,System.Int32,System.Int32)">
+	<summary>设置像素点。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.GetRectangle(System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>获取矩形。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.GetRectangleBytes(System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>获取矩形。表示为字节。仅供8位及以下图片使用。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SetRectangle(System.Int32,System.Int32,System.Int32[0:,0:])">
+	<summary>已重载。设置矩形。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SetRectangle(System.Int32,System.Int32,System.Byte[0:,0:])">
+	<summary>已重载。设置矩形。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.GetRectangleAsARGB(System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>获取矩形为ARGB整数。对非24、32位位图会进行转换。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SetRectangleFromARGB(System.Int32,System.Int32,System.Int32[0:,0:],System.Func{System.Int32,System.Byte})">
+	<summary>从ARGB整数设置矩形。对非24、32位位图会进行转换。使用自定义的量化器。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.SetRectangleFromARGB(System.Int32,System.Int32,System.Int32[0:,0:])">
+	<summary>从ARGB整数设置矩形。对非24、32位位图会进行转换。</summary>
+</member><member name="M:Firefly.Imaging.Bmp.Dispose(System.Boolean)">
+	<summary>释放资源。</summary>
+	<remarks>对继承者的说明：不要调用基类的Dispose()，而应调用Dispose(True)，否则会出现无限递归。</remarks>
+</member><member name="M:Firefly.Imaging.Bmp.Dispose">
+	<summary>释放资源。</summary>
+</member><member name="T:Firefly.Imaging.Bmp">
+	<summary>基本Bmp文件流类</summary>
+	<remarks>不能使用压缩等无用功能</remarks>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingStringFromText(System.String,System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingStringFromText(System.String[],System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingString32FromText(System.String,System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingString32FromText(System.String[],System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingString32FromText(Firefly.TextEncoding.Char32[],System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.GetEncodingString32FromText(Firefly.TextEncoding.Char32[][],System.String)">
+	<summary>已重载。得到编码文本，按第一次出现的位置排序。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.#ctor">
+	<summary>已重载。创建新实例。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.#ctor(System.String)">
+	<summary>已重载。用排除列表创建新实例。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.#ctor(Firefly.TextEncoding.Char32[])">
+	<summary>已重载。用排除列表创建新实例。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushExclude(System.Char)">
+	<summary>已重载。添加排除的字符列表。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushExclude(Firefly.TextEncoding.Char32)">
+	<summary>已重载。添加排除的字符列表。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushExclude(System.String)">
+	<summary>已重载。添加排除的字符列表。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushExclude(Firefly.TextEncoding.Char32[])">
+	<summary>已重载。添加排除的字符列表。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushText(System.String)">
+	<summary>已重载。从文本添加字符。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.PushText(Firefly.TextEncoding.Char32[])">
+	<summary>已重载。从文本添加字符。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.GetLibString">
+	<summary>已重载。得到字库文字，频率高的在前。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.GetLibString32">
+	<summary>已重载。得到字库文字，频率高的在前。</summary>
+</member><member name="M:Firefly.TextEncoding.EncodingString.EncodingStringGenerator.Clear">
+	<summary>清空。</summary>
+</member><member name="T:Firefly.TextEncoding.EncodingString.EncodingStringGenerator">
+	<summary>编码文本生成器</summary>
+</member><member name="M:Firefly.TextEncoding.TextEncoding.GetString32(System.Text.Encoding,System.Byte[])">
+	<summary>
+ 将指定字节数组中的所有字节解码为一组字符。
+ </summary>
+	<param name="This">编码。</param>
+	<param name="Bytes">包含要解码的字节序列的字节数组。</param>
+	<returns>一个字节数组，包含对指定的字节序列进行解码的结果。</returns>
+</member><member name="T:Firefly.TextEncoding.TextEncoding.Mapping`2">
+	<summary>
+ 映射。
+ </summary>
+	<typeparam name="D">定义域。</typeparam>
+	<typeparam name="R">值域。</typeparam>
+</member><member name="F:Firefly.TextEncoding.ControlChars.Cr">
+	<summary>回车符。</summary>
+</member><member name="F:Firefly.TextEncoding.ControlChars.Lf">
+	<summary>换行符。</summary>
+</member><member name="F:Firefly.TextEncoding.ControlChars.CrLf">
+	<summary>回车换行符。</summary>
+</member><member name="F:Firefly.TextEncoding.ControlChars.Nul">
+	<summary>空字符。</summary>
+</member><member name="F:Firefly.TextEncoding.ControlChars.Quote">
+	<summary>双引号。</summary>
+</member><member name="F:Firefly.TextEncoding.CharCode.Unicode">
+	<summary>Unicode字符，UTF-32。</summary>
+</member><member name="F:Firefly.TextEncoding.CharCode.Code">
+	<summary>码点形式的自定义码点。</summary>
+</member><member name="F:Firefly.TextEncoding.CharCode.CodeLength">
+	<summary>自定义码点的字节长度。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.#ctor">
+	<summary>已重载。创建字符码点值对的实例。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.#ctor(Firefly.TextEncoding.Char32,System.Int32,System.Int32)">
+	<summary>已重载。创建字符码点值对的实例。</summary>
+	<param name="UniChar">Unicode字符，-1表示不存在。</param>
+	<param name="Code">自定义码点，-1表示不存在。</param>
+	<param name="CodeLength">自定义码点的字节长度，只能为-1、0、1、2、3、4。其中-1表示不明确，0表示码点不存在。</param>
+	<remarks></remarks>
+</member><member name="M:Firefly.TextEncoding.CharCode.FromNothing">
+	<summary>创建字符码点值对的实例。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.FromUniChar(Firefly.TextEncoding.Char32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="UniChar">Unicode字符。</param>
+</member><member name="M:Firefly.TextEncoding.CharCode.FromUnicode(System.Int32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="Unicode">Unicode码。</param>
+</member><member name="M:Firefly.TextEncoding.CharCode.FromCode(System.Int32,System.Int32)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="Code">自定义码点，-1表示不存在。</param>
+	<param name="CodeLength">自定义码点的字节长度，只能为-1、0、1、2、3、4。其中-1表示不明确，0表示码点不存在。</param>
+</member><member name="M:Firefly.TextEncoding.CharCode.FromCodeString(System.String)">
+	<summary>创建字符码点值对的实例。</summary>
+	<param name="CodeString">自定义码点的字符串形式，""表示不存在。</param>
+</member><member name="P:Firefly.TextEncoding.CharCode.Character">
+	<summary>字符。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.IsControlChar">
+	<summary>指示是否是控制符。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.IsNewLine">
+	<summary>指示是否是换行符。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.IsCodeMappable">
+	<summary>指示是否已建立映射。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.HasUnicode">
+	<summary>指示Unicode是否存在。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.HasCode">
+	<summary>指示自定义码点是否存在。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.ToString">
+	<summary>生成显示用字符串。</summary>
+</member><member name="P:Firefly.TextEncoding.CharCode.CodeString">
+	<summary>自定义码点的字符串形式。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.Equals(Firefly.TextEncoding.CharCode)">
+	<summary>比较两个字符码点是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.Equals(System.Object)">
+	<summary>比较两个字符码点是否相等。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCode.GetHashCode">
+	<summary>获取字符码点的HashCode。</summary>
+</member><member name="T:Firefly.TextEncoding.CharCode">
+	<summary>字符码点值对，可用于码点转换。值均用Int32存储。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCodeString.FromString32(Firefly.TextEncoding.Char32[])">
+	<summary>转换UTF-32字符串到CharCode()。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCodeString.ToString32(Firefly.TextEncoding.CharCode[])">
+	<summary>转换CharCode()到UTF-32字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCodeString.FromString16(System.String)">
+	<summary>转换UTF-16 Big-Endian字符串到UTF-32字符串。</summary>
+</member><member name="M:Firefly.TextEncoding.CharCodeString.ToString16(Firefly.TextEncoding.CharCode[])">
+	<summary>转换UTF-32字符串到UTF-16 Big-Endian字符串。</summary>
+</member><member name="T:Firefly.TextEncoding.CharCodeString">
+	<summary>字符码点值对字符串。</summary>
+</member><member name="T:Firefly.Setting.Xml">
+	<summary>
+ Xml
+ 
+ 用于将对象格式化到Xml文件及从Xml文件恢复数据
+ 简单对象能够直接格式化
+ 所谓的简单对象，包括String、基元类型、Enum、1维数组、有公开单参数Add方法并实现IEnumerable的简单对象元素的集合、简单对象构成的类和结构
+ 所有的简单对象的类需要有公共的不带参数的构造函数
+ 不能有交叉引用
+ 允许使用继承，但所有不直接出现在根类型的类型声明的类型树中的类型必须添加到ExternalTypes中
+ ExternalTypes中不应有命名冲突
+ 
+ 如果不能满足这些条件，可以使用类型替代
+ 需要注意的是，不要在替代器中返回替代类的子类，比如，不能使用List(Of Int32)来做某个类-&gt;IEnumerable(Of Int32)的替代，这时应明确为某个类-&gt;List(Of Int32)的替代
+ </summary>
+</member><member name="F:Firefly.Packaging.PackageDiscrete.Blocks">
+	<summary>文件包中的数据块(地址-&gt;文件数)。</summary>
+</member><member name="F:Firefly.Packaging.PackageDiscrete.Holes">
+	<summary>文件包中的空洞。</summary>
+</member><member name="F:Firefly.Packaging.PackageDiscrete.HoleMap">
+	<summary>文件包中的空洞。</summary>
+</member><member name="P:Firefly.Packaging.PackageDiscrete.FileAddressInPhysicalFileDB(Firefly.Packaging.FileDB)">
+	<summary>从文件包读取FileDB文件地址和写入文件地址到文件包。用于替换文件包时使用。</summary>
+</member><member name="P:Firefly.Packaging.PackageDiscrete.FileLengthInPhysicalFileDB(Firefly.Packaging.FileDB)">
+	<summary>从文件包读取FileDB文件长度和写入文件长度到文件包。用于替换文件包时使用。</summary>
+</member><member name="F:Firefly.Packaging.PackageDiscrete.DataStart">
+	<summary>默认的文件数据起始地址</summary>
+</member><member name="F:Firefly.Packaging.PackageDiscrete.AlignmentBlockSize">
+	<summary>默认的文件对齐大小</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.GetAlignedAddress(System.Int64)">
+	<summary>
+ 返回一个地址的对齐位置，相对于开始位置。默认通过GetSpace与ScanHoles传入的DataStart计算。
+ </summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.GetSpace(System.Int64)">
+	<summary>
+ 返回一个长度的文件所占的空间，通常用于对齐。
+ 比如800h对齐的文件，应该返回((Length + 800h - 1) \ 800h) * 800h
+ </summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.#ctor">
+	<summary>已重载。默认构照函数。请手动初始化BaseStream。</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。打开或创建文件包。</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.AddFileToBlocks(Firefly.Packaging.FileDB)">
+	<summary>在增加文件时用于更新文件包占用数据块信息。</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.RemoveFileFromBlocks(Firefly.Packaging.FileDB)">
+	<summary>在去除文件时用于更新文件包占用数据块信息。</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.ScanHoles(System.Int64)">
+	<summary>扫描洞。</summary>
+</member><member name="M:Firefly.Packaging.PackageDiscrete.Replace(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。替换包中的一个文件。</summary>
+</member><member name="T:Firefly.Packaging.PackageDiscrete">
+	<summary>
+ 离散数据文件包，通常用于有完整地址索引和长度索引的文件包，能够在文件末尾和文件空白区扩充文件数据
+ 若需要数据顺序和索引一致，请使用PackageContinuous，虽然这通常意味着要增加修改包所需的时间
+ 
+ 
+ 给继承者的说明：
+ 
+ 文件包支持写入，应
+ (1)重写FileAddressInPhysicalFileDB、FileLengthInPhysicalFileDB、GetSpace方法
+ (2)在加入一个FileDB时，调用PushFile方法，使得它被加入到FileList、IndexOfFile、FileSetAddressSorted中，以及PushFileToDir到根目录FileDB中，若根目录FileDB不存在，则空的根目录会自动创建
+ (3)最后执行ScanHoles，扫描出可以放置文件数据的洞
+ 
+ 请使用PackageRegister来注册文件包类型。
+ 应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
+ 并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
+ </summary>
+</member><member name="T:Firefly.Packaging.Hole">
+	<summary>洞</summary>
+</member><member name="T:Firefly.Packaging.HoleComparer">
+	<summary>洞地址比较器</summary>
+</member><member name="F:Firefly.Packaging.PackageContinuous.FileSetAddressSorted">
+	<summary>按照地址排序的文件集。</summary>
+</member><member name="F:Firefly.Packaging.PackageContinuous.NotifyProgress">
+	<summary>设置该委托函数，可以启用进度通知功能，参数值在[0, 1]上。</summary>
+</member><member name="P:Firefly.Packaging.PackageContinuous.FileLengthInPhysicalFileDB(Firefly.Packaging.FileDB)">
+	<summary>从文件包读取FileDB文件长度和写入文件长度到文件包。用于替换文件包时使用。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.GetSpace(System.Int64)">
+	<summary>
+ 返回一个长度的文件所占的空间，通常用于对齐。
+ 比如800h对齐的文件，应该返回((Length + 800h - 1) \ 800h) * 800h
+ </summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.#ctor">
+	<summary>已重载。默认构照函数。请手动初始化BaseStream。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。打开或创建文件包。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.PushFile(Firefly.Packaging.FileDB,Firefly.Packaging.FileDB)">
+	<summary>把文件FileDB放入根目录FileDB。若根目录FileDB不存在，则空的根目录会自动创建。在加入一个FileDB时，调用该方法，使得它被加入到FileList、IndexOfFile、FileSetAddressSorted中，以及PushFileToDir到根目录FileDB中。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.Replace(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。替换包中的一个文件。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.ReplaceMultiple(System.Int32[],System.String)">
+	<summary>替换包中的多个文件。默认实现调用ReplaceMultipleInner。</summary>
+</member><member name="M:Firefly.Packaging.PackageContinuous.MoveData(System.Int64,System.Int64,System.Int64)">
+	<summary>物理移动数据。请勿轻易直接调用。</summary>
+</member><member name="T:Firefly.Packaging.PackageContinuous">
+	<summary>
+ 连续数据文件包，通常用于需改变文件索引的文件包，且文件包的数据顺序需要保持和索引一致
+ 若无需数据顺序和索引一致，请考虑PackageDiscrete，这通常能够减少修改包所需的时间
+ 当前实现假设索引在文件包头部或外部，因此无需备份。如果不是这样，则需要修改某些行为
+ 
+ 
+ 给继承者的说明：
+ 
+ 文件包支持写入，应
+ (1)重写FileLengthInPhysicalFileDB、GetSpace方法
+ (2)在加入一个FileDB时，调用PushFile方法，使得它被加入到FileList、IndexOfFile、FileSetAddressSorted中，以及PushFileToDir到根目录FileDB中，若根目录FileDB不存在，则空的根目录会自动创建
+ 
+ 如果需要启用进度通知功能，请设置委托函数NotifyProgress，参数值在[0, 1]上。
+ 
+ 请使用PackageRegister来注册文件包类型。
+ 应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
+ 并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
+ </summary>
+</member><member name="F:Firefly.Packaging.PackageFixedAddress.FileSetAddressSorted">
+	<summary>按照地址排序的文件集。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixedAddress.#ctor">
+	<summary>已重载。默认构照函数。请手动初始化BaseStream。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixedAddress.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。打开或创建文件包。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixedAddress.PushFile(Firefly.Packaging.FileDB,Firefly.Packaging.FileDB)">
+	<summary>把文件FileDB放入根目录FileDB。若根目录FileDB不存在，则空的根目录会自动创建。在加入一个FileDB时，调用该方法，使得它被加入到FileList、IndexOfFile、FileSetAddressSorted中，以及PushFileToDir到根目录FileDB中。</summary>
+</member><member name="P:Firefly.Packaging.PackageFixedAddress.FileLengthInPhysicalFileDB(Firefly.Packaging.FileDB)">
+	<summary>从文件包读取FileDB文件长度和写入文件长度到文件包。用于替换文件包时使用。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixedAddress.Replace(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。替换包中的一个文件。</summary>
+</member><member name="T:Firefly.Packaging.PackageFixedAddress">
+	<summary>
+ 固定地址文件包，通常用于无需改变文件地址索引的文件包
+ 若需要数据顺序和索引一致，请使用PackageContinuous
+ 若需要改变文件地址索引，请使用PackageDiscrete
+ 若不需要改变文件地址索引，请使用PackageFixed
+ 
+ 
+ 给继承者的说明：
+ 
+ 如果文件包支持写入，应
+ (1)重写FileLengthInPhysicalFileDB方法
+ (2)在加入一个FileDB时，调用PushFile方法，使得它被加入到FileList、IndexOfFile、FileSetAddressSorted中，以及PushFileToDir到根目录FileDB中，若根目录FileDB不存在，则空的根目录会自动创建
+ 
+ 请使用PackageRegister来注册文件包类型。
+ 应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
+ 并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
+ </summary>
+</member><member name="M:Firefly.Packaging.PackageFixed.#ctor">
+	<summary>已重载。默认构照函数。请手动初始化BaseStream。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixed.#ctor(Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。打开或创建文件包。</summary>
+</member><member name="M:Firefly.Packaging.PackageFixed.Replace(Firefly.Packaging.FileDB,Firefly.ZeroPositionStreamPasser)">
+	<summary>已重载。替换包中的一个文件。</summary>
+</member><member name="T:Firefly.Packaging.PackageFixed">
+	<summary>
+ 固定索引文件包，通常用于无需改变文件索引的文件包
+ 若需要数据顺序和索引一致，请使用PackageContinuous
+ 若需要改变文件索引，请使用PackageDiscrete
+ 若需要改变文件地址索引，请使用PackageFixedAddress
+ 
+ 
+ 给继承者的说明：
+ 
+ 如果文件包支持写入，应
+ (1)在加入一个FileDB时，调用PushFile方法，使得它被加入到FileList、IndexOfFile中，以及PushFileToDir到根目录FileDB中，若根目录FileDB不存在，则空的根目录会自动创建
+ 
+ 请使用PackageRegister来注册文件包类型。
+ 应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
+ 并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
+ </summary>
+</member><member name="M:Firefly.Imaging.Quantizer.QuantizeOnPalette(System.Int32,System.Int32[],Firefly.Imaging.ColorSpace.ColorDistance)">
+	<summary>按调色板量化，使用自定义颜色距离函数。</summary>
+</member><member name="M:Firefly.Imaging.Quantizer.QuantizeOnPalette(System.Int32,System.Int32[])">
+	<summary>按调色板量化ARGB颜色，使用内置颜色距离函数。</summary>
+</member><member name="T:Firefly.Imaging.Quantizer">
+	<summary>量化</summary>
+</member><member name="M:Firefly.Imaging.BitmapEx.GetRectangle(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 从Bitmap中获得颜色数组。
+ 仅支持格式为PixelFormat.Format32bppArgb的Bitmap，且BitmapData.Stride必须为宽度的4倍。
+ </summary>
+</member><member name="M:Firefly.Imaging.BitmapEx.SetRectangle(System.Drawing.Bitmap,System.Int32,System.Int32,System.Int32[0:,0:])">
+	<summary>
+ 将颜色数组放入Bitmap。
+ 仅支持格式为PixelFormat.Format32bppArgb的Bitmap，且BitmapData.Stride必须为宽度的4倍。
+ </summary>
+</member><member name="T:Firefly.Imaging.BitmapEx">
+	<summary>
+ 用于扩展System.Drawing.Bitmap，使得可以将其中数据与Int32数组交换。
+ </summary>
+</member><member name="M:Firefly.Glyphing.Glyphing.MeasureStringWidth(System.Drawing.Graphics,System.String,System.Drawing.Font)">
+	<summary>测定字符串显示的宽度。</summary>
+</member><member name="M:Firefly.Glyphing.Glyphing.MeasureStringRectangle(System.Drawing.Graphics,System.String,System.Drawing.Font)">
+	<summary>测定字符串显示的矩形。</summary>
+</member><member name="T:Firefly.Glyphing.ChannelPattern">
+	<summary>通道类型</summary>
+</member><member name="M:Firefly.Glyphing.GlyphGenerator.Dispose(System.Boolean)">
+	<summary>释放流的资源。</summary>
+	<remarks>对继承者的说明：不要调用基类的Dispose()，而应调用Dispose(True)，否则会出现无限递归。</remarks>
+</member><member name="M:Firefly.Glyphing.GlyphGenerator.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.Glyphing.GlyphGenerator">
+	<summary>字形生成器</summary>
+</member><member name="M:Firefly.Glyphing.GlyphGeneratorDoubleSample.Dispose(System.Boolean)">
+	<summary>释放流的资源。</summary>
+	<remarks>对继承者的说明：不要调用基类的Dispose()，而应调用Dispose(True)，否则会出现无限递归。</remarks>
+</member><member name="M:Firefly.Glyphing.GlyphGeneratorDoubleSample.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.Glyphing.GlyphGeneratorDoubleSample">
+	<summary>两倍超采样字形生成器</summary>
+</member><member name="F:Firefly.Glyphing.GlyphDescriptor.c">
+	<summary>字符信息</summary>
+</member><member name="F:Firefly.Glyphing.GlyphDescriptor.PhysicalBox">
+	<summary>物理包围盒，字符的图片信息在此包围盒内。</summary>
+</member><member name="F:Firefly.Glyphing.GlyphDescriptor.VirtualBox">
+	<summary>虚拟包围盒，字符的显示相对位置为此包围盒。</summary>
+</member><member name="T:Firefly.Glyphing.GlyphDescriptor">
+	<summary>字形描述信息</summary>
+</member><member name="P:Firefly.Glyphing.IGlyph.c">
+	<summary>字符信息</summary>
+</member><member name="P:Firefly.Glyphing.IGlyph.Block">
+	<summary>字符的32位颜色数据。</summary>
+</member><member name="P:Firefly.Glyphing.IGlyph.PhysicalWidth">
+	<summary>字符的宽度。</summary>
+</member><member name="P:Firefly.Glyphing.IGlyph.PhysicalHeight">
+	<summary>字符的高度。</summary>
+</member><member name="P:Firefly.Glyphing.IGlyph.VirtualBox">
+	<summary>虚拟包围盒，字符的显示相对位置为此包围盒。</summary>
+</member><member name="T:Firefly.Glyphing.IGlyph">
+	<summary>字形信息接口</summary>
+</member><member name="P:Firefly.Glyphing.IGlyphProvider.PhysicalWidth">
+	<summary>物理宽度</summary>
+</member><member name="P:Firefly.Glyphing.IGlyphProvider.PhysicalHeight">
+	<summary>物理高度</summary>
+</member><member name="M:Firefly.Glyphing.IGlyphProvider.GetGlyph(Firefly.TextEncoding.StringCode)">
+	<summary>获取字形</summary>
+</member><member name="T:Firefly.Glyphing.IGlyphProvider">
+	<summary>字形提供器接口</summary>
+</member><member name="F:Firefly.Glyphing.Glyph.c">
+	<summary>字符信息</summary>
+</member><member name="F:Firefly.Glyphing.Glyph.Block">
+	<summary>字符的32位颜色数据。</summary>
+</member><member name="P:Firefly.Glyphing.Glyph.PhysicalWidth">
+	<summary>字符的宽度。</summary>
+</member><member name="P:Firefly.Glyphing.Glyph.PhysicalHeight">
+	<summary>字符的高度。</summary>
+</member><member name="F:Firefly.Glyphing.Glyph.VirtualBox">
+	<summary>虚拟包围盒，字符的显示相对位置为此包围盒。</summary>
+</member><member name="T:Firefly.Glyphing.Glyph">
+	<summary>字形信息</summary>
+</member><member name="F:Firefly.Glyphing.BmpGlyph.Bmp">
+	<summary>位图。</summary>
+</member><member name="F:Firefly.Glyphing.BmpGlyph.GlyphDescriptor">
+	<summary>字形描述信息</summary>
+</member><member name="P:Firefly.Glyphing.BmpGlyph.c">
+	<summary>字符信息</summary>
+</member><member name="P:Firefly.Glyphing.BmpGlyph.Block">
+	<summary>字符的32位颜色数据。</summary>
+</member><member name="P:Firefly.Glyphing.BmpGlyph.PhysicalWidth">
+	<summary>字符的宽度。</summary>
+</member><member name="P:Firefly.Glyphing.BmpGlyph.PhysicalHeight">
+	<summary>字符的高度。</summary>
+</member><member name="P:Firefly.Glyphing.BmpGlyph.VirtualBoxI">
+	<summary>虚拟包围盒，字符的显示相对位置为此包围盒。</summary>
+</member><member name="T:Firefly.Glyphing.BmpGlyph">
+	<summary>位于位图中的字形信息</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageReader.DisposeManagedResource">
+	<summary>释放托管对象或间接非托管对象(Stream等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageReader.DisposeUnmanagedResource">
+	<summary>释放直接非托管对象(Handle等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageReader.Dispose(System.Boolean)">
+	<summary>释放流的资源。请优先覆盖DisposeManagedResource、DisposeUnmanagedResource、DisposeNullify方法。如果你直接保存非托管对象(Handle等)，请覆盖Finalize方法，并在其中调用Dispose(False)。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageReader.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageWriter.DisposeManagedResource">
+	<summary>释放托管对象或间接非托管对象(Stream等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageWriter.DisposeUnmanagedResource">
+	<summary>释放直接非托管对象(Handle等)。可在这里将大型字段设置为 null。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageWriter.Dispose(System.Boolean)">
+	<summary>释放流的资源。请优先覆盖DisposeManagedResource、DisposeUnmanagedResource、DisposeNullify方法。如果你直接保存非托管对象(Handle等)，请覆盖Finalize方法，并在其中调用Dispose(False)。</summary>
+</member><member name="M:Firefly.Glyphing.BmpFontImageWriter.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="M:Firefly.ListStringEx`1.#ctor(System.Collections.Generic.IList{`0})">
+	<summary>考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListStringEx`1.#ctor(System.Collections.Generic.IList{`0},System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="T:Firefly.ListStringEx`1">
+	<summary>
+ 列表式泛型串，特性类似于字符串，但是类型参数不是字符，创建后不可改变，可作为容器类的键使用
+ </summary>
+</member><member name="M:Firefly.ByteArrayStream.#ctor(System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ByteArrayStream.#ctor(System.Byte[],System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ByteArrayStream.#ctor(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ByteArrayStream.ReadByte">
+	<summary>读取元素。</summary>
+</member><member name="M:Firefly.ByteArrayStream.WriteByte(System.Byte)">
+	<summary>写入元素。</summary>
+</member><member name="P:Firefly.ByteArrayStream.CanRead">
+	<summary>指示当前流是否支持读取。</summary>
+</member><member name="P:Firefly.ByteArrayStream.CanSeek">
+	<summary>指示当前流是否支持定位。</summary>
+</member><member name="P:Firefly.ByteArrayStream.CanWrite">
+	<summary>指示当前流是否支持写入。</summary>
+</member><member name="M:Firefly.ByteArrayStream.Flush">
+	<summary>强制同步缓冲数据。</summary>
+</member><member name="P:Firefly.ByteArrayStream.Length">
+	<summary>用字节表示的流的长度。</summary>
+</member><member name="P:Firefly.ByteArrayStream.Position">
+	<summary>流的当前位置。</summary>
+</member><member name="M:Firefly.ByteArrayStream.Read(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。读取到元素数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。</param>
+</member><member name="M:Firefly.ByteArrayStream.Write(System.Byte[],System.Int32,System.Int32)">
+	<summary>已重载。写入元素数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始将字节复制到当前流。</param>
+</member><member name="T:Firefly.ByteArrayStream">
+	<summary>
+ 字节数组流
+ </summary>
+	<remarks>
+ 请显式调用Close或Dispose来关闭流。
+ </remarks>
+</member><member name="M:Firefly.ArrayStream`1.#ctor(System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ArrayStream`1.#ctor(`0[],System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ArrayStream`1.#ctor(`0[],System.Int32,System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.ArrayStream`1.ReadElement">
+	<summary>读取元素。</summary>
+</member><member name="M:Firefly.ArrayStream`1.WriteElement(`0)">
+	<summary>写入元素。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Flush">
+	<summary>强制同步缓冲数据。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Close">
+	<summary>关闭流。</summary>
+	<remarks>对继承者的说明：该方法调用Dispose()，不要覆盖该方法，而应覆盖Dispose(Boolean)</remarks>
+</member><member name="P:Firefly.ArrayStream`1.Length">
+	<summary>用字节表示的流的长度。</summary>
+</member><member name="P:Firefly.ArrayStream`1.Position">
+	<summary>流的当前位置。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Read(`0[],System.Int32,System.Int32)">
+	<summary>已重载。读取到元素数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始存储从当前流中读取的数据。</param>
+</member><member name="M:Firefly.ArrayStream`1.Read(`0[])">
+	<summary>已重载。读取到元素数组。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Read(System.Int32)">
+	<summary>已重载。读取元素数组。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Write(`0[],System.Int32,System.Int32)">
+	<summary>已重载。写入元素数组。</summary>
+	<param name="Offset">Buffer 中的从零开始的字节偏移量，从此处开始将字节复制到当前流。</param>
+</member><member name="M:Firefly.ArrayStream`1.Write(`0[])">
+	<summary>已重载。写入元素数组。</summary>
+</member><member name="M:Firefly.ArrayStream`1.ReadToStream(Firefly.ArrayStream{`0},System.Int32)">
+	<summary>读取到外部流。</summary>
+</member><member name="M:Firefly.ArrayStream`1.WriteFromStream(Firefly.ArrayStream{`0},System.Int32)">
+	<summary>从外部流写入。</summary>
+</member><member name="M:Firefly.ArrayStream`1.Dispose(System.Boolean)">
+	<summary>释放流的资源。</summary>
+	<remarks>对继承者的说明：不要调用基类的Dispose()，而应调用Dispose(True)，否则会出现无限递归。</remarks>
+</member><member name="M:Firefly.ArrayStream`1.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.ArrayStream`1">
+	<summary>
+ 数组流
+ </summary>
+	<remarks>
+ 请显式调用Close或Dispose来关闭流。
+ </remarks>
+</member><member name="M:Firefly.StringDescape.Descape(System.String)">
+	<summary>字符串反转义函数</summary>
+	<remarks>
+ \0 与null \u0000 匹配
+ \a 与响铃（警报）\u0007 匹配 
+ \b 与退格符 \u0008 匹配
+ \f 与换页符 \u000C 匹配
+ \n 与换行符 \u000A 匹配
+ \r 与回车符 \u000D 匹配
+ \t 与 Tab 符 \u0009 匹配 
+ \v 与垂直 Tab 符 \u000B 匹配
+ \x?? 与 \u00?? 匹配
+ \u???? 与对应的Unicode字符对应
+ </remarks>
+</member><member name="M:Firefly.StringDescape.Escape(System.String)">
+	<summary>字符串转义函数</summary>
+	<remarks>
+ \0 与null \u0000 匹配
+ \a 与响铃（警报）\u0007 匹配 
+ \b 与退格符 \u0008 匹配
+ \f 与换页符 \u000C 匹配
+ \n 与换行符 \u000A 匹配
+ \r 与回车符 \u000D 匹配
+ \t 与 Tab 符 \u0009 匹配 
+ \v 与垂直 Tab 符 \u000B 匹配
+ \u???? 与对应的Unicode字符对应(只转义\u0000-\u001F和\u007F中除上述字符的字符)
+ </remarks>
+</member><member name="M:Firefly.StringDescape.Formats(System.String,System.Object)">
+	<summary>将指定的 String 中的格式项替换为指定的 Object 实例的值的文本等效项。</summary>
+</member><member name="M:Firefly.StringDescape.Formats(System.String,System.Object,System.Object)">
+	<summary>将指定的 String 中的格式项替换为两个指定的 Object 实例的值的文本等效项。</summary>
+</member><member name="M:Firefly.StringDescape.Formats(System.String,System.Object,System.Object,System.Object)">
+	<summary>将指定的 String 中的格式项替换为三个指定的 Object 实例的值的文本等效项。</summary>
+</member><member name="M:Firefly.StringDescape.Formats(System.String,System.Object[])">
+	<summary>将指定 String 中的格式项替换为指定数组中相应 Object 实例的值的文本等效项。</summary>
+</member><member name="M:Firefly.StringDescape.Formats(System.String,System.IFormatProvider,System.Object[])">
+	<summary>将指定 String 中的格式项替换为指定数组中相应 Object 实例的值的文本等效项。指定的参数提供区域性特定的格式设置信息。</summary>
+</member><member name="T:Firefly.StringDescape">
+	<summary>
+ 字符串转义
+ 用于使用 "转义字符串".Descape 和 "格式".Formats(...) 语法
+ </summary>
+</member><member name="T:Firefly.ZeroLengthStreamPasser">
+	<summary>零长度零位置扩展流传递器。用于保证在函数传参时传递零长度零位置的流。</summary>
+</member><member name="T:Firefly.ZeroPositionStreamPasser">
+	<summary>零位置扩展流传递器。用于保证在函数传参时传递零位置的流。</summary>
+</member><member name="T:Firefly.PositionedStreamPasser">
+	<summary>有位置的扩展流传递器。用于显式申明函数传参时传递的流有位置信息。</summary>
+</member><member name="T:Firefly.NumericOperations">
+	<summary>数值操作</summary>
+</member><member name="M:Firefly.BitOperations.SHL(System.Byte,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模8，导致左移8位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHR(System.Byte,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模8，导致右移8位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHL(System.UInt16,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模16，导致左移16位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHR(System.UInt16,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模16，导致右移16位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHL(System.UInt32,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模32，导致左移32位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHR(System.UInt32,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模32，导致右移32位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHL(System.UInt64,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模64，导致左移64位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SHR(System.UInt64,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模64，导致右移64位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAL(System.SByte,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模8，导致左移8位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAR(System.SByte,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模8，导致右移8位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAL(System.Int16,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模16，导致左移16位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAR(System.Int16,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模16，导致右移16位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAL(System.Int32,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模32，导致左移32位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAR(System.Int32,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模32，导致右移32位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAL(System.Int64,System.Int32)">
+	<summary>安全的左移位操作，原来的操作由于Intel的原因，会自动对移的位数模64，导致左移64位错为左移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.SAR(System.Int64,System.Int32)">
+	<summary>安全的右移位操作，原来的操作由于Intel的原因，会自动对移的位数模64，导致右移64位错为右移0位。</summary>
+	<remarks></remarks>
+</member><member name="M:Firefly.BitOperations.Bits(System.Byte,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Byte</param>
+	<param name="U">高位索引(7-0)</param>
+	<param name="L">低位索引(7-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.UInt16,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">UInt16</param>
+	<param name="U">高位索引(15-0)</param>
+	<param name="L">低位索引(15-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.UInt32,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Int32</param>
+	<param name="U">高位索引(31-0)</param>
+	<param name="L">低位索引(31-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.UInt64,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Int32</param>
+	<param name="U">高位索引(63-0)</param>
+	<param name="L">低位索引(63-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.SByte,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Byte</param>
+	<param name="U">高位索引(7-0)</param>
+	<param name="L">低位索引(7-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.Int16,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">UInt16</param>
+	<param name="U">高位索引(15-0)</param>
+	<param name="L">低位索引(15-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Int32</param>
+	<param name="U">高位索引(31-0)</param>
+	<param name="L">低位索引(31-0)</param>
+</member><member name="M:Firefly.BitOperations.Bits(System.Int64,System.Int32,System.Int32)">
+	<summary>
+ 获得整数的特定位。
+ </summary>
+	<param name="This">Int32</param>
+	<param name="U">高位索引(63-0)</param>
+	<param name="L">低位索引(63-0)</param>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TU">第三字节高位索引(7-0)</param>
+	<param name="TL">第三字节低位索引(7-0)</param>
+	<param name="Q">第四字节</param>
+	<param name="QU">第四字节高位索引(7-0)</param>
+	<param name="QL">第四字节低位索引(7-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TU">第三字节高位索引(7-0)</param>
+	<param name="TL">第三字节低位索引(7-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Byte,System.Int32,System.Int32,System.Byte,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Byte,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HU">首Int32高位索引(31-0)</param>
+	<param name="HL">首Int32低位索引(31-0)</param>
+	<param name="S">次Int32</param>
+	<param name="SU">次Int32高位索引(31-0)</param>
+	<param name="SL">次Int32低位索引(31-0)</param>
+	<returns>由这些Int32的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ComposeBits(System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位构成整数。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HU">首Int32高位索引(31-0)</param>
+	<param name="HL">首Int32低位索引(31-0)</param>
+	<returns>由这些Int32的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TU">第三字节高位索引(7-0)</param>
+	<param name="TL">第三字节低位索引(7-0)</param>
+	<param name="Q">第四字节</param>
+	<param name="QU">第四字节高位索引(7-0)</param>
+	<param name="QL">第四字节低位索引(7-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TU">第三字节高位索引(7-0)</param>
+	<param name="TL">第三字节低位索引(7-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Byte@,System.Int32,System.Int32,System.Byte@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="S">次字节</param>
+	<param name="SU">次字节高位索引(7-0)</param>
+	<param name="SL">次字节低位索引(7-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Byte@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HU">首字节高位索引(7-0)</param>
+	<param name="HL">首字节低位索引(7-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Int32@,System.Int32,System.Int32,System.Int32@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HU">首Int32高位索引(31-0)</param>
+	<param name="HL">首Int32低位索引(31-0)</param>
+	<param name="S">次Int32</param>
+	<param name="SU">次Int32高位索引(31-0)</param>
+	<param name="SL">次Int32低位索引(31-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.DecomposeBits(System.Int32@,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数分解到位。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HU">首Int32高位索引(31-0)</param>
+	<param name="HL">首Int32低位索引(31-0)</param>
+	<param name="Value">待分解的整数。</param>
+</member><member name="M:Firefly.BitOperations.ConcatBits(System.Byte,System.Int32,System.Byte,System.Int32,System.Byte,System.Int32,System.Byte,System.Int32)">
+	<summary>
+ 已重载。从位连接整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TW">第三字节宽度(8-0)</param>
+	<param name="Q">第四字节</param>
+	<param name="QW">第四字节宽度(8-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ConcatBits(System.Byte,System.Int32,System.Byte,System.Int32,System.Byte,System.Int32)">
+	<summary>
+ 已重载。从位连接整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TW">第三字节宽度(8-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ConcatBits(System.Byte,System.Int32,System.Byte,System.Int32)">
+	<summary>
+ 已重载。从位连接整数。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<returns>由这些字节的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.ConcatBits(System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。从位连接整数。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HW">首Int32宽度(32-0)</param>
+	<param name="S">次Int32</param>
+	<param name="SW">次Int32宽度(32-0)</param>
+	<returns>由这些Int32的这些位依次从高到低连接得到的整数。</returns>
+</member><member name="M:Firefly.BitOperations.SplitBits(System.Byte@,System.Int32,System.Byte@,System.Int32,System.Byte@,System.Int32,System.Byte@,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数拆分到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TW">第三字节宽度(8-0)</param>
+	<param name="Q">第四字节</param>
+	<param name="QW">第四字节宽度(8-0)</param>
+	<param name="Value">待拆分的整数。</param>
+</member><member name="M:Firefly.BitOperations.SplitBits(System.Byte@,System.Int32,System.Byte@,System.Int32,System.Byte@,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数拆分到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<param name="T">第三字节</param>
+	<param name="TW">第三字节宽度(8-0)</param>
+	<param name="Value">待拆分的整数。</param>
+</member><member name="M:Firefly.BitOperations.SplitBits(System.Byte@,System.Int32,System.Byte@,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数拆分到位。
+ </summary>
+	<param name="H">首字节</param>
+	<param name="HW">首字节宽度(8-0)</param>
+	<param name="S">次字节</param>
+	<param name="SW">次字节宽度(8-0)</param>
+	<param name="Value">待拆分的整数。</param>
+</member><member name="M:Firefly.BitOperations.SplitBits(System.Int32@,System.Int32,System.Int32@,System.Int32,System.Int32)">
+	<summary>
+ 已重载。将整数拆分到位。
+ </summary>
+	<param name="H">首Int32</param>
+	<param name="HW">首Int32宽度(32-0)</param>
+	<param name="S">次Int32</param>
+	<param name="SW">次Int32宽度(32-0)</param>
+	<param name="Value">待拆分的整数。</param>
+</member><member name="T:Firefly.BitOperations">
+	<summary>位操作</summary>
+</member><member name="M:Firefly.ArrayOperations.SubArray``1(``0[],System.Int32,System.Int32)">
+	<summary>
+ 已重载。获取数组的子数组。
+ </summary>
+	<param name="This">数组</param>
+	<param name="StartIndex">起始索引</param>
+	<param name="Length">长度</param>
+</member><member name="M:Firefly.ArrayOperations.SubArray``1(``0[],System.Int32)">
+	<summary>
+ 已重载。获取数组的子数组。
+ </summary>
+	<param name="This">数组</param>
+	<param name="StartIndex">起始索引</param>
+</member><member name="M:Firefly.ArrayOperations.Extend``1(``0[],System.Int32,``0)">
+	<summary>
+ 返回数组的扩展数组。
+ </summary>
+	<param name="This">数组</param>
+	<param name="Length">新长度</param>
+	<param name="Value">初始值</param>
+</member><member name="M:Firefly.ArrayOperations.ForEach``1(``0[],System.Action{``0})">
+	<summary>
+ 对指定数组的每个元素执行指定操作。
+ </summary>
+	<typeparam name="T">数组元素的类型。</typeparam>
+	<param name="This">从零开始的一维 Array，要对其元素执行操作。</param>
+	<param name="Action">要对 array 的每个元素执行的 Action(Of T)。</param>
+</member><member name="M:Firefly.ArrayOperations.ArrayEqual``1(``0[],``0[])">
+	<summary>
+ 判断数组是否元素完全相等。
+ </summary>
+</member><member name="M:Firefly.ArrayOperations.ArrayEqual``1(``0[],``0[],System.Int32,System.Int32)">
+	<summary>
+ 判断数组是否元素完全相等。
+ </summary>
+</member><member name="T:Firefly.ArrayOperations">
+	<summary>数组操作</summary>
+</member><member name="M:Firefly.StringEx`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.StringEx`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="T:Firefly.StringEx`1">
+	<summary>
+ 泛型串，特性类似于字符串，但是类型参数不是字符，创建后不可改变，可作为容器类的键使用
+ </summary>
+</member><member name="T:Firefly.MappedEnumerator`2">
+	<summary>映射式枚举器</summary>
+</member><member name="T:Firefly.ZippedEnumerator`3">
+	<summary>Zip式枚举器</summary>
+</member><member name="T:Firefly.EnumeratorEnumerable`1">
+	<summary>用于转换泛型Enumerator到泛型IEnumerable</summary>
+</member><member name="M:Firefly.ListPart`1.#ctor(System.Collections.Generic.IList{`0})">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPart`1.#ctor(System.Collections.Generic.IList{`0},System.Int32,System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="T:Firefly.ListPart`1">
+	<summary>
+ 列表片，列表的一部分
+ </summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(System.Collections.Generic.IList{`0})">
+	<summary>考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(System.Collections.Generic.IList{`0},System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(System.Collections.Generic.IList{`0},System.Int32,System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(System.Collections.Generic.IList{`0},System.Int32,System.Int32,System.Int32)">
+	<summary>已重载。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(Firefly.ListPartStringEx{`0},System.Int32)">
+	<summary>已重载。延长已有的串。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="M:Firefly.ListPartStringEx`1.#ctor(Firefly.ListPartStringEx{`0},System.Int32,System.Int32)">
+	<summary>已重载。延长已有的串。考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
+</member><member name="T:Firefly.ListPartStringEx`1">
+	<summary>
+ 列表片式泛型串，特性类似于字符串，但是类型参数不是字符，创建后不可改变，可作为容器类的键使用
+ </summary>
+</member><member name="M:Firefly.BitStream.#ctor(System.Int32)">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.BitStream.#ctor(System.Byte[])">
+	<summary>已重载。初始化新实例。</summary>
+</member><member name="M:Firefly.BitStream.ReadToByte(System.Int32)">
+	<summary>读取到Byte。</summary>
+</member><member name="M:Firefly.BitStream.WriteFromByte(System.Byte,System.Int32)">
+	<summary>从Byte写入。</summary>
+</member><member name="M:Firefly.BitStream.ReadToInt32(System.Int32)">
+	<summary>读取到Int32。</summary>
+</member><member name="M:Firefly.BitStream.WriteFromInt32(System.Int32,System.Int32)">
+	<summary>从Int32写入。</summary>
+</member><member name="M:Firefly.BitStream.Flush">
+	<summary>强制同步缓冲数据。</summary>
+</member><member name="M:Firefly.BitStream.Close">
+	<summary>关闭流。</summary>
+	<remarks>对继承者的说明：该方法调用Dispose()，不要覆盖该方法，而应覆盖Dispose(Boolean)</remarks>
+</member><member name="P:Firefly.BitStream.Length">
+	<summary>用字节表示的流的长度。</summary>
+</member><member name="P:Firefly.BitStream.Position">
+	<summary>流的当前位置。</summary>
+</member><member name="M:Firefly.BitStream.Dispose(System.Boolean)">
+	<summary>释放流的资源。</summary>
+	<remarks>对继承者的说明：不要调用基类的Dispose()，而应调用Dispose(True)，否则会出现无限递归。</remarks>
+</member><member name="M:Firefly.BitStream.Dispose">
+	<summary>释放流的资源。</summary>
+</member><member name="T:Firefly.BitStream">
+	<summary>
+ 位流。字节内部的位的顺序，低位在前。字节间，低位在前。返回的数据的内部，低位在前。
+ </summary>
+	<remarks>
+ 请显式调用Close或Dispose来关闭流。
+ </remarks>
+</member><member name="P:Firefly.Compressing.RLE.OriginalData">
+	<summary>原始数据</summary>
+</member><member name="P:Firefly.Compressing.RLE.Position">
+	<summary>位置</summary>
+</member><member name="M:Firefly.Compressing.RLE.Proceed(System.Int32)">
+	<summary>已重载。前进</summary>
+</member><member name="M:Firefly.Compressing.RLE.Proceed">
+	<summary>已重载。前进</summary>
+</member><member name="M:Firefly.Compressing.RLE.Match">
+	<summary>匹配</summary>
+	<remarks>无副作用</remarks>
+</member><member name="F:Firefly.Compressing.RLE.RLEPointer.Value">
+	<summary>重复值</summary>
+</member><member name="P:Firefly.Compressing.RLE.RLEPointer.Length">
+	<summary>长度</summary>
+</member><member name="T:Firefly.Compressing.RLE.RLEPointer">
+	<summary>RLE匹配指针，表示一个RLE匹配</summary>
+</member><member name="T:Firefly.Compressing.RLE">
+	<summary>
+ RLE算法类
+ 完成一个完整压缩的时间复杂度为O(n)，空间复杂度为O(1)
+ </summary>
+</member><member name="T:Firefly.Compressing.Pointer">
+	<summary>压缩匹配指针</summary>
+</member><member name="P:Firefly.Compressing.Literal.Length">
+	<summary>长度</summary>
+</member><member name="T:Firefly.Compressing.Literal">
+	<summary>字面量</summary>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.#ctor(System.Byte[],System.UInt16,System.UInt16,System.UInt16,System.UInt16)">
+	<summary>
+ 已重载。构造函数。
+ </summary>
+	<param name="OriginalData">原始数据</param>
+	<param name="SlideWindowLength">滑动窗口大小</param>
+	<param name="MaxMatchLength">最大匹配长度</param>
+	<param name="MinMatchLength">最小匹配长度</param>
+	<param name="MaxHashStringLength">最大散列匹配长度</param>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.#ctor(System.Byte[],System.UInt16,System.UInt16,System.UInt16,System.UInt16,System.UInt16,System.Int32)">
+	<summary>
+ 已重载。构造函数。
+ </summary>
+	<param name="OriginalData">原始数据</param>
+	<param name="SlideWindowLength">滑动窗口大小</param>
+	<param name="MaxMatchLength">最大匹配长度</param>
+	<param name="MinMatchLength">最小匹配长度</param>
+	<param name="MaxHashStringLength">最大散列匹配长度</param>
+	<param name="MinHashStringLength">最小散列匹配长度</param>
+	<param name="MaxItemForEachItem">最大非散列匹配项数</param>
+	<remarks></remarks>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.OriginalData">
+	<summary>原始数据</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.Position">
+	<summary>位置</summary>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.Proceed(System.Int32)">
+	<summary>已重载。向左移动</summary>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.Proceed">
+	<summary>已重载。向左移动</summary>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.Update">
+	<summary>更新查找表</summary>
+	<remarks>无副作用</remarks>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.Delete">
+	<summary>去除窗口外内容</summary>
+</member><member name="M:Firefly.Compressing.LZ77Reversed.Match(System.Collections.Generic.LinkedList{Firefly.Compressing.LZ77Reversed.AccPointer})">
+	<summary>匹配</summary>
+	<remarks>无副作用</remarks>
+</member><member name="F:Firefly.Compressing.LZ77Reversed.LZPointer.NumBack">
+	<summary>回退量</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.LZPointer.Length">
+	<summary>长度</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.LZPointer.AccLength">
+	<summary>后缀最优压缩长度</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.LZPointer.AccLengthReadOnly">
+	<summary>后缀最优压缩长度</summary>
+</member><member name="T:Firefly.Compressing.LZ77Reversed.LZPointer">
+	<summary>LZ匹配指针，表示一个LZ匹配</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.AccPointer.AccLength">
+	<summary>后缀最优压缩长度</summary>
+</member><member name="T:Firefly.Compressing.LZ77Reversed.AccPointer">
+	<summary>指针，表示一个匹配</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.Literal.Length">
+	<summary>长度</summary>
+</member><member name="P:Firefly.Compressing.LZ77Reversed.Literal.AccLength">
+	<summary>后缀最优压缩长度</summary>
+</member><member name="T:Firefly.Compressing.LZ77Reversed.Literal">
+	<summary>字面量指针，表示一个字面量匹配</summary>
+</member><member name="T:Firefly.Compressing.LZ77Reversed">
+	<summary>
+ 从后向前的LZ77算法类
+ 完成一个完整压缩的时间复杂度为O(n * MaxHashStringLength)，空间复杂度为O(n)
+ 主要用于完成完全LZ和RLE下的绝对最优压缩率的压缩。内存占用很大。
+ 压缩时，逐次调用Match获得当前匹配，调用Proceed向左移动数据指针。
+ </summary>
+	<remarks>
+ 本类不用于较长数据的压缩，如需进行较长数据的压缩，需要对数据进行分段处理。
+ </remarks>
+</member><member name="M:Firefly.Compressing.LZ77.#ctor(System.Byte[],System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。构造函数。
+ </summary>
+	<param name="OriginalData">原始数据</param>
+	<param name="SlideWindowLength">滑动窗口大小</param>
+	<param name="MaxMatchLength">最大匹配长度</param>
+	<param name="MinMatchLength">最小匹配长度</param>
+	<param name="MaxHashStringLength">最大散列匹配长度</param>
+</member><member name="M:Firefly.Compressing.LZ77.#ctor(System.Byte[],System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32)">
+	<summary>
+ 已重载。构造函数。
+ </summary>
+	<param name="OriginalData">原始数据</param>
+	<param name="SlideWindowLength">滑动窗口大小</param>
+	<param name="MaxMatchLength">最大匹配长度</param>
+	<param name="MinMatchLength">最小匹配长度</param>
+	<param name="MaxHashStringLength">最大散列匹配长度</param>
+	<param name="MinHashStringLength">最小散列匹配长度</param>
+	<param name="MaxItemForEachItem">最大非散列匹配项数</param>
+	<remarks></remarks>
+</member><member name="P:Firefly.Compressing.LZ77.OriginalData">
+	<summary>原始数据</summary>
+</member><member name="P:Firefly.Compressing.LZ77.Position">
+	<summary>位置</summary>
+</member><member name="M:Firefly.Compressing.LZ77.Proceed(System.Int32)">
+	<summary>已重载。前进</summary>
+</member><member name="M:Firefly.Compressing.LZ77.Proceed">
+	<summary>已重载。前进</summary>
+</member><member name="M:Firefly.Compressing.LZ77.Update">
+	<summary>更新查找表</summary>
+</member><member name="M:Firefly.Compressing.LZ77.Delete">
+	<summary>去除窗口外内容</summary>
+</member><member name="M:Firefly.Compressing.LZ77.Match">
+	<summary>匹配</summary>
+	<remarks>无副作用</remarks>
+</member><member name="F:Firefly.Compressing.LZ77.LZPointer.NumBack">
+	<summary>回退量</summary>
+</member><member name="P:Firefly.Compressing.LZ77.LZPointer.Length">
+	<summary>长度</summary>
+</member><member name="T:Firefly.Compressing.LZ77.LZPointer">
+	<summary>LZ匹配指针，表示一个LZ匹配</summary>
+</member><member name="T:Firefly.Compressing.LZ77">
+	<summary>
+ LZ77算法类
+ 完成一个完整压缩的时间复杂度为O(n * MaxHashStringLength)，空间复杂度为O(MaxHashStringLength)
+ 压缩时，逐次调用Match获得当前匹配，调用Proceed移动数据指针。
+ </summary>
+	<remarks>
+ 本类不用于较长数据的压缩，如需进行较长数据的压缩，需要将本类用到的一些数组修改成缓存流。
+ </remarks>
+</member><member name="T:Firefly.Compressing.Compress">
+	<summary>
+ 压缩委托
+ 本接口仅用于短数据，即所有数据均可放于内存中。
+ </summary>
+</member><member name="T:Firefly.Compressing.Decompress">
+	<summary>
+ 解压委托
+ 本接口仅用于短数据，即所有数据均可放于内存中。
+ </summary>
+</member><member name="M:Firefly.Compressing.CompressorSelector.#ctor(Firefly.Compressing.Compress[])">
+	<summary>
+ 靠前的压缩方法会被优先使用。
+ </summary>
+</member><member name="M:Firefly.Compressing.CompressorSelector.Compress(System.Byte[],System.Int32@)">
+	<summary>
+ 逐次尝试，选取最佳压缩率的压缩方法。
+ </summary>
+</member><member name="M:Firefly.Compressing.CompressorSelector.CompressAndFitIn(System.Byte[],System.Int32,System.Int32@,System.Boolean)">
+	<summary>
+ 逐次尝试，选取第一个能压缩到指定大小的压缩方法。
+ </summary>
+</member><member name="T:Firefly.Compressing.CompressorSelector">
+	<summary>
+ 压缩方法选择器
+ 能够对数据尝试输入的一组压缩方法，返回最小的或第一个小于指定大小的压缩数据。
+ </summary>
+</member>
+</members>
+</doc>
