@@ -1,0 +1,62 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Firefly.GUI
+</name>
+</assembly>
+<members>
+<member name="P:Firefly.GUI.My.Resources.Resources.ResourceManager">
+	<summary>
+  返回此类使用的缓存的 ResourceManager 实例。
+</summary>
+</member><member name="P:Firefly.GUI.My.Resources.Resources.Culture">
+	<summary>
+  使用此强类型资源类，为所有资源查找
+  重写当前线程的 CurrentUICulture 属性。
+</summary>
+</member><member name="T:Firefly.GUI.My.Resources.Resources">
+	<summary>
+  一个强类型的资源类，用于查找本地化的字符串等。
+</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.Icon">
+	<summary>get icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.DisplayName">
+	<summary>get display name</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.TypeName">
+	<summary>get type name</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.Attributes">
+	<summary>get attributes</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.IconLocation">
+	<summary>get icon location</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.ExeType">
+	<summary>return exe type</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.SysIconIndex">
+	<summary>get system icon index</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.LinkOverlay">
+	<summary>put a link overlay on icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.Selected">
+	<summary>show icon in selected state</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.Attr_Specified">
+	<summary>get only specified attributes</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.LargeIcon">
+	<summary>get large icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.SmallIcon">
+	<summary>get small icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.OpenIcon">
+	<summary>get open icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.ShellIconize">
+	<summary>get shell size icon</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.PIDL">
+	<summary>pszPath is a pidl</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.UseFileAttributes">
+	<summary>use passed dwFileAttribute</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.AddOverlays">
+	<summary>apply the appropriate overlays</summary>
+</member><member name="F:Firefly.GUI.FilePickerInterop.SHGFI.OverlayIndex">
+	<summary>Get the index of the overlay in the upper 8 bits of the iIcon</summary>
+</member><member name="T:Firefly.GUI.FilePicker">
+	<summary>文件选取对话框，用于统一打开和保存单个和多个文件和文件夹，可替代OpenFileDialog、SaveFileDialog、FolderBrowserDialog三个对话框。</summary>
+</member>
+</members>
+</doc>
