@@ -43,6 +43,10 @@
     <Reference Include="Firefly.Core">
       <HintPath>..\Firefly.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Firefly.GUI, Version=2010.9.23.0, Culture=neutral, PublicKeyToken=9117b2e0faa1b83e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Firefly.GUI.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
