@@ -9,9 +9,7 @@
 
 @call Clear.cmd
 @cd ..
-@del %PackName%Src.rar
 @del %PackName%.rar
-@rar a -av- -m5 -md4096 -tsm -tsc -s -k -t %PackName%Src.rar Src
-@rar a -av- -m5 -md4096 -tsm -tsc -s -k -t %PackName%.rar Bin
+@rar a -av- -m5 -md4096 -tsm -tsc -s -k -t %PackName%.rar -x*\.svn -x*\.svn\* -x*.user -x*.suo Src Bin
 @if not exist Versions\ md Versions\
-@copy %PackName%Src.rar Versions\
+@copy %PackName%.rar Versions\
