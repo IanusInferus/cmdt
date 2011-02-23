@@ -74,6 +74,13 @@
     <Compile Include="Comm2\SEC.vb" />
     <Compile Include="Comm2\Y64.vb" />
     <Compile Include="CSF\PAK.vb" />
+    <Compile Include="StreamAdapters.vb" />
+    <Compile Include="StreamEx.vb" />
+    <Compile Include="StreamExComplex.vb" />
+    <Compile Include="StreamExFloats.vb" />
+    <Compile Include="StreamExInts.vb" />
+    <Compile Include="StreamExPasser.vb" />
+    <Compile Include="StreamExStrings.vb" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
