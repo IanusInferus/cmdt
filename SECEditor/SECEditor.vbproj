@@ -85,10 +85,6 @@
       <Project>{22AC14B6-5EA5-44B6-BAFF-BA887AD25211}</Project>
       <Name>GraphSystem</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GraphD3D\GraphD3D.vbproj">
-      <Project>{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}</Project>
-      <Name>GraphD3D</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="2.ico" />
