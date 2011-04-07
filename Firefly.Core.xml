@@ -1039,7 +1039,7 @@ Firefly.Core
 	<summary>虚拟包围盒，字符的显示相对位置为此包围盒。</summary>
 </member><member name="T:Firefly.Glyphing.BmpGlyph">
 	<summary>位于位图中的字形信息</summary>
-</member><member name="T:Firefly.Mapping.XmlSerializer">
+</member><member name="T:Firefly.Mapping.XmlText.XmlSerializer">
 	<remarks>
  对于非简单类型，应提供自定义序列化器
  简单类型 ::= 简单类型
@@ -1085,13 +1085,45 @@ Firefly.Core
 	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
 </member><member name="T:Firefly.Mapping.IGenericCollectionAggregatorResolver`1">
 	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
-</member><member name="M:Firefly.Mapping.IFieldOrPropertyProjectorResolver`1.ResolveProjector(Firefly.Mapping.MetaProgramming.FieldOrPropertyInfo)">
+</member><member name="M:Firefly.Mapping.IFieldProjectorResolver`1.ResolveProjector(System.Reflection.MemberInfo,System.Type)">
 	<returns>返回Func(Of ${DomainType}, ${FieldOrPropertyType})</returns>
-</member><member name="T:Firefly.Mapping.IFieldOrPropertyProjectorResolver`1">
+</member><member name="T:Firefly.Mapping.IFieldProjectorResolver`1">
 	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
-</member><member name="M:Firefly.Mapping.IFieldOrPropertyAggregatorResolver`1.ResolveAggregator(Firefly.Mapping.MetaProgramming.FieldOrPropertyInfo)">
+</member><member name="M:Firefly.Mapping.IFieldAggregatorResolver`1.ResolveAggregator(System.Reflection.MemberInfo,System.Type)">
 	<returns>返回Action(Of ${FieldOrPropertyType}, ${RangeType})</returns>
-</member><member name="T:Firefly.Mapping.IFieldOrPropertyAggregatorResolver`1">
+</member><member name="T:Firefly.Mapping.IFieldAggregatorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.IAliasFieldProjectorResolver`1.ResolveProjector(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Func(Of ${DomainType}, ${FieldOrPropertyType})</returns>
+</member><member name="T:Firefly.Mapping.IAliasFieldProjectorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.IAliasFieldAggregatorResolver`1.ResolveAggregator(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Action(Of ${FieldOrPropertyType}, ${RangeType})</returns>
+</member><member name="T:Firefly.Mapping.IAliasFieldAggregatorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITagProjectorResolver`1.ResolveProjector(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Func(Of ${DomainType}, ${TagType})</returns>
+</member><member name="T:Firefly.Mapping.ITagProjectorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITagAggregatorResolver`1.ResolveAggregator(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Action(Of ${TagType}, ${RangeType})</returns>
+</member><member name="T:Firefly.Mapping.ITagAggregatorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITaggedUnionAlternativeProjectorResolver`1.ResolveProjector(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Func(Of ${DomainType}, ${FieldOrPropertyType})</returns>
+</member><member name="T:Firefly.Mapping.ITaggedUnionAlternativeProjectorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITaggedUnionAlternativeAggregatorResolver`1.ResolveAggregator(System.Reflection.MemberInfo,System.Type)">
+	<returns>返回Action(Of ${FieldOrPropertyType}, ${RangeType})</returns>
+</member><member name="T:Firefly.Mapping.ITaggedUnionAlternativeAggregatorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITupleElementProjectorResolver`1.ResolveProjector(System.Reflection.MemberInfo,System.Int32,System.Type)">
+	<returns>返回Func(Of ${DomainType}, ${Type})</returns>
+</member><member name="T:Firefly.Mapping.ITupleElementProjectorResolver`1">
+	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
+</member><member name="M:Firefly.Mapping.ITupleElementAggregatorResolver`1.ResolveAggregator(System.Reflection.MemberInfo,System.Int32,System.Type)">
+	<returns>返回Action(Of ${Type}, ${RangeType})</returns>
+</member><member name="T:Firefly.Mapping.ITupleElementAggregatorResolver`1">
 	<remarks>实现带泛型约束的接口会导致代码分析无效。</remarks>
 </member><member name="M:Firefly.ListStringEx`1.#ctor(System.Collections.Generic.IList{`0})">
 	<summary>考虑到效率原因，不会复制数据，而是直接引用数据，因此传入的数组不得改变</summary>
@@ -1140,6 +1172,8 @@ Firefly.Core
 	<summary>读取元素。</summary>
 </member><member name="M:Firefly.Streaming.ArrayStream`1.WriteElement(`0)">
 	<summary>写入元素。</summary>
+</member><member name="M:Firefly.Streaming.ArrayStream`1.PeekElement">
+	<summary>查看元素。</summary>
 </member><member name="M:Firefly.Streaming.ArrayStream`1.Flush">
 	<summary>强制同步缓冲数据。</summary>
 </member><member name="M:Firefly.Streaming.ArrayStream`1.Close">
@@ -1782,23 +1816,59 @@ Firefly.Core
 </member><member name="T:Firefly.Streaming.UnsafeStreamAdapter">
 	<summary>流适配器类-适配非安全流</summary>
 	<remarks>用于非安全保存IStream的Stream形式。</remarks>
-</member><member name="M:Firefly.Mapping.IObjectProjectorResolver.TryResolveProjector(System.Collections.Generic.KeyValuePair{System.Type,System.Type})">
+</member><member name="M:Firefly.Mapping.IProjectorResolver.TryResolveProjector(System.Collections.Generic.KeyValuePair{System.Type,System.Type})">
 	<param name="TypePair">(DomainType, RangeType)</param>
 	<returns>返回Func(Of ${DomainType}, ${RangeType})</returns>
-</member><member name="M:Firefly.Mapping.IObjectAggregatorResolver.TryResolveAggregator(System.Collections.Generic.KeyValuePair{System.Type,System.Type})">
+</member><member name="M:Firefly.Mapping.IAggregatorResolver.TryResolveAggregator(System.Collections.Generic.KeyValuePair{System.Type,System.Type})">
 	<returns>返回Action(Of ${DomainType}, ${RangeType})</returns>
-</member><member name="T:Firefly.Mapping.AbsoluteResolver">
-	<remarks>解析器适配器，用于在无法解析时抛出异常。</remarks>
-</member><member name="T:Firefly.Mapping.NoncircularResolver">
-	<remarks>不循环解析器，用于在出现循环引用时抛出异常。</remarks>
-</member><member name="T:Firefly.Mapping.AlternativeResolver">
+</member><member name="M:Firefly.Mapping.Mapping.AsNoncircular(Firefly.Mapping.IProjectorResolver)">
+	<remarks>获取不循环解析器，用于在出现循环引用时抛出异常。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsNoncircular(Firefly.Mapping.IAggregatorResolver)">
+	<remarks>获取不循环解析器，用于在出现循环引用时抛出异常。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsNoncircular(Firefly.Mapping.IMapperResolver)">
+	<remarks>获取不循环解析器，用于在出现循环引用时抛出异常。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeProjectorResolver(Firefly.Mapping.IProjectorResolver)">
+	<remarks>获取运行时解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeAggregatorResolver(Firefly.Mapping.IAggregatorResolver)">
+	<remarks>获取运行时解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntime(Firefly.Mapping.IMapperResolver)">
+	<remarks>获取运行时解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeDomainNoncircularProjectorResolver(Firefly.Mapping.IProjectorResolver)">
+	<remarks>获取运行时定义域非循环解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeDomainNoncircularAggregatorResolver(Firefly.Mapping.IAggregatorResolver)">
+	<remarks>获取运行时定义域非循环解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeDomainNoncircular(Firefly.Mapping.IMapperResolver)">
+	<remarks>获取运行时定义域非循环解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsRuntimeRangeNoncircularAggregatorResolver(Firefly.Mapping.IAggregatorResolver)">
+	<remarks>获取运行时值域非循环解析器，用于在出现循环类型引用时延迟到运行时解析。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsCached(Firefly.Mapping.IProjectorResolver)">
+	<remarks>获取缓存解析器。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsCached(Firefly.Mapping.IAggregatorResolver)">
+	<remarks>获取缓存解析器。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.AsCached(Firefly.Mapping.IMapperResolver)">
+	<remarks>获取缓存解析器。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.Concatenated(System.Collections.Generic.IEnumerable{Firefly.Mapping.IProjectorResolver})">
+	<remarks>获取连接解析器。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.Concatenated(System.Collections.Generic.IEnumerable{Firefly.Mapping.IAggregatorResolver})">
+	<remarks>获取连接解析器。</remarks>
+</member><member name="M:Firefly.Mapping.Mapping.Concatenated(System.Collections.Generic.IEnumerable{Firefly.Mapping.IMapperResolver})">
+	<remarks>获取连接解析器。</remarks>
+</member><member name="T:Firefly.Mapping.Mapping.CachedProjectorResolver">
+	<remarks>缓存解析器</remarks>
+</member><member name="T:Firefly.Mapping.Mapping.CachedAggregatorResolver">
+	<remarks>缓存解析器</remarks>
+</member><member name="T:Firefly.Mapping.Mapping.ConcatenatedProjectorResolver">
+	<remarks>选择解析器</remarks>
+</member><member name="T:Firefly.Mapping.Mapping.ConcatenatedAggregatorResolver">
 	<remarks>选择解析器</remarks>
 </member><member name="T:Firefly.Mapping.PrimitiveResolver">
 	<remarks>基元解析器</remarks>
-</member><member name="T:Firefly.Mapping.CachedResolver">
-	<remarks>缓存解析器</remarks>
-</member><member name="T:Firefly.Mapping.ObjectMapper">
-	<summary>Object映射器</summary>
+</member><member name="T:Firefly.Mapping.ReferenceProjectorResolver">
+	<remarks>引用解析器</remarks>
+</member><member name="T:Firefly.Mapping.ReferenceAggregatorResolver">
+	<remarks>引用解析器</remarks>
+</member><member name="T:Firefly.Mapping.ReferenceMapperResolver">
+	<remarks>引用解析器</remarks>
 </member><member name="T:Firefly.MappedEnumerator`2">
 	<summary>映射式枚举器</summary>
 </member><member name="T:Firefly.ZippedEnumerator`3">
@@ -1856,7 +1926,44 @@ Firefly.Core
 	<remarks>
  请显式调用Close或Dispose来关闭流。
  </remarks>
-</member><member name="T:Firefly.Mapping.BinarySerializer`2">
+</member><member name="T:Firefly.Mapping.MetaSchema.RecordAttribute">
+	<summary>记录类型标记</summary>
+	<remarks>
+ 该标记可选，只要符合记录的语法，序列化器应默认识别为记录。
+ 记录，即有若干字段的数据结构。
+ 在VB中，记录可定义如下
+ 记录 ::= 
+     ( 类或结构(构造函数(参数(简单类型)*), 公共只读字段(简单类型)*, 公共可写属性{0}) AND (参数(简单类型)* = 公共只读字段(简单类型)*)
+     | 类或结构(构造函数(参数(简单类型)*), 公共可写字段{0}, 公共只读属性(简单类型)*) AND (参数(简单类型)* = 公共只读属性(简单类型)*)
+     | 类或结构(无参构造函数, 公共可读写字段(简单类型)*, 公共可写属性{0})
+     | 类或结构(无参构造函数, 公共可写字段{0}, 公共可读写属性(简单类型)*)
+     ) AND 数据为树状
+ </remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.AliasAttribute">
+	<summary>别名类型标记</summary>
+	<remarks>
+ 别名，即有且只有一个字段的记录。字段的名称没有意义。
+ </remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.TaggedUnionAttribute">
+	<summary>标签联合类型标记</summary>
+	<remarks>
+ 标签联合，即一个这样的记录，它有其仅有一个枚举字段标记其余字段中哪一个是有效的。该枚举字段应用TagAttribute标记。
+ </remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.TupleAttribute">
+	<summary>元组类型标记</summary>
+	<remarks>
+ 元组，即一个这样的记录，它的字段的顺序和类型有意义，而名称没有意义。
+ </remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.TagAttribute">
+	<summary>标签字段标记</summary>
+	<remarks>
+ 用于标记标签联合的标签字段。
+ </remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.DebuggerDisplayer.PrimitiveStringResolver">
+	<remarks>基元解析器</remarks>
+</member><member name="T:Firefly.Mapping.MetaSchema.DebuggerDisplayer.NullableStringResolver">
+	<remarks>可空解析器</remarks>
+</member><member name="T:Firefly.Mapping.Binary.BinarySerializer`2">
 	<remarks>
  对于非简单类型，应提供自定义序列化器
  简单类型 ::= 简单类型
