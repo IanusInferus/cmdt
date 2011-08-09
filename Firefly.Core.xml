@@ -40,6 +40,10 @@ Firefly.Core
  Unicode Standard Annex #38
  http://www.unicode.org/reports/tr38/
  </remarks>
+</member><member name="F:Firefly.Texting.TreeFormat.TreeFormatParseResult.Positions">
+	<summary>Token | SyntaxRule =&gt; Range</summary>
+</member><member name="F:Firefly.Texting.TreeFormat.TreeFormatParseResult.RawFunctionCalls">
+	<summary>SingleLineFunctionNode | FunctionNodes =&gt; RawFunctionCall</summary>
 </member><member name="T:Firefly.Texting.LOC">
 	<summary>LOC文件格式类(版本2)(图形文本)</summary>
 	<remarks>本类兼容LOC版本1格式的读取，但不能生成LOC版本1格式的文件。</remarks>
@@ -937,17 +941,17 @@ Firefly.Core
  应提供一个返回"ISO(*.ISO)|*.ISO"形式字符串的Filter属性，
  并按照PackageRegister中的委托类型提供一个Open函数、一个Create函数(如果支持创建)。
  </summary>
-</member><member name="M:Firefly.Mapping.MetaProgramming.TryGetImmutableRecordInfo(System.Type)">
+</member><member name="M:Firefly.Mapping.MetaProgramming.MetaProgrammingExtensions.TryGetImmutableRecordInfo(System.Type)">
 	<remarks>
  不变记录 ::= 类或结构(构造函数(参数(简单类型)*), 公共只读字段(简单类型)*, 公共可写属性{0}) AND (参数(简单类型)* = 公共只读字段(简单类型)*)
             | 类或结构(构造函数(参数(简单类型)*), 公共可写字段{0}, 公共只读属性(简单类型)*) AND (参数(简单类型)* = 公共只读属性(简单类型)*)
  </remarks>
-</member><member name="M:Firefly.Mapping.MetaProgramming.TryGetMutableRecordInfo(System.Type)">
+</member><member name="M:Firefly.Mapping.MetaProgramming.MetaProgrammingExtensions.TryGetMutableRecordInfo(System.Type)">
 	<remarks>
  可变记录 ::= 类或结构(无参构造函数, 公共可读写字段(简单类型)*, 公共可写属性{0})
             | 类或结构(无参构造函数, 公共可写字段{0}, 公共可读写属性(简单类型)*)
  </remarks>
-</member><member name="M:Firefly.Mapping.MetaProgramming.GetParameters(System.Delegate)">
+</member><member name="M:Firefly.Mapping.MetaProgramming.MetaProgrammingExtensions.GetParameters(System.Delegate)">
 	<summary>获得委托的参数</summary>
 </member><member name="M:Firefly.Imaging.Quantizer.QuantizeOnPalette(System.Int32,System.Int32[],Firefly.Imaging.ColorSpace.ColorDistance)">
 	<summary>按调色板量化，使用自定义颜色距离函数。</summary>
