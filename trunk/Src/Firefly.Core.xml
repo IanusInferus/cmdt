@@ -317,6 +317,16 @@ Firefly.Core
 	<summary>辅助类，仅仅是为了是使用跨缓冲区多次GetBytes的.Net内部的类正常。</summary>
 </member><member name="T:Firefly.TextEncoding.MultiByteEncoding.InternalDecoder">
 	<summary>辅助类，仅仅是为了是使用跨缓冲区多次GetChars的.Net内部的类正常。</summary>
+</member><member name="T:Firefly.Texting.HalfWidth">
+	<summary>
+ 本模块用于判定半角字符。
+ </summary>
+	<remarks>
+ 参见
+ Unicode Technical Report #11
+ Unicode Character Property "East Asian Width"
+ http://unicode.org/reports/tr11-2/
+ </remarks>
 </member><member name="M:Firefly.Streaming.Streams.OpenReadable(System.String,System.IO.FileShare)">
 	<summary>初始化新实例。</summary>
 </member><member name="M:Firefly.Streaming.Streams.CreateWritable(System.String,System.IO.FileShare)">
