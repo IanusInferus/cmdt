@@ -65,6 +65,7 @@
     </Compile>
     <Compile Include="Comm2\ABI.vb" />
     <Compile Include="Comm2\BSMB.vb" />
+    <Compile Include="Comm2\DES.vb" />
     <Compile Include="Comm2\GRL.vb" />
     <Compile Include="Comm2\H2O.vb" />
     <Compile Include="Comm2\MBI.vb" />
