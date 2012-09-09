@@ -3,7 +3,7 @@
 '  File:        DES.vb
 '  Location:    FileSystem <Visual Basic .Net>
 '  Description: SEC文件类
-'  Version:     2012.09.05.
+'  Version:     2012.09.10.
 '  Copyright(C) F.R.C.
 '
 '==========================================================================
@@ -39,86 +39,90 @@ Public NotInheritable Class DES
         Dim s = sp.GetStream()
 
         If s.ReadSimpleString(8) <> Identifier Then Throw New InvalidDataException()
-        Dim Address1 = s.ReadInt32()
-        Dim Address2 = s.ReadInt32()
-        Dim Address3 = s.ReadInt32()
+        Dim CoverTableAddress = s.ReadInt32()
+        Dim DestructionTableAddress = s.ReadInt32()
+        Dim InitialCoverTableAddress = s.ReadInt32()
         Dim Address4 = s.ReadInt32()
-        Dim Address5 = s.ReadInt32()
+        Dim InitialHidenObjectTableAddress = s.ReadInt32()
         Dim NumView = s.ReadInt32()
-        Dim NumEntryInTable1 = s.ReadInt32()
-        Dim NumEntryInTable2 = s.ReadInt32()
+        Dim NumCover = s.ReadInt32()
+        Dim NumDestruction = s.ReadInt32()
 
-        Dim GRLData = s.Read(CInt(Address1 - s.Position))
+        Dim GRLData = s.Read(CInt(CoverTableAddress - s.Position))
 
-        s.Position = Address1
-        Dim Table1 = New List(Of DES_Table1Record)()
-        For k = 0 To NumEntryInTable1 - 1
-            Dim r = New DES_Table1Record()
+        s.Position = CoverTableAddress
+        Dim Table1 = New List(Of DES_Cover)()
+        For k = 0 To NumCover - 1
+            Dim r = New DES_Cover()
             r.TextureIndex = s.ReadInt32()
-            r.Float1 = s.ReadFloat32()
-            r.Float2 = s.ReadFloat32()
-            r.Int1 = s.ReadInt32()
-            r.Int2 = s.ReadInt32()
-            r.Int3 = s.ReadInt32()
-            r.Int4 = s.ReadInt32()
-            r.Int5 = s.ReadInt32()
+            r.SecX = s.ReadFloat32()
+            r.SecY = s.ReadFloat32()
+            r.SecZ = s.ReadFloat32()
+            r.Y64X = s.ReadInt32()
+            r.Y64Y = s.ReadInt32()
+            r.Unknown1 = s.ReadInt32()
+            r.Unknown2 = s.ReadInt32()
             Table1.Add(r)
         Next
 
-        s.Position = Address2
-        Dim Table2 = New List(Of DES_Table2Record)()
-        For k = 0 To NumEntryInTable2 - 1
-            Dim r As New DES_Table2Record()
+        s.Position = DestructionTableAddress
+        Dim Table2 = New List(Of DES_Destruction)()
+        For k = 0 To NumDestruction - 1
+            Dim r As New DES_Destruction()
             r.Name = s.ReadSimpleString(32)
-            r.Unknown = New Int32(15)() {}
-            For j = 0 To 15
-                Dim NumItem = s.ReadInt32()
-                Dim a = New List(Of Int32)()
-                For i = 0 To NumItem - 1
-                    a.Add(s.ReadInt32())
+            r.Views = New DES_DestructionInView(NumView - 1) {}
+            For n = 0 To NumView - 1
+                Dim Indices = New Int32(3)() {}
+                For j = 0 To 3
+                    Dim NumItem = s.ReadInt32()
+                    Dim a = New List(Of Int32)()
+                    For i = 0 To NumItem - 1
+                        a.Add(s.ReadInt32())
+                    Next
+                    Indices(j) = a.ToArray()
                 Next
-                r.Unknown(j) = a.ToArray()
+                r.Views(n) = New DES_DestructionInView With {.Unknown = Indices(0), .CoverIndicesToShow = Indices(1), .ObjectsToHide = Indices(2), .ObjectsToShow = Indices(3)}
             Next
             Table2.Add(r)
         Next
 
-        s.Position = Address3
-        Dim Table3 = New List(Of DES_Table3Record)()
+        s.Position = InitialCoverTableAddress
+        Dim Table3 = New List(Of DES_InitialCoverInView)()
         For k = 0 To NumView - 1
-            Dim r As New DES_Table3Record()
+            Dim r As New DES_InitialCoverInView()
             Dim NumItem = s.ReadInt32()
             Dim a = New List(Of Int32)()
             For i = 0 To NumItem - 1
                 a.Add(s.ReadInt32())
             Next
-            r.Unknown = a.ToArray()
+            r.CoverIndices = a.ToArray()
             Table3.Add(r)
         Next
 
         s.Position = Address4
-        If Address5 - Address4 <> 4 Then Throw New NotSupportedException()
+        If InitialHidenObjectTableAddress - Address4 <> 4 Then Throw New NotSupportedException()
         If s.ReadInt32() <> 0 Then Throw New NotSupportedException()
 
-        s.Position = Address5
-        Dim Table5 = New List(Of DES_Table5Record)()
+        s.Position = InitialHidenObjectTableAddress
+        Dim Table5 = New List(Of DES_InitialHidenObjectInView)()
         For k = 0 To NumView - 1
-            Dim r As New DES_Table5Record()
+            Dim r As New DES_InitialHidenObjectInView()
             Dim NumItem = s.ReadInt32()
             Dim a = New List(Of Int32)()
             For i = 0 To NumItem - 1
                 a.Add(s.ReadInt32())
             Next
-            r.Unknown = a.ToArray()
+            r.ObjectIndices = a.ToArray()
             Table5.Add(r)
         Next
 
         Dim Root As New DES_Root
         Root.GRLData = GRLData
         Dim Description As New DES_Description
-        Description.Table1 = Table1.ToArray()
-        Description.Table2 = Table2.ToArray()
-        Description.Table3 = Table3.ToArray()
-        Description.Table5 = Table5.ToArray()
+        Description.CoverTable = Table1.ToArray()
+        Description.DestructionTable = Table2.ToArray()
+        Description.InitialCoverTable = Table3.ToArray()
+        Description.InitialHidenObjectTable = Table5.ToArray()
         Root.Description = Description
 
         Return Root
@@ -128,16 +132,16 @@ Public NotInheritable Class DES
 
         s.WriteSimpleString(Identifier, 8)
 
-        If v.Description.Table3.Length <> v.Description.Table5.Length Then Throw New InvalidOperationException()
+        If v.Description.InitialCoverTable.Length <> v.Description.InitialHidenObjectTable.Length Then Throw New InvalidOperationException()
 
-        Dim Address1 = 0
-        Dim Address2 = 0
-        Dim Address3 = 0
+        Dim CoverTableAddress = 0
+        Dim DestructionTableAddress = 0
+        Dim InitialCoverTableAddress = 0
         Dim Address4 = 0
-        Dim Address5 = 0
-        Dim NumView = v.Description.Table3.Length
-        Dim NumEntryInTable1 = v.Description.Table1.Length
-        Dim NumEntryInTable2 = v.Description.Table2.Length
+        Dim InitialHidenObjectTableAddress = 0
+        Dim NumView = v.Description.InitialCoverTable.Length
+        Dim NumCover = v.Description.CoverTable.Length
+        Dim NumDestruction = v.Description.DestructionTable.Length
 
         Dim AddressPosition = s.Position
         s.WriteInt32(0)
@@ -151,36 +155,39 @@ Public NotInheritable Class DES
 
         s.Write(v.GRLData)
 
-        Address1 = CInt(s.Position)
-        For Each r In v.Description.Table1
+        CoverTableAddress = CInt(s.Position)
+        For Each r In v.Description.CoverTable
             s.WriteInt32(r.TextureIndex)
-            s.WriteFloat32(r.Float1)
-            s.WriteFloat32(r.Float2)
-            s.WriteInt32(r.Int1)
-            s.WriteInt32(r.Int2)
-            s.WriteInt32(r.Int3)
-            s.WriteInt32(r.Int4)
-            s.WriteInt32(r.Int5)
+            s.WriteFloat32(r.SecX)
+            s.WriteFloat32(r.SecY)
+            s.WriteFloat32(r.SecZ)
+            s.WriteInt32(r.Y64X)
+            s.WriteInt32(r.Y64Y)
+            s.WriteInt32(r.Unknown1)
+            s.WriteInt32(r.Unknown2)
         Next
 
-        Address2 = CInt(s.Position)
-        For Each r In v.Description.Table2
+        DestructionTableAddress = CInt(s.Position)
+        For Each r In v.Description.DestructionTable
             s.WriteSimpleString(r.Name, 32)
-            If r.Unknown.Length <> 16 Then Throw New InvalidOperationException
-            For Each a In r.Unknown
-                Dim NumItem = a.Length
-                s.WriteInt32(NumItem)
-                For Each Item In a
-                    s.WriteInt32(Item)
+            If r.Views.Length <> NumView Then Throw New InvalidOperationException
+            For Each rv In r.Views
+                Dim Indices = New Int32()() {rv.Unknown, rv.CoverIndicesToShow, rv.ObjectsToHide, rv.ObjectsToShow}
+                For Each a In Indices
+                    Dim NumItem = a.Length
+                    s.WriteInt32(NumItem)
+                    For Each Item In a
+                        s.WriteInt32(Item)
+                    Next
                 Next
             Next
         Next
 
-        Address3 = CInt(s.Position)
-        For Each r In v.Description.Table3
-            Dim NumItem = r.Unknown.Length
+        InitialCoverTableAddress = CInt(s.Position)
+        For Each r In v.Description.InitialCoverTable
+            Dim NumItem = r.CoverIndices.Length
             s.WriteInt32(NumItem)
-            For Each Item In r.Unknown
+            For Each Item In r.CoverIndices
                 s.WriteInt32(Item)
             Next
         Next
@@ -188,24 +195,24 @@ Public NotInheritable Class DES
         Address4 = CInt(s.Position)
         s.WriteInt32(0)
 
-        Address5 = CInt(s.Position)
-        For Each r In v.Description.Table5
-            Dim NumItem = r.Unknown.Length
+        InitialHidenObjectTableAddress = CInt(s.Position)
+        For Each r In v.Description.InitialHidenObjectTable
+            Dim NumItem = r.ObjectIndices.Length
             s.WriteInt32(NumItem)
-            For Each Item In r.Unknown
+            For Each Item In r.ObjectIndices
                 s.WriteInt32(Item)
             Next
         Next
 
         s.Position = AddressPosition
-        s.WriteInt32(Address1)
-        s.WriteInt32(Address2)
-        s.WriteInt32(Address3)
+        s.WriteInt32(CoverTableAddress)
+        s.WriteInt32(DestructionTableAddress)
+        s.WriteInt32(InitialCoverTableAddress)
         s.WriteInt32(Address4)
-        s.WriteInt32(Address5)
+        s.WriteInt32(InitialHidenObjectTableAddress)
         s.WriteInt32(NumView)
-        s.WriteInt32(NumEntryInTable1)
-        s.WriteInt32(NumEntryInTable2)
+        s.WriteInt32(NumCover)
+        s.WriteInt32(NumDestruction)
 
         s.Position = s.Length
     End Sub
@@ -217,32 +224,39 @@ Public Class DES_Root
 End Class
 
 Public Class DES_Description
-    Public Table1 As DES_Table1Record()
-    Public Table2 As DES_Table2Record()
-    Public Table3 As DES_Table3Record()
-    Public Table5 As DES_Table5Record()
+    Public CoverTable As DES_Cover()
+    Public DestructionTable As DES_Destruction()
+    Public InitialCoverTable As DES_InitialCoverInView()
+    Public InitialHidenObjectTable As DES_InitialHidenObjectInView()
 End Class
 
-Public Class DES_Table1Record
+Public Class DES_Cover
     Public TextureIndex As Int32
-    Public Float1 As Single
-    Public Float2 As Single
-    Public Int1 As Int32
-    Public Int2 As Int32
-    Public Int3 As Int32
-    Public Int4 As Int32
-    Public Int5 As Int32
+    Public SecX As Single
+    Public SecY As Single
+    Public SecZ As Single
+    Public Y64X As Int32
+    Public Y64Y As Int32
+    Public Unknown1 As Int32
+    Public Unknown2 As Int32
 End Class
 
-Public Class DES_Table2Record
+Public Class DES_Destruction
     Public Name As String
-    Public Unknown As Int32()()
+    Public Views As DES_DestructionInView()
 End Class
 
-Public Class DES_Table3Record
+Public Class DES_DestructionInView
     Public Unknown As Int32()
+    Public CoverIndicesToShow As Int32()
+    Public ObjectsToHide As Int32()
+    Public ObjectsToShow As Int32()
 End Class
 
-Public Class DES_Table5Record
-    Public Unknown As Int32()
+Public Class DES_InitialCoverInView
+    Public CoverIndices As Int32()
+End Class
+
+Public Class DES_InitialHidenObjectInView
+    Public ObjectIndices As Int32()
 End Class
