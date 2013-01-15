@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{67AF930E-A1D9-49A6-BCFB-C589E6A6A657}"
 	ProjectSection(SolutionItems) = preProject
 		Doc\Architecture.zh.txt = Doc\Architecture.zh.txt
@@ -29,6 +29,8 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SECEditor", "SECEditor\SECEditor.vbproj", "{62CA92D2-2580-4D8B-A085-FAAE4B5670DC}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "XmlConverter", "XmlConverter\XmlConverter.vbproj", "{14B28DC4-4772-4F71-8299-0D3F95EBBB7C}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GraphD3D", "GraphD3D\GraphD3D.vbproj", "{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -84,6 +86,10 @@ Global
 		{14B28DC4-4772-4F71-8299-0D3F95EBBB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14B28DC4-4772-4F71-8299-0D3F95EBBB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14B28DC4-4772-4F71-8299-0D3F95EBBB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
