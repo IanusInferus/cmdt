@@ -67,6 +67,7 @@
     <Compile Include="Picker.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SecState.vb" />
     <Compile Include="Surface.vb">
       <SubType>Form</SubType>
     </Compile>
