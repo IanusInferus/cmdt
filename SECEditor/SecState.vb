@@ -3,7 +3,7 @@
 '  File:        SecDistrict.vb
 '  Location:    SECEditor <Visual Basic .Net>
 '  Description: SEC区域
-'  Version:     2013.01.16.
+'  Version:     2013.01.18.
 '  Copyright(C) F.R.C.
 '
 '==========================================================================
@@ -16,7 +16,7 @@ Imports GraphSystem
 Imports FileSystem
 
 Public Class SecState
-    Public Sec As SEC
+    Public Sec As SEC_Simple.FileInfo
     Public PointToDistrict As New Dictionary(Of Integer, HashSet(Of Integer))
     Public DistrictToPoint As New Dictionary(Of Integer, HashSet(Of Integer))
     Public SecPoints As New List(Of SecPoint)
@@ -107,14 +107,14 @@ Public Class SecDistrict
         Dim d = SecState.Sec.Districts(Index)
         '绘制上顶面
         Dim Points As New List(Of Vector)
-        For Each bi As Integer In d.Border
-            Dim p As SEC.PointInfo = SecState.Sec.Points(SecState.Sec.Borders(bi).StartPointIndex)
+        For Each b In d.Borders
+            Dim p = SecState.Sec.Points(b.StartPointIndex)
             Points.Add(New Vector(p.x, p.y, d.GetZ(p.x, p.y)))
         Next
         If Picked Then
-            Return New Region(Points.ToArray(), CSelectionColor(GetColor(d)))
+            Return New Region(Points.ToArray(), CSelectionColor(GetColor(d.Terrain)))
         Else
-            Return New Region(Points.ToArray(), GetColor(d))
+            Return New Region(Points.ToArray(), GetColor(d.Terrain))
         End If
     End Function
     Public Function GetSideRegions() As Region()
@@ -122,16 +122,15 @@ Public Class SecDistrict
         Dim l As New List(Of Region)()
         '绘制侧面
         Dim BorderOfDistrict As Integer = 0
-        For Each bi As Integer In d.Border
-            Dim b As SEC.BorderInfo = SecState.Sec.Borders(bi)
+        For Each b In d.Borders
             If b.NeighborDistrictIndex = -1 Then
                 BorderOfDistrict += 1
                 l.Add(Nothing)
                 Continue For
             End If
 
-            Dim StartPoint As SEC.PointInfo = SecState.Sec.Points(b.StartPointIndex)
-            Dim EndPoint As SEC.PointInfo = SecState.Sec.Points(b.EndPointIndex)
+            Dim StartPoint = SecState.Sec.Points(b.StartPointIndex)
+            Dim EndPoint = SecState.Sec.Points(b.EndPointIndex)
             Dim Az As Double = d.GetZ(StartPoint.x, StartPoint.y)
             Dim Bz As Double
             Dim Cz As Double
@@ -141,7 +140,7 @@ Public Class SecDistrict
                 Bz = 0
                 Cz = 0
             Else
-                Dim nd As SEC.DistrictInfo = SecState.Sec.Districts(b.NeighborDistrictIndex)
+                Dim nd = SecState.Sec.Districts(b.NeighborDistrictIndex)
                 Bz = nd.GetZ(StartPoint.x, StartPoint.y)
                 Cz = nd.GetZ(EndPoint.x, EndPoint.y)
             End If
@@ -193,11 +192,11 @@ Public Class SecDistrict
         Return l.ToArray()
     End Function
 
-    Public Shared Function GetColor(ByVal d As SEC.DistrictInfo) As ColorInt32
+    Public Shared Function GetColor(ByVal Terrain As SEC.TerrainInfo) As ColorInt32
         Dim c As ColorInt32
 
         '根据主类型
-        Select Case d.Terrain.MajorType
+        Select Case Terrain.MajorType
             Case 0  '陆地
                 c = Color.DarkOrange
             Case 1 '雪地
@@ -213,7 +212,7 @@ Public Class SecDistrict
         End Select
 
         '根据子类型
-        Select Case d.Terrain.MinorType
+        Select Case Terrain.MinorType
             Case 0 '柔软地面(土壤、沙)
 
             Case 1 '草地
@@ -251,21 +250,21 @@ Public Class SecDistrict
         End Select
 
         '根据是否可进入
-        If Not d.Terrain.IsEnterable Then
+        If Not Terrain.IsEnterable Then
             c.R \= 4
             c.G \= 4
             c.B \= 4
         End If
 
         '根据是否是阴影
-        If d.Terrain.IsShadow Then
+        If Terrain.IsShadow Then
             c.R \= 2
             c.G \= 2
             c.B \= 2
         End If
 
         '根据是否有未知的属性
-        If d.Terrain.UnknownAttributes <> "None" Then
+        If Terrain.UnknownAttributes <> "None" Then
             c = &HFFFF00FF
         End If
 
@@ -334,8 +333,8 @@ Public Class SecDistrict
                 pIndex += 1
             Next
             If MinD < Radius Then
-                Dim BorderIndex = SecState.Sec.Districts(Index).Border(MinPIndex)
-                SubPicking = SecState.SecPoints(SecState.Sec.Borders(BorderIndex).StartPointIndex)
+                Dim b = SecState.Sec.Districts(Index).Borders(MinPIndex)
+                SubPicking = SecState.SecPoints(b.StartPointIndex)
                 Return Min(MinTP, MinT)
             End If
         Else
@@ -358,11 +357,11 @@ Public Class SecDistrict
             Next
             If MinD < Radius Then
                 Dim pIndex = Array.FindIndex(Regions, Function(r) r Is Region) - 1
-                Dim BorderIndex = SecState.Sec.Districts(Index).Border(pIndex)
+                Dim b = SecState.Sec.Districts(Index).Borders(pIndex)
                 If MinLineIndex = 0 Then
-                    SubPicking = SecState.SecPoints(SecState.Sec.Borders(BorderIndex).StartPointIndex)
+                    SubPicking = SecState.SecPoints(b.StartPointIndex)
                 Else
-                    SubPicking = SecState.SecPoints(SecState.Sec.Borders(BorderIndex).EndPointIndex)
+                    SubPicking = SecState.SecPoints(b.EndPointIndex)
                 End If
                 Return Min(MinTP, MinT)
             End If
