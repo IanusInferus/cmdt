@@ -98,6 +98,7 @@ Public NotInheritable Class SEC_Simple
         Public Districts As List(Of DistrictInfo)
     End Class
 
+    <ComponentModel.TypeConverter(GetType(RecordExpandableObjectConverter))> _
     Public Class PointInfo
         Public x As Single
         Public y As Single
@@ -110,6 +111,7 @@ Public NotInheritable Class SEC_Simple
         Public Unknown As Integer
     End Class
 
+    <ComponentModel.TypeConverter(GetType(RecordExpandableObjectConverter))> _
     Public Class DistrictInfo
         Public ReadOnly Property n() As Int32
             Get
@@ -119,17 +121,22 @@ Public NotInheritable Class SEC_Simple
         End Property
 
         <ComponentModel.TypeConverter(GetType(SEC_Complex.TerrainInfoConverter))> _
-        Public Property Terrain As SEC_Complex.TerrainInfo
-        Public Property kx As Single
-        Public Property ky As Single
-        Public Property bz As Single
-        Public Property UnknownData As Byte()
-        Public Property MinPx As Single
-        Public Property MinPy As Single
-        Public Property MinPz As Single
-        Public Property MaxPx As Single
-        Public Property MaxPy As Single
-        Public Property MaxPz As Single
-        Public Property Borders As List(Of BorderInfo)
+        Public Terrain As SEC_Complex.TerrainInfo
+        Public kx As Single
+        Public ky As Single
+        Public bz As Single
+        Public UnknownData As Byte()
+        Public MinPx As Single
+        Public MinPy As Single
+        Public MinPz As Single
+        Public MaxPx As Single
+        Public MaxPy As Single
+        Public MaxPz As Single
+        Public Borders As List(Of BorderInfo)
+
+        Public Function GetZ(ByVal x As Double, ByVal y As Double) As Double
+            '平面方程 z = kx * x + ky * y + bz
+            Return kx * x + ky * y + bz
+        End Function
     End Class
 End Class

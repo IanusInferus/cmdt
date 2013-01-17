@@ -84,6 +84,7 @@
     <Compile Include="StreamExInts.vb" />
     <Compile Include="StreamExPasser.vb" />
     <Compile Include="StreamExStrings.vb" />
+    <Compile Include="TypeConverters.vb" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
