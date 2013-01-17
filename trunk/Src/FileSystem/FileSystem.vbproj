@@ -53,6 +53,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="zlib.net, Version=1.0.3.0, Culture=neutral, PublicKeyToken=47d7877cb3620160">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\zlib.net.dll</HintPath>
@@ -73,6 +74,7 @@
     <Compile Include="Comm2\MA2.vb" />
     <Compile Include="Comm2\PCK.vb" />
     <Compile Include="Comm2\SEC.vb" />
+    <Compile Include="Comm2\SEC_Simple.vb" />
     <Compile Include="Comm2\Y64.vb" />
     <Compile Include="CSF\PAK.vb" />
     <Compile Include="StreamAdapters.vb" />
