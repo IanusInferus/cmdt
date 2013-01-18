@@ -12,11 +12,36 @@ Imports System
 Imports System.Collections
 Imports System.Collections.Generic
 Imports System.Linq
+Imports System.Xml
+Imports System.Xml.Linq
 Imports System.Reflection
 Imports System.ComponentModel
 
-Public Class IEnumerableExpandableObjectConverter
-    Inherits ExpandableObjectConverter
+Public Class IEnumerableConverter
+    Inherits CollectionConverter
+
+    Public Overrides Function CanConvertFrom(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal sourceType As System.Type) As Boolean
+        Return False
+    End Function
+    Public Overrides Function CanConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal destinationType As System.Type) As Boolean
+        If (destinationType Is GetType(String)) Then Return True
+        Return MyBase.CanConvertTo(context, destinationType)
+    End Function
+
+    Public Overrides Function ConvertTo(ByVal context As System.ComponentModel.ITypeDescriptorContext, ByVal culture As System.Globalization.CultureInfo, ByVal value As Object, ByVal destinationType As System.Type) As Object
+        If (destinationType Is GetType(String)) Then
+            Return "(Collection)"
+        End If
+        Return MyBase.ConvertTo(context, culture, value, destinationType)
+    End Function
+
+    Public Overrides Function GetPropertiesSupported(context As ITypeDescriptorContext) As Boolean
+        Return True
+    End Function
+
+    Public Overrides Function GetStandardValuesSupported(ByVal context As ComponentModel.ITypeDescriptorContext) As Boolean
+        Return True
+    End Function
 
     Public Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object, ByVal attributes() As Attribute) As PropertyDescriptorCollection
         Dim l As New List(Of PropertyDescriptor)
@@ -95,9 +120,19 @@ End Class
 Public Class RecordExpandableObjectConverter
     Inherits ExpandableObjectConverter
 
+    Public Overrides Function GetPropertiesSupported(context As ITypeDescriptorContext) As Boolean
+        Return True
+    End Function
+
     Public Overrides Function GetProperties(ByVal context As ITypeDescriptorContext, ByVal value As Object, ByVal attributes() As Attribute) As PropertyDescriptorCollection
         Dim l As New List(Of PropertyDescriptor)
-        Dim Type = value.GetType()
+        Dim Type As Type
+        If TypeOf value Is PropertyDescriptor Then
+            Dim td = DirectCast(value, PropertyDescriptor)
+            Type = td.PropertyType
+        Else
+            Type = value.GetType()
+        End If
         For Each m In Type.GetMembers()
             If m.MemberType <> MemberTypes.Field AndAlso m.MemberType <> MemberTypes.Property Then Continue For
             If m.MemberType = MemberTypes.Property Then
@@ -142,7 +177,7 @@ Public Class RecordExpandableObjectConverter
                         End If
                     End If
                     If et Is Nothing OrElse et.IsClass Then
-                        Dim c = New IEnumerableExpandableObjectConverter
+                        Dim c = New IEnumerableConverter
                         If m.MemberType = MemberTypes.Field Then
                             Dim pd As New SimpleFieldDescriptor(Type, DirectCast(m, FieldInfo), c)
                             l.Add(pd)
@@ -164,8 +199,70 @@ Public Class RecordExpandableObjectConverter
                 l.Add(pd)
             End If
         Next
-        Return New PropertyDescriptorCollection(l.ToArray())
+        If TypeOf value Is PropertyDescriptor Then
+            Dim td = DirectCast(value, PropertyDescriptor)
+            Return New PropertyDescriptorCollection(l.Select(Function(pd) New PropertyDescriptorDescriptorWrapper(td, pd)).ToArray())
+        Else
+            Return New PropertyDescriptorCollection(l.ToArray())
+        End If
     End Function
+
+    Private Class PropertyDescriptorDescriptorWrapper
+        Inherits PropertyDescriptor
+
+        Private TypeDescriptor As PropertyDescriptor
+        Private FieldDescriptor As PropertyDescriptor
+
+        Public Sub New(ByVal TypeDescriptor As PropertyDescriptor, ByVal FieldDescriptor As PropertyDescriptor)
+            MyBase.New(FieldDescriptor.Name, Nothing)
+            Me.TypeDescriptor = TypeDescriptor
+            Me.FieldDescriptor = FieldDescriptor
+        End Sub
+
+        Public Overrides Function CanResetValue(ByVal component As Object) As Boolean
+            Return FieldDescriptor.CanResetValue(TypeDescriptor.GetValue(component))
+        End Function
+
+        Public Overrides ReadOnly Property ComponentType As Type
+            Get
+                Return TypeDescriptor.ComponentType
+            End Get
+        End Property
+
+        Public Overrides Function GetValue(ByVal component As Object) As Object
+            Return FieldDescriptor.GetValue(TypeDescriptor.GetValue(component))
+        End Function
+
+        Public Overrides ReadOnly Property IsReadOnly As Boolean
+            Get
+                Return FieldDescriptor.IsReadOnly
+            End Get
+        End Property
+
+        Public Overrides ReadOnly Property PropertyType As Type
+            Get
+                Return FieldDescriptor.PropertyType
+            End Get
+        End Property
+
+        Public Overrides Sub ResetValue(ByVal component As Object)
+            FieldDescriptor.ResetValue(TypeDescriptor.GetValue(component))
+        End Sub
+
+        Public Overrides Sub SetValue(ByVal component As Object, ByVal value As Object)
+            FieldDescriptor.SetValue(TypeDescriptor.GetValue(component), value)
+        End Sub
+
+        Public Overrides Function ShouldSerializeValue(ByVal component As Object) As Boolean
+            Return FieldDescriptor.ShouldSerializeValue(TypeDescriptor.GetValue(component))
+        End Function
+
+        Public Overrides ReadOnly Property Converter As TypeConverter
+            Get
+                Return FieldDescriptor.Converter
+            End Get
+        End Property
+    End Class
 
     Private Class SimpleFieldDescriptor
         Inherits PropertyDescriptor

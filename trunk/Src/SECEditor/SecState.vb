@@ -48,7 +48,7 @@ Public Class SecPoint
     Public Overrides Function Copy() As NDObject
         Return BaseCopy()
     End Function
-    Public Overrides Function Complete() As IPicObj()
+    Public Function GetLine() As Line
         Dim p = SecState.Sec.Points(Index)
 
         Dim lz As New List(Of Double)
@@ -69,6 +69,10 @@ Public Class SecPoint
         Else
             Line = New Line(New Vector(p.x, p.y, zLower), New Vector(p.x, p.y, zUpper), Color.Red)
         End If
+        Return Line
+    End Function
+    Public Overrides Function Complete() As IPicObj()
+        Dim Line = GetLine()
         Line.HomotheticTransformation = HomotheticTransformation
 
         Return Line.Complete()
