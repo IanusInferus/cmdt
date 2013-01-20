@@ -1,0 +1,2 @@
+VBValidator.exe /repairbyval
+pause
