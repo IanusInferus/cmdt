@@ -10,6 +10,7 @@ if exist Bin (
   del *.pdb /F /Q
   del *.xml /F /Q
   del *.vshost.exe /F /Q
+  del SlimDX.dll /F /Q
   del *.manifest /F /Q
   del *.CodeAnalysisLog.xml /F /Q
   del *.lastcodeanalysissucceeded /F /Q
