@@ -7,10 +7,10 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2DCAA1ED-6A7F-498D-8C7A-74BC93D7937A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <StartupObject>PCKManager.My.MyApplication</StartupObject>
+    <StartupObject>Sub Main</StartupObject>
     <RootNamespace>PCKManager</RootNamespace>
     <AssemblyName>PCKManager</AssemblyName>
-    <MyType>WindowsForms</MyType>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ApplicationIcon>3.ico</ApplicationIcon>
     <SignAssembly>false</SignAssembly>
@@ -42,8 +42,7 @@
     <Reference Include="Firefly.Core">
       <HintPath>..\Firefly.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Firefly.GUI, Version=2010.9.23.0, Culture=neutral, PublicKeyToken=9117b2e0faa1b83e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Firefly.GUI">
       <HintPath>..\Firefly.GUI.dll</HintPath>
     </Reference>
     <Reference Include="System" />

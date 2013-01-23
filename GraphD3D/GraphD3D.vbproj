@@ -41,9 +41,7 @@
     </WarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SlimDX">
-      <Private>False</Private>
-    </Reference>
+    <Reference Include="SlimDX" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
