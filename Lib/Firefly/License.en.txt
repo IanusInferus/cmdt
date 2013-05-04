@@ -1,0 +1,39 @@
+﻿* Firefly Framework License
+* (This license is a 3-clause BSD license.)
+*
+* Copyright (c) 2008-2010, F.R.C. (aka Rex, 地狱门神,
+* Identified by the RSA public key shipped with the software: 
+* 00 24 00 00 04 80 00 00 94 00 00 00 06 02 00 00   // .$..............
+* 00 24 00 00 52 53 41 31 00 04 00 00 01 00 01 00   // .$..RSA1........
+* F5 D4 D1 5B 87 9D 38 82 D9 BC 47 8D 8E CD DB 6E   // ...[..8...G....n
+* 6F 53 D0 8F 64 F0 D1 E5 22 20 F8 01 03 8B 30 81   // oS..d..." ....0.
+* C3 0B 74 50 05 8A AC 5C 6C 86 D9 B5 C9 0B AE 16   // ..tP...\l.......
+* 46 5E 29 3D 5F 3C C1 5D 62 F0 E8 5D B4 AB 0A B6   // F^)=_<.]b..]....
+* 70 B1 FA EF 9E 6C CF B9 84 31 C4 46 BE 75 66 3C   // p....l...1.F.uf<
+* AE E6 C6 C4 AE B8 E4 48 5A 87 1A 2F 17 93 23 BE   // .......HZ../..#.
+* 45 C1 EA A8 B9 DC 68 74 C6 F1 F3 BF 4C 2A 75 66   // E.....ht....L*uf
+* C2 1C 21 8E 87 32 AE 8D 7D FD 55 3C 4A 01 E0 A3   // ..!..2..}.U<J...
+* )
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*     * Redistributions of source code must retain the above copyright
+*       notice, this list of conditions and the following disclaimer.
+*     * Redistributions in binary form must reproduce the above copyright
+*       notice, this list of conditions and the following disclaimer in the
+*       documentation and/or other materials provided with the distribution.
+*     * Neither the name of the F.R.C. nor the
+*       names of its contributors may be used to endorse or promote products
+*       derived from this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY F.R.C. "AS IS" AND ANY
+* EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+* WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+* DISCLAIMED. IN NO EVENT SHALL F.R.C. BE LIABLE FOR ANY
+* DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
