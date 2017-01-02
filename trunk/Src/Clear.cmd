@@ -1,3 +1,4 @@
+rd .vs /S /Q
 rd "FileSystem\My Project" /S /Q
 rd "GraphSystem\My Project" /S /Q
 rd "ImageConverter\My Project" /S /Q
