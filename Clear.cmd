@@ -4,7 +4,6 @@ rd "GraphSystem\My Project" /S /Q
 rd "ImageConverter\My Project" /S /Q
 rd "GraphD3D\My Project" /S /Q
 rd "XmlConverter\My Project" /S /Q
-for /d %%a in (*) do if exist %%a\obj rd %%a\obj /S /Q
 cd..
 if exist Bin (
   cd Bin
