@@ -1,6 +1,7 @@
 PATH %windir%\Microsoft.NET\Framework\v4.0.30319;%PATH%
 
-MSBuild /t:Rebuild /p:Configuration=Release
+MSBuild CommDevToolkit.sln /t:Rebuild /p:Configuration=Release
+MSBuild NeoRAGEx2002Tools.sln /t:Rebuild /p:Configuration=Release
 
 copy NDGrapher\SampleScr.vb ..\Bin\NDGrapher\
 copy Doc\Readme.*.txt ..\Bin\
