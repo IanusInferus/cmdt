@@ -7,6 +7,7 @@ copy NDGrapher\SampleScr.vb ..\Bin\NDGrapher\
 copy Doc\Readme.*.txt ..\Bin\
 copy Doc\UpdateLog.*.txt ..\Bin\
 copy Doc\License.*.txt ..\Bin\
+copy Doc\License-NeoRAGEx2002.txt ..\Bin\
 copy zlib.net-license.txt ..\Bin\
 copy Doc\Localization.*.txt ..\Bin\
 del ..\Bin\Examples\ /S /F /Q
