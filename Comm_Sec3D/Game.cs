@@ -163,7 +163,7 @@ namespace Comm_Sec3D
 
 			//设置标题栏
 			FileInfo fi = new FileInfo(fn);
-			filename = fi.Name.ToLower();
+            filename = fn; // fi.Name.ToLower();
 			Text = "3D .Sec Viewer - " + filename;
 
 			//初始化信息字符串
@@ -216,8 +216,8 @@ namespace Comm_Sec3D
 
 			////////////////////////////////////////////////////////////////////////////
 			//预先准备好Win32字体
-			font_selected = new System.Drawing.Font("Tahoma", 9, FontStyle.Bold);
-			font_hud = new System.Drawing.Font("Courier New", 9);
+			font_selected = new System.Drawing.Font("新宋体", 12, FontStyle.Bold);
+			font_hud = new System.Drawing.Font("新宋体", 12);
 
 			////////////////////////////////////////////////////////////////////////////
 			//创建背景贴图的Win32 BMP
@@ -613,8 +613,14 @@ namespace Comm_Sec3D
 		void GenerateMessageString()
 		{
 			District d = sec.districts[curr_district];
-			message = string.Format("District Index       :{0}\nBorders Number       :{1}\nTerrain Category     :0x{2:X}\nTerrain Sub-category :0x{3:X}\nIs Enterable?        :0x{4:X}\nIllumination         :0x{5:X}\nIs the Border?       :0x{6:X}",
-				this.curr_district,
+            message = string.Format("District Index(区块编号)           :{0}\n" +
+                                    "Borders Number(边线数量)           :{1}\n" +
+                                    "Terrain Category(地形属性)         :0x{2:X}\n" +
+                                    "Terrain Sub-category(地形属性子类) :0x{3:X}\n" +
+                                    "Is Enterable?(能否通行)            :0x{4:X}\n" +
+                                    "Illumination(明暗程度)             :0x{5:X}\n" +
+                                    "Is the Border?(是否边缘)           :0x{6:X}",
+                this.curr_district,
 				d.borders.Length,
 				d.attributes[0],
 				d.attributes[1],
@@ -623,7 +629,7 @@ namespace Comm_Sec3D
 				d.attributes[6]
 			);
 
-			string tmp = string.Format("<<{0}>>\n\n{1}", filename, message);
+			string tmp = string.Format("<{0}>\n\n{1}", filename, message);
 			message = tmp;
 		}
 
