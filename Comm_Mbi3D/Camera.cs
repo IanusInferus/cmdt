@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Text;
 using System.Drawing;
 using System.Collections.Generic;
@@ -9,14 +9,14 @@ using System.Diagnostics;
 
 namespace Comm_Mbi3D
 {
-	class FreeRotateCamera //Ê¹ÓÃArcBallËã·¨µÄ×ÔÓÉĞı×ªÉãÏñ»ú
+	class FreeRotateCamera //ä½¿ç”¨ArcBallç®—æ³•çš„è‡ªç”±æ—‹è½¬æ‘„åƒæœº
 	{
-		public Matrix rotate;	//»ıÀÛĞı×ª¾ØÕó
+		public Matrix rotate;	//ç§¯ç´¯æ—‹è½¬çŸ©é˜µ
 
-		public float r;			//Êµ¼Ê°ë¾¶
-		private float radius;	//²Î¿¼°ë¾¶
+		public float r;			//å®é™…åŠå¾„
+		private float radius;	//å‚è€ƒåŠå¾„
 
-		private bool updating;	//ºÏ·¨¸üĞÂ±êÖ¾
+		private bool updating;	//åˆæ³•æ›´æ–°æ ‡å¿—
 		private Vector3 from, to;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -31,11 +31,11 @@ namespace Comm_Mbi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public Matrix GetViewMatrix()
 		{
-			//×óÊÖÏµ£º-ZÖ¸Ïò×Ô¼º¡¢+XÖ¸ÏòÕıÓÒ·½¡¢YÖáÖ¸ÏòÕıÉÏ·½
-			return Matrix.LookAtLH(		//view±ä»»
-				new Vector3(0, 0, -r),	//eye£¬cameraÎ»ÓÚ-ZÖáÉÏ
+			//å·¦æ‰‹ç³»ï¼š-ZæŒ‡å‘è‡ªå·±ã€+XæŒ‡å‘æ­£å³æ–¹ã€Yè½´æŒ‡å‘æ­£ä¸Šæ–¹
+			return Matrix.LookAtLH(		//viewå˜æ¢
+				new Vector3(0, 0, -r),	//eyeï¼Œcameraä½äº-Zè½´ä¸Š
 				new Vector3(0, 0, 0),	//at
-				new Vector3(0, 1, 0));	//up£¬+YÎªcameraÕıÉÏ·½
+				new Vector3(0, 1, 0));	//upï¼Œ+Yä¸ºcameraæ­£ä¸Šæ–¹
 		}
 
 		public void IncreaseRadius(float d)
@@ -49,16 +49,16 @@ namespace Comm_Mbi3D
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		//ÒÑÖªÊó±êÎ»ÖÃ¡¢´°¿Ú¿í¸ß£¬Çó¶ÔÓ¦µÄ°ëÇòÃæ×ø±ê
-		//×¢ÒâX¡¢YÓëÈıÎ¬×ø±êÏµÖáµÄÓ³Éä¹ØÏµ£¡ÕâÀïµÄ¼ÆËãÊÇÓëView MatrixµÄ·½ÏòÉè¶¨Ïà¹ØµÄ£¡
-		//ÕâÒ»Ëã·¨À´×ÔÓÚNeHeµÄOpenGL tutorial£¬ÆäÃû³Æ½Ğ×öArcBall£¬Æä±Èacos·½Ê½Çó½Ç¶ÈËÆºõ¸ü¼Ó¾«È·
+		//å·²çŸ¥é¼ æ ‡ä½ç½®ã€çª—å£å®½é«˜ï¼Œæ±‚å¯¹åº”çš„åŠçƒé¢åæ ‡
+		//æ³¨æ„Xã€Yä¸ä¸‰ç»´åæ ‡ç³»è½´çš„æ˜ å°„å…³ç³»ï¼è¿™é‡Œçš„è®¡ç®—æ˜¯ä¸View Matrixçš„æ–¹å‘è®¾å®šç›¸å…³çš„ï¼
+		//è¿™ä¸€ç®—æ³•æ¥è‡ªäºNeHeçš„OpenGL tutorialï¼Œå…¶åç§°å«åšArcBallï¼Œå…¶æ¯”acosæ–¹å¼æ±‚è§’åº¦ä¼¼ä¹æ›´åŠ ç²¾ç¡®
 		private void Hemisphere(float X, float Y, float W, float H, out Vector3 ret)
 		{
-			//ÏÈ°ÑXºÍY·Ö±ğÓ³Éäµ½[-1,1]·¶Î§
+			//å…ˆæŠŠXå’ŒYåˆ†åˆ«æ˜ å°„åˆ°[-1,1]èŒƒå›´
 			X = (X - W / 2) / (W / 2);
 			Y = (H / 2 - Y) / (H / 2);
 
-			//¶ÔÓ¦µ½View MatrixµÄ·½ÏòÉè¶¨
+			//å¯¹åº”åˆ°View Matrixçš„æ–¹å‘è®¾å®š
 			float x = X;
 			float y = Y;
 			float length = x * x + y * y;
@@ -66,7 +66,7 @@ namespace Comm_Mbi3D
 			float z;
 			if (length > 1.0f)
 			{
-				//ÁîxÎª0£¬È»ºóÊÊµ±Ëõ·Åy¡¢z£¬×ÜÖ®¾ÍÊÇÒª±£Ö¤x^2+y^2+z^2=1
+				//ä»¤xä¸º0ï¼Œç„¶åé€‚å½“ç¼©æ”¾yã€zï¼Œæ€»ä¹‹å°±æ˜¯è¦ä¿è¯x^2+y^2+z^2=1
 				float norm = 1.0f / (float)Math.Sqrt(length);
 				x = x * norm;
 				y = y * norm;
@@ -75,7 +75,7 @@ namespace Comm_Mbi3D
 			else
 				z = (float)Math.Sqrt(1 - length);
 
-			ret = new Vector3(x, y, -z); //ÕâÀï±ØĞëÊÇ-z£¬ÒòÎªÉãÏñ»úÎ»ÓÚ-zÖáÉÏ
+			ret = new Vector3(x, y, -z); //è¿™é‡Œå¿…é¡»æ˜¯-zï¼Œå› ä¸ºæ‘„åƒæœºä½äº-zè½´ä¸Š
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,14 +84,14 @@ namespace Comm_Mbi3D
 		public void StartRotate(int X, int Y, Size size)
 		{
 			Hemisphere(X, Y, size.Width, size.Height, out from);
-			mm = rotate;		//ÁÙÊ±±£´æµ±Ç°rotate
+			mm = rotate;		//ä¸´æ—¶ä¿å­˜å½“å‰rotate
 
-			updating = true;	//Ğı×ª¿ªÊ¼
+			updating = true;	//æ—‹è½¬å¼€å§‹
 		}
 
 		public void UpdateRotateAccurately(int X, int Y, Size size)
 		{
-			//±ØĞëÏÈStartRotate£¬·½¿ÉUpdateRotate£¬·ñÔòÍË³ö
+			//å¿…é¡»å…ˆStartRotateï¼Œæ–¹å¯UpdateRotateï¼Œå¦åˆ™é€€å‡º
 			if (!updating) return;
 
 			Hemisphere(X, Y, size.Width, size.Height, out to);
@@ -99,22 +99,22 @@ namespace Comm_Mbi3D
 			float dot = (float)Vector3.Dot(from, to);
 			Vector3 axis = Vector3.Cross(from, to);
 
-			//from¡¢toÁ½¸öµ¥Î»Ê¸Á¿µÄ²æ³Ë¡¢µã³ËÆ´×°³ÉÒ»¸öQuaternion
-			//Õâ¸öQuaternionÕıºÃ±íÊ¾ÁË´Ófromµ½toµÄ2±¶½Ç¶ÈĞı×ªÕâÒ»¶¯×÷£¬×ĞÏ¸¿´
-			//ÕâÒ»Ëã·¨À´×ÔÓÚNeHeµÄOpenGL tutorial£¬ÆäÃû³Æ½Ğ×öArcBall
-			//Õâ¸öËã·¨±Èacos·½Ê½Çó½Ç¶ÈËÆºõ¸ü¼Ó¾«È·
+			//fromã€toä¸¤ä¸ªå•ä½çŸ¢é‡çš„å‰ä¹˜ã€ç‚¹ä¹˜æ‹¼è£…æˆä¸€ä¸ªQuaternion
+			//è¿™ä¸ªQuaternionæ­£å¥½è¡¨ç¤ºäº†ä»fromåˆ°toçš„2å€è§’åº¦æ—‹è½¬è¿™ä¸€åŠ¨ä½œï¼Œä»”ç»†çœ‹
+			//è¿™ä¸€ç®—æ³•æ¥è‡ªäºNeHeçš„OpenGL tutorialï¼Œå…¶åç§°å«åšArcBall
+			//è¿™ä¸ªç®—æ³•æ¯”acosæ–¹å¼æ±‚è§’åº¦ä¼¼ä¹æ›´åŠ ç²¾ç¡®
 			Quaternion q = new Quaternion(axis.X, axis.Y, axis.Z, dot);
 
-			//½«Quaternion×ª»»³ÉMatrix
+			//å°†Quaternionè½¬æ¢æˆMatrix
 			Matrix m = Matrix.RotationQuaternion(q);
 
-			//ÏÈ»ù´¡Ğı×ª£¬È»ºóÔÙĞı×ªÔöÁ¿£¬ÕâÖÖ·½·¨±ÈÃ¿´Î¸üĞÂÒ»¸öĞ¡ÔöÁ¿Ğı×ªµÄ·½Ê½¸üºÃ£¬ÒòÎªÏû³ıÁËÎó²î»ıÀÛ
+			//å…ˆåŸºç¡€æ—‹è½¬ï¼Œç„¶åå†æ—‹è½¬å¢é‡ï¼Œè¿™ç§æ–¹æ³•æ¯”æ¯æ¬¡æ›´æ–°ä¸€ä¸ªå°å¢é‡æ—‹è½¬çš„æ–¹å¼æ›´å¥½ï¼Œå› ä¸ºæ¶ˆé™¤äº†è¯¯å·®ç§¯ç´¯
 			rotate = mm * m;
 		}
 
 		public void EndRotate()
 		{
-			updating = false;	//Ğı×ª½áÊø
+			updating = false;	//æ—‹è½¬ç»“æŸ
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////

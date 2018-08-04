@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.DirectX;
@@ -121,7 +121,7 @@ namespace Comm_Sec
 					{
 						if (p0.Equals(b.from))
 						{
-							//shit£¬Ô­À´ÊÇ¸ö¶¥µã
+							//shitï¼ŒåŸæ¥æ˜¯ä¸ªé¡¶ç‚¹
 							return;
 						}
 
@@ -131,14 +131,14 @@ namespace Comm_Sec
 						//decimal t1 = (decimal)test.X / (decimal)d.X;
 						//decimal t2 = (decimal)test.Y / (decimal)d.Y;
 						
-						//ÒÔÏÂÈ«´í£¡
+						//ä»¥ä¸‹å…¨é”™ï¼
 						long dx = (long)(test.X * 10000) / (long)(d.X * 10000);
 						long dy = (long)(test.Y * 10000) / (long)(d.Y * 10000);
 						double ddx = ((double)dx) / 10000;
 
-						if (dx == dy && ddx > 0 && ddx < 1) //b.from¡¢p0¡¢b.toÈıµã¹²Ïß
+						if (dx == dy && ddx > 0 && ddx < 1) //b.fromã€p0ã€b.toä¸‰ç‚¹å…±çº¿
 						{						
-							//ÅĞ¶ÏVector2.Ccw(b,n0)µÄ·ûºÅ£¬belong/neighborµÃµ½polygon
+							//åˆ¤æ–­Vector2.Ccw(b,n0)çš„ç¬¦å·ï¼Œbelong/neighborå¾—åˆ°polygon
 							Vector2 vb = GetV2FromBorder(b);						
 							int poly_idx;
 							if (Vector2.Ccw(vb, n0) > 0)
@@ -190,7 +190,7 @@ namespace Comm_Sec
 						break;
 				}
 
-				//ÒÔÏÂÊÇ¼ì²âLOSÊÇ·ñ¿ÉÖÕÖ¹
+				//ä»¥ä¸‹æ˜¯æ£€æµ‹LOSæ˜¯å¦å¯ç»ˆæ­¢
 				Polygon dst = topo.polys[dstp];
 
 				switch (ret.result)
@@ -235,13 +235,13 @@ namespace Comm_Sec
 		}
 
 		//========================================================================================================
-		//1. p0Î»ÓÚpolyÖ®ÄÚ£¬°üÀ¨¶¥µãÉÏºÍ±ßÉÏ
-		//2. n0±ØĞë¹éÒ»»¯	
+		//1. p0ä½äºpolyä¹‹å†…ï¼ŒåŒ…æ‹¬é¡¶ç‚¹ä¸Šå’Œè¾¹ä¸Š
+		//2. n0å¿…é¡»å½’ä¸€åŒ–	
 		public ReturnInfo TestVertexPolygon(FPoint p0, Vector2 n0, Polygon poly)
 		{
 			Debug.Assert(poly.enterable);
 
-			//²âÊÔ1£ºÏà½»ÓÚ¶¥µã·ñ
+			//æµ‹è¯•1ï¼šç›¸äº¤äºé¡¶ç‚¹å¦
 			for (int i = 0; i < poly.num_borders; i++)
 			{
 				Border b = poly.borders[i];
@@ -250,7 +250,7 @@ namespace Comm_Sec
 					Vector2 n1 = GetV2(b.to, p0);
 					n1.Normalize();
 
-					if (n0 == n1) //¿É¿¿·ñ£¿
+					if (n0 == n1) //å¯é å¦ï¼Ÿ
 					{
 						lfp.Add(b.to);
 
@@ -259,7 +259,7 @@ namespace Comm_Sec
 				}
 			}
 
-			//²âÊÔ2£ºÏà½»ÓÚ±ß·ñ
+			//æµ‹è¯•2ï¼šç›¸äº¤äºè¾¹å¦
 			for (int i = 0; i < poly.num_borders; i++)
 			{
 				Border b = poly.borders[i];
@@ -271,10 +271,10 @@ namespace Comm_Sec
 					from.Normalize();
 					to.Normalize();
 
-					float ra = Vector2.Ccw(from, n0); //+ZÖáÃæ³¯ÆÁÄ»ÄÚ
+					float ra = Vector2.Ccw(from, n0); //+Zè½´é¢æœå±å¹•å†…
 					float rb = Vector2.Ccw(to, n0);
 
-					if (ra > 0 && rb < 0) //ÕÒµ½´©³ö±ß£¬¸ÃÅĞ¶ÏÊÇÕıÈ·µÄ£¬¿´MSDNÖĞµÄVector2.CcwÊÍÒå
+					if (ra > 0 && rb < 0) //æ‰¾åˆ°ç©¿å‡ºè¾¹ï¼Œè¯¥åˆ¤æ–­æ˜¯æ­£ç¡®çš„ï¼Œçœ‹MSDNä¸­çš„Vector2.Ccwé‡Šä¹‰
 					{
 						Vector2 p1 = CrossedRayLineSegIntersection(n0, GetV2(p0), GetV2(b.from), GetV2(b.to));
 						lfp.Add(GetFP(p1));
@@ -291,35 +291,35 @@ namespace Comm_Sec
 				}
 			}
 
-			Debug.Assert(false); //´íÎó¼ì²â£¬²»¿ÉÄÜÔËĞĞµ½ÕâÀï
+			Debug.Assert(false); //é”™è¯¯æ£€æµ‹ï¼Œä¸å¯èƒ½è¿è¡Œåˆ°è¿™é‡Œ
 			return TestEndCall();
 		}
 
 		//========================================================================================================
-		//Ç°Ìá£ºp0Î»ÓÚ¶à±ßĞÎ¶¥µãÉÏ
+		//å‰æï¼šp0ä½äºå¤šè¾¹å½¢é¡¶ç‚¹ä¸Š
 		public ReturnInfo TestPureVertex(FPoint p0, Vector2 n0)
 		{
 			int y_idx = (int)(p0.y / 64);
 			int x_idx = (int)(p0.x / 64);
 			Grid grid = topo.grids[y_idx, x_idx];
 
-			//²âÊÔ1£ºÓëÄ³¶à±ßĞÎµÄÄ³±ßÖØºÏ·ñ
+			//æµ‹è¯•1ï¼šä¸æŸå¤šè¾¹å½¢çš„æŸè¾¹é‡åˆå¦
 			for (int i = 0; i < grid.num_polys; i++)
 			{
 				Polygon p = grid.polygons[i];
 				for (int j = 0; j < p.num_borders; j++)
 				{
 					Border b = p.borders[j];
-					if (b.from.Equals(p0)) //Ô¶¶Ë¾ÍÊÇb.to
+					if (b.from.Equals(p0)) //è¿œç«¯å°±æ˜¯b.to
 					{
 						Vector2 bn = GetV2FromBorder(b);
 						bn.Normalize();
 
-						if (bn == n0) //ÖØºÏ
+						if (bn == n0) //é‡åˆ
 						{
 							Polygon neighbor_p = (b.neighbor_poly == -1) ? null : topo.polys[b.neighbor_poly];
-							if (neighbor_p != null && !p.enterable && !neighbor_p.enterable) break; //ÅÅ³ıÒ»ÖÖÇé¿ö£ºÄ³±ßÁ½²àµÄ¶à±ßĞÎ¾ù²»¿É½øÈë
-							if (neighbor_p == null && !p.enterable) break;//ÅÅ³ıÒ»ÖÖÇé¿ö£ºÄ³±ßÒ»²àµÄ¶à±ßĞÎ²»¿É½øÈë£¬Ò»²à²»´æÔÚ¶à±ßĞÎ
+							if (neighbor_p != null && !p.enterable && !neighbor_p.enterable) break; //æ’é™¤ä¸€ç§æƒ…å†µï¼šæŸè¾¹ä¸¤ä¾§çš„å¤šè¾¹å½¢å‡ä¸å¯è¿›å…¥
+							if (neighbor_p == null && !p.enterable) break;//æ’é™¤ä¸€ç§æƒ…å†µï¼šæŸè¾¹ä¸€ä¾§çš„å¤šè¾¹å½¢ä¸å¯è¿›å…¥ï¼Œä¸€ä¾§ä¸å­˜åœ¨å¤šè¾¹å½¢
 
 							lfp.Add(b.to);
 
@@ -331,7 +331,7 @@ namespace Comm_Sec
 				}
 			}
 
-			//²âÊÔ2£º(p0,n0)ÊôÓÚÄÄ¸ö¶à±ßĞÎ£¿
+			//æµ‹è¯•2ï¼š(p0,n0)å±äºå“ªä¸ªå¤šè¾¹å½¢ï¼Ÿ
 			for (int i = 0; i < grid.num_polys; i++)
 			{
 				Polygon p = grid.polygons[i];
@@ -354,10 +354,10 @@ namespace Comm_Sec
 
 						if ((sb1 > 0 && sb2 < 0) || (sb1 < 0 && sb2 > 0))
 						{
-							float z = Vector2.Dot((vb1 + vb2), n0); //¸ù¾İÁ½±ßµÄ½ÇÆÀ·ÖÏßÓën0µÄ·½ÏòÀ´ÅĞ¶Ï
+							float z = Vector2.Dot((vb1 + vb2), n0); //æ ¹æ®ä¸¤è¾¹çš„è§’è¯„åˆ†çº¿ä¸n0çš„æ–¹å‘æ¥åˆ¤æ–­
 							if (z > 0)
 							{
-								int p_idx = grid.poly_idxs[i]; //Î»ÓÚ¶à±ßĞÎgrid.polygons_idx[i]ÄÚ£¡
+								int p_idx = grid.poly_idxs[i]; //ä½äºå¤šè¾¹å½¢grid.polygons_idx[i]å†…ï¼
 								Polygon p_ref = topo.polys[p_idx];
 
 								if (p_ref.enterable)
@@ -398,11 +398,11 @@ namespace Comm_Sec
 			return new FPoint(v.X, v.Y);
 		}
 
-		//×¢Òâ£¡Õâ¸öº¯ÊıÓĞ¸ö¼ÙÉèÇ°Ìá£¬ÄÇ¾ÍÊÇÊäÈëµÄÉäÏßºÍÏß¶Î±ØÏà½»£¬º¯Êı±¾Éí²»¸ºÔğ²âÊÔrayºÍlineÆ½ĞĞ¡¢ÖØºÏµÄÇé¿ö
-		//Ã÷È·µÄËµ£¬Õâ¸öº¯ÊıÇóµÄÊÇÁ½ÌõÏßµÄ½»µã£¬¶øÃ»ÓĞ¿¼ÂÇÉäÏß²»ÉäÏßµÄÎÊÌâ
+		//æ³¨æ„ï¼è¿™ä¸ªå‡½æ•°æœ‰ä¸ªå‡è®¾å‰æï¼Œé‚£å°±æ˜¯è¾“å…¥çš„å°„çº¿å’Œçº¿æ®µå¿…ç›¸äº¤ï¼Œå‡½æ•°æœ¬èº«ä¸è´Ÿè´£æµ‹è¯•rayå’Œlineå¹³è¡Œã€é‡åˆçš„æƒ…å†µ
+		//æ˜ç¡®çš„è¯´ï¼Œè¿™ä¸ªå‡½æ•°æ±‚çš„æ˜¯ä¸¤æ¡çº¿çš„äº¤ç‚¹ï¼Œè€Œæ²¡æœ‰è€ƒè™‘å°„çº¿ä¸å°„çº¿çš„é—®é¢˜
 		Vector2 CrossedRayLineSegIntersection(Vector2 n, Vector2 p, Vector2 from, Vector2 to)
 		{
-			//¹«Ê½À´×ÔÓëWordware - 3D Math Primer for Graphics and Game Development pp.282
+			//å…¬å¼æ¥è‡ªä¸Wordware - 3D Math Primer for Graphics and Game Development pp.282
 			float a1, b1, d1;
 			float a2, b2, d2;
 
@@ -414,7 +414,7 @@ namespace Comm_Sec
 			b2 = -(to.X - from.X);
 			d2 = a2 * from.X + b2 * from.Y;
 
-			//a1*x+b1*y=d1ºÍa2*x+b2*y=d2ÁªÁ¢²¢Çó½â
+			//a1*x+b1*y=d1å’Œa2*x+b2*y=d2è”ç«‹å¹¶æ±‚è§£
 			float x, y;
 			x = (b2 * d1 - b1 * d2) / (a1 * b2 - a2 * b1);
 			y = (a1 * d2 - a2 * d1) / (a1 * b2 - a2 * b1);

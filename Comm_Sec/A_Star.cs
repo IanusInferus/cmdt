@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -10,9 +10,9 @@ namespace Comm_Sec
 
 	class Waypoint
 	{
-		public bool done; //±êÖ¾£ºÓÃÒÔ±íÕ÷ÊÇ·ñÓëÄ¿±êÎ»ÖÃÖ±½ÓÏàÁÚ
+		public bool done; //æ ‡å¿—ï¼šç”¨ä»¥è¡¨å¾æ˜¯å¦ä¸ç›®æ ‡ä½ç½®ç›´æ¥ç›¸é‚»
 
-		public WaypointType type; //ÓÃÒÔ±ÜÃâÊ¹ÓÃ¶àÌ¬£¬Ì«Âı
+		public WaypointType type; //ç”¨ä»¥é¿å…ä½¿ç”¨å¤šæ€ï¼Œå¤ªæ…¢
 
 		public FPoint fp;
 		public float G, H, F;
@@ -38,7 +38,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		static FPoint fp_dst; //ÆÄÓôÃÆ...
+		static FPoint fp_dst; //é¢‡éƒé—·...
 		static public void SetDest(FPoint dst)
 		{
 			fp_dst = dst.Clone();
@@ -74,8 +74,8 @@ namespace Comm_Sec
 	/////////////////////////////////////////////////////////////////////////////////////////////////////
 	class WorkList
 	{
-		SortedDictionary<float, List<Waypoint>> fmap;	//´ú¼ÛF->Î»µãÁĞ±í:	multi-set ¿É·ñ£¿£¿
-		SortedDictionary<FPoint, Waypoint> pmap;		//Î»ÖÃpos->Î»µã:	unique-set
+		SortedDictionary<float, List<Waypoint>> fmap;	//ä»£ä»·F->ä½ç‚¹åˆ—è¡¨:	multi-set å¯å¦ï¼Ÿï¼Ÿ
+		SortedDictionary<FPoint, Waypoint> pmap;		//ä½ç½®pos->ä½ç‚¹:	unique-set
 
 		public WorkList()
 		{
@@ -115,23 +115,23 @@ namespace Comm_Sec
 
 			list = fmap[w.F];
 			int idx;
-			for (idx = 0; idx < list.Count; idx++) //Âı...
+			for (idx = 0; idx < list.Count; idx++) //æ…¢...
 			{
 				if (list[idx].fp.Equals(w.fp))
 					break;
 			}
 			Debug.Assert(idx != list.Count);
 
-			list.RemoveAt(idx); //Âı...
+			list.RemoveAt(idx); //æ…¢...
 
 			if (list.Count == 0)
 				fmap.Remove(w.F);
 
 			FPoint pos = new FPoint(w.fp.x, w.fp.y);
-			pmap.Remove(pos); //Öµ±È½Ï
+			pmap.Remove(pos); //å€¼æ¯”è¾ƒ
 		}
 
-		public Waypoint GetLeastWaypoint() //ÈÕ...È¡¸ö×îĞ¡ÖµÕâÃ´Âé·³
+		public Waypoint GetLeastWaypoint() //æ—¥...å–ä¸ªæœ€å°å€¼è¿™ä¹ˆéº»çƒ¦
 		{
 			float min = 0;
 			Debug.Assert(fmap.Keys.Count != 0);
@@ -143,10 +143,10 @@ namespace Comm_Sec
 			}
 
 			List<Waypoint> list = fmap[min];
-			return list[0]; //ÊÇ0»¹ÊÇlist.Count-1
+			return list[0]; //æ˜¯0è¿˜æ˜¯list.Count-1
 		}
 
-		public Waypoint GetWaypointFromXY(FPoint key) //OpenListÓÃ
+		public Waypoint GetWaypointFromXY(FPoint key) //OpenListç”¨
 		{
 			Waypoint value = null;
 			pmap.TryGetValue(key, out value);
@@ -158,7 +158,7 @@ namespace Comm_Sec
 			return (pmap.Count == 0);
 		}
 
-		public bool IsContainsPos(FPoint key) //CloseListÓÃ
+		public bool IsContainsPos(FPoint key) //CloseListç”¨
 		{
 			return pmap.ContainsKey(key);
 		}
@@ -185,26 +185,26 @@ namespace Comm_Sec
 		}
 
 		//===============================================================================================
-		Polygon dst_poly;	//Ä¿±ê¶à±ßĞÎ£¬ÓÃÓÚÅĞ¶ÏEdgeWaypointÊÇ·ñÓëÄ¿±êµãÖ±½ÓÏàÁÚ
-		int[] dst_fpidx;	//Ä¿±ê¶à±ßĞÎµÄ¶¥µãË÷Òı£¬ÓÃÓÚÅĞ¶ÏVertexWaypointÊÇ·ñÓëÄ¿±êµãÖ±½ÓÏàÁÚ
+		Polygon dst_poly;	//ç›®æ ‡å¤šè¾¹å½¢ï¼Œç”¨äºåˆ¤æ–­EdgeWaypointæ˜¯å¦ä¸ç›®æ ‡ç‚¹ç›´æ¥ç›¸é‚»
+		int[] dst_fpidx;	//ç›®æ ‡å¤šè¾¹å½¢çš„é¡¶ç‚¹ç´¢å¼•ï¼Œç”¨äºåˆ¤æ–­VertexWaypointæ˜¯å¦ä¸ç›®æ ‡ç‚¹ç›´æ¥ç›¸é‚»
 
 		public Waypoint PathFinding(FPoint srcfp, FPoint dstfp)
 		{
-			//Æğµã¡¢ÖÕµã±ØĞë²»Îª¿Õ
+			//èµ·ç‚¹ã€ç»ˆç‚¹å¿…é¡»ä¸ä¸ºç©º
 			if (srcfp == null || dstfp == null) return null;
 
-			//ÑéÖ¤Æğµã¡¢ÖÕµãËùÔÚ¶à±ßĞÎµÄºÏ·¨ĞÔ
+			//éªŒè¯èµ·ç‚¹ã€ç»ˆç‚¹æ‰€åœ¨å¤šè¾¹å½¢çš„åˆæ³•æ€§
 			int srcp = topo.SelectPolygon(srcfp.x, srcfp.y);
 			int dstp = topo.SelectPolygon(dstfp.x, dstfp.y);
 			if (srcp == -1 || dstp == -1 || !polys[srcp].enterable || !polys[dstp].enterable) return null;
 
-			//ÉèÖÃÂ·¾¶¹æ»®ÖÕµã
+			//è®¾ç½®è·¯å¾„è§„åˆ’ç»ˆç‚¹
 			Waypoint.SetDest(dstfp);
 
-			//ÉèÖÃÄ¿±ê¶à±ßĞÎ
+			//è®¾ç½®ç›®æ ‡å¤šè¾¹å½¢
 			dst_poly = polys[dstp];
 
-			//±ê¼ÇÄ¿±ê¶à±ßĞÎµÄ¶¥µã
+			//æ ‡è®°ç›®æ ‡å¤šè¾¹å½¢çš„é¡¶ç‚¹
 			dst_fpidx = new int[dst_poly.num_borders];
 			for (int i = 0; i < dst_poly.num_borders; i++)
 				dst_fpidx[i] = dst_poly.borders[i].from_idx;
@@ -214,7 +214,7 @@ namespace Comm_Sec
 			close.Clear();
 
 			Waypoint start = new Waypoint(srcfp, null, false);
-			close.Add(start); //!!!±£Ö¤openÀïÃæÖ»ÓĞedgewºÍvertexwÁ½ÀàÎ»µã
+			close.Add(start); //!!!ä¿è¯opené‡Œé¢åªæœ‰edgewå’Œvertexwä¸¤ç±»ä½ç‚¹
 
 			if (srcp == dstp)
 			{
@@ -232,7 +232,7 @@ namespace Comm_Sec
 			{
 				w = open.GetLeastWaypoint();
 
-				if (w.done) //Èç¹ûwÓëÄ¿±êµãÖ±½ÓÏàÁÚ
+				if (w.done) //å¦‚æœwä¸ç›®æ ‡ç‚¹ç›´æ¥ç›¸é‚»
 				{
 					Waypoint end = new Waypoint(dstfp, w, true);
 					return end;
@@ -264,7 +264,7 @@ namespace Comm_Sec
 			}
 		}
 
-		void ExtendStartWaypoint(Waypoint start, int srcp) //srcp: ÆğÊ¼µãËùÊôµÄ¶à±ßĞÎ
+		void ExtendStartWaypoint(Waypoint start, int srcp) //srcp: èµ·å§‹ç‚¹æ‰€å±çš„å¤šè¾¹å½¢
 		{
 			Polygon p = polys[srcp];
 			Debug.Assert(p != dst_poly);	
@@ -278,7 +278,7 @@ namespace Comm_Sec
 			}
 		}
 
-		void ExtendEdgeWaypoint(EdgeWaypoint w) //À©Õ¹±ßÖĞµã
+		void ExtendEdgeWaypoint(EdgeWaypoint w) //æ‰©å±•è¾¹ä¸­ç‚¹
 		{
 			int p1 = (w.border == null) ? -1 : w.border.belong_poly;
 			int p2 = (w.border == null) ? -1 : w.border.neighbor_poly;
@@ -310,7 +310,7 @@ namespace Comm_Sec
 
 		void ExtendVertexWaypoint(VertexWaypoint w)
 		{
-			//ÅĞ¶Ï¸Ã¶¥µãÊôÓÚÄÄĞ©¶à±ßĞÎ		
+			//åˆ¤æ–­è¯¥é¡¶ç‚¹å±äºå“ªäº›å¤šè¾¹å½¢		
 			List<Polygon> l = new List<Polygon>(8);
 			foreach (Polygon p in w.grid.polygons)
 			{
@@ -327,7 +327,7 @@ namespace Comm_Sec
 				}
 			}
 
-			//ÖğÒ»½«ÕâĞ©¶à±ßĞÎµÄ¶¥µãºÍ±ßÖĞµãÌíÈë
+			//é€ä¸€å°†è¿™äº›å¤šè¾¹å½¢çš„é¡¶ç‚¹å’Œè¾¹ä¸­ç‚¹æ·»å…¥
 			foreach (Polygon p in l)
 			{
 				foreach (Border b in p.borders)
@@ -341,19 +341,19 @@ namespace Comm_Sec
 		}
 
 		//===============================================================================================
-		void PushEdgeWaypoint(FPoint fp, Border border, Waypoint parent) //Æ¾½èborder¿ÉÒÔÅĞ¶Ïdone±êÖ¾
+		void PushEdgeWaypoint(FPoint fp, Border border, Waypoint parent) //å‡­å€Ÿborderå¯ä»¥åˆ¤æ–­doneæ ‡å¿—
 		{
-			//ÔÚClose±íÖĞ£¬ÍË³ö
+			//åœ¨Closeè¡¨ä¸­ï¼Œé€€å‡º
 			if (close.IsContainsPos(fp)) return;
 
-			//ÔÚOpen±íÖĞ·ñ£¿
+			//åœ¨Openè¡¨ä¸­å¦ï¼Ÿ
 			Waypoint w = open.GetWaypointFromXY(fp);
 			if (w != null)
 			{
-				//ÔÚOpen±íÖĞ£¬¿ÉÓÅ»¯·ñ£¿
+				//åœ¨Openè¡¨ä¸­ï¼Œå¯ä¼˜åŒ–å¦ï¼Ÿ
 				float d = fp.Distance(parent.fp);
 
-				if (w.G > parent.G + d) //¿ÉÓÅ»¯
+				if (w.G > parent.G + d) //å¯ä¼˜åŒ–
 				{
 					open.Delete(w);
 
@@ -366,7 +366,7 @@ namespace Comm_Sec
 			}
 			else
 			{
-				//²»ÔÚOpen±íÖĞ
+				//ä¸åœ¨Openè¡¨ä¸­
 				int p1 = border.belong_poly;
 				int p2 = border.neighbor_poly;
 				Polygon po1 = (p1 == -1) ? null : polys[p1];
@@ -379,19 +379,19 @@ namespace Comm_Sec
 			}
 		}
 
-		void PushVertexWaypoint(FPoint fp, int fp_idx, Waypoint parent) //Æ¾½èfp_idx¿ÉÒÔÅĞ¶Ïdone±êÖ¾
+		void PushVertexWaypoint(FPoint fp, int fp_idx, Waypoint parent) //å‡­å€Ÿfp_idxå¯ä»¥åˆ¤æ–­doneæ ‡å¿—
 		{
-			//ÔÚClose±íÖĞ£¬ÍË³ö
+			//åœ¨Closeè¡¨ä¸­ï¼Œé€€å‡º
 			if (close.IsContainsPos(fp)) return;
 
-			//ÔÚOpen±íÖĞ·ñ£¿
+			//åœ¨Openè¡¨ä¸­å¦ï¼Ÿ
 			Waypoint w = open.GetWaypointFromXY(fp);
 			if (w != null)
 			{
-				//ÔÚOpen±íÖĞ£¬¿ÉÓÅ»¯·ñ£¿
+				//åœ¨Openè¡¨ä¸­ï¼Œå¯ä¼˜åŒ–å¦ï¼Ÿ
 				float d = fp.Distance(parent.fp);
 
-				if (w.G > parent.G + d) //¿ÉÓÅ»¯
+				if (w.G > parent.G + d) //å¯ä¼˜åŒ–
 				{
 					open.Delete(w);
 
@@ -404,13 +404,13 @@ namespace Comm_Sec
 			}
 			else
 			{
-				//²»ÔÚOpen±íÖĞ
+				//ä¸åœ¨Openè¡¨ä¸­
 				int y_idx = (int)(fp.y / 64);
 				int x_idx = (int)(fp.x / 64);
 				Grid grid = topo.grids[y_idx, x_idx];
 
 				bool done = false;
-				foreach (int idx in dst_fpidx) //»á²»»áÂı?...
+				foreach (int idx in dst_fpidx) //ä¼šä¸ä¼šæ…¢?...
 				{
 					if (fp_idx == idx)
 					{

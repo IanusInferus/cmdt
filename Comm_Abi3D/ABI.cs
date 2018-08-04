@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -29,8 +29,8 @@ namespace Comm_Abi3D
 
 		public BoneHierarchy[] hierarchy;
 
-		public TransformTimeAxis[] timeaxises;	//num_mesh¸ö
-		public Animation[] animations;			//num_animation¸ö
+		public TransformTimeAxis[] timeaxises;	//num_meshä¸ª
+		public Animation[] animations;			//num_animationä¸ª
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////
 		public ABI(string filename)
@@ -47,14 +47,14 @@ namespace Comm_Abi3D
 					Debug.Assert(sign == 0x424d444c);
 
 					version=int.Parse(ConvertBytesToString(br.ReadBytes(4)));
-					Debug.Assert(version == 1060 || version == 1050, "´ËABIÎÄ¼şµÄ°æ±¾²»ÊÇ1050»ò1060!");
+					Debug.Assert(version == 1060 || version == 1050, "æ­¤ABIæ–‡ä»¶çš„ç‰ˆæœ¬ä¸æ˜¯1050æˆ–1060!");
 					
 					num_timeaxis = br.ReadInt32();
 					num_animation= br.ReadInt32();
 					num_texture = br.ReadInt32();
 
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//ËùÓĞÌùÍ¼
+					//æ‰€æœ‰è´´å›¾
 					textureinfos = new TextureInfo[num_texture];				
 					for (int i = 0; i < num_texture; i++)
 					{
@@ -78,9 +78,9 @@ namespace Comm_Abi3D
 					}
 
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//Ä£ĞÍÊı¾İ
+					//æ¨¡å‹æ•°æ®
 					if (version!=1050)
-						br.ReadByte();//Î´Öª±êÖ¾£¬²¢²»ºãÎª1£¬Ææ¹ÖµÄÊÇ£¬1050¸ñÊ½ÀïÃæÃ»ÓĞÕâ¸ö×Ô¼º£¬¶ø1060È´ÓĞ
+						br.ReadByte();//æœªçŸ¥æ ‡å¿—ï¼Œå¹¶ä¸æ’ä¸º1ï¼Œå¥‡æ€ªçš„æ˜¯ï¼Œ1050æ ¼å¼é‡Œé¢æ²¡æœ‰è¿™ä¸ªè‡ªå·±ï¼Œè€Œ1060å´æœ‰
 					//Debug.Assert(br.ReadByte() == 1);
 
 					num_model = br.ReadInt32();
@@ -111,7 +111,7 @@ namespace Comm_Abi3D
 							
 							if (poly.num_lines != 3 && poly.num_lines != 4)
 							{
-								//µÄÈ·´æÔÚnum_lines³¬¹ı3/4µÄÇé¿ö£¬±È·½Ëµtiger.abi£¬num_lines¾ÍÓĞÎª6µÄÇé¿ö
+								//çš„ç¡®å­˜åœ¨num_linesè¶…è¿‡3/4çš„æƒ…å†µï¼Œæ¯”æ–¹è¯´tiger.abiï¼Œnum_lineså°±æœ‰ä¸º6çš„æƒ…å†µ
 								//throw new Exception();
 							}
 							
@@ -133,12 +133,12 @@ namespace Comm_Abi3D
 						{
 							d.vbt.entry[j] = new VidToBoneTableEntry();
 							d.vbt.entry[j].StartVidx = br.ReadInt32();
-							d.vbt.entry[j].EndVidx = br.ReadInt32(); //Òª²»Òª-1?
+							d.vbt.entry[j].EndVidx = br.ReadInt32(); //è¦ä¸è¦-1?
 						}
 					}
 					
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//¹Ç÷À¼Ì³Ğ½á¹¹
+					//éª¨éª¼ç»§æ‰¿ç»“æ„
 					hierarchy = new BoneHierarchy[num_bone];
 
 					for (int i = 0; i < num_bone;i++ )
@@ -157,7 +157,7 @@ namespace Comm_Abi3D
 					}
 					
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//¹Ø¼üÖ¡¡¢Ê±¼äÖáÏà¹Ø½á¹¹
+					//å…³é”®å¸§ã€æ—¶é—´è½´ç›¸å…³ç»“æ„
 					timeaxises = new TransformTimeAxis[num_timeaxis];
 
 					for (int i = 0; i < num_timeaxis; i++)
@@ -188,7 +188,7 @@ namespace Comm_Abi3D
 					}
 
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//¶¯»­ĞĞÎª¶¨Òå½á¹¹
+					//åŠ¨ç”»è¡Œä¸ºå®šä¹‰ç»“æ„
 					animations = new Animation[num_animation];
 
 					for (int i = 0; i < num_animation; i++)
@@ -207,11 +207,11 @@ namespace Comm_Abi3D
 						}
 					}
 
-					Debug.WriteLine("ÒÑ¶Á³¤¶È: "+fs.Position.ToString());
-					Debug.WriteLine("ÎÄ¼ş³¤¶È: "+fs.Length.ToString());
+					Debug.WriteLine("å·²è¯»é•¿åº¦: "+fs.Position.ToString());
+					Debug.WriteLine("æ–‡ä»¶é•¿åº¦: "+fs.Length.ToString());
 				}
 
-				//GenerateAllBitmaps(); //´´½¨ËùÓĞÎ»Í¼
+				//GenerateAllBitmaps(); //åˆ›å»ºæ‰€æœ‰ä½å›¾
 			}
 		}
 
@@ -269,7 +269,7 @@ namespace Comm_Abi3D
 		public int UNKNOWN;
 		public int width;
 		public int height;
-		public string name; //32×Ö½Ú
+		public string name; //32å­—èŠ‚
 		public uint[] palette;
 		public byte[] data;
 	}
@@ -320,55 +320,55 @@ namespace Comm_Abi3D
 
 	class BoneHierarchy 
 	{
-		public int		ParentIdx;	//4×Ö½Ú
-		public Vector3	GlobalOffset;			//12×Ö½Ú
-		public String	NodeName;	//32×Ö½Ú
-		public int		UNKNOWN;	//4×Ö½Ú
+		public int		ParentIdx;	//4å­—èŠ‚
+		public Vector3	GlobalOffset;			//12å­—èŠ‚
+		public String	NodeName;	//32å­—èŠ‚
+		public int		UNKNOWN;	//4å­—èŠ‚
 	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////
-	class TranslateKeyFrame //Æ½ÒÆÏà¹ØµÄ¹Ø¼üÖ¡
+	class TranslateKeyFrame //å¹³ç§»ç›¸å…³çš„å…³é”®å¸§
 	{
 		public int timestamp;
 		public Vector3 translate;
 	}
 
-	class TranslateTimeAxis //Æ½ÒÆÏà¹Ø¹Ø¼üÖ¡Ê±¼äÖá
+	class TranslateTimeAxis //å¹³ç§»ç›¸å…³å…³é”®å¸§æ—¶é—´è½´
 	{
 		public int num_keyframe;
 		public TranslateKeyFrame[] tkf;
 	}
 	//---------------------------------------------------------------------------------------------------------
-	class RotateKeyFrame //Ğı×ªÏà¹ØµÄ¹Ø¼üÖ¡
+	class RotateKeyFrame //æ—‹è½¬ç›¸å…³çš„å…³é”®å¸§
 	{
 		public int timestamp;
 		public Quaternion rotate;
 	}
 
-	class RotateTimeAxis //Ğı×ªÏà¹ØµÄ¹Ø¼üÖ¡Ê±¼äÖá
+	class RotateTimeAxis //æ—‹è½¬ç›¸å…³çš„å…³é”®å¸§æ—¶é—´è½´
 	{
 		public int num_keyframe;
 		public RotateKeyFrame[] rkf;
 	}
 	//---------------------------------------------------------------------------------------------------------
-	class TransformTimeAxis //Æ½ÒÆºÍĞı×ª½áºÏÆğÀ´£¬±ä»»Ïà¹ØµÄ¹Ø¼üÖ¡Ê±¼äÖá
+	class TransformTimeAxis //å¹³ç§»å’Œæ—‹è½¬ç»“åˆèµ·æ¥ï¼Œå˜æ¢ç›¸å…³çš„å…³é”®å¸§æ—¶é—´è½´
 	{
 		public TranslateTimeAxis trta;
 		public RotateTimeAxis rta;
 	}
 	//---------------------------------------------------------------------------------------------------------
-	class BoneAnimationEntry  //¶¯×÷Ïà¹ØµÄ¹Ç÷À¼°Æä¶ÔÓ¦µÄ¹Ø¼üÖ¡Ê±¼äÖá
+	class BoneAnimationEntry  //åŠ¨ä½œç›¸å…³çš„éª¨éª¼åŠå…¶å¯¹åº”çš„å…³é”®å¸§æ—¶é—´è½´
 	{
-		public int bone_id;					//ÄÄÒ»¸ù¹Ç÷À
-		public int transform_time_axis_idx;	//¶ÔÓ¦ÄÄ¸ö¹Ø¼üÖ¡Ê±¼äÖá
+		public int bone_id;					//å“ªä¸€æ ¹éª¨éª¼
+		public int transform_time_axis_idx;	//å¯¹åº”å“ªä¸ªå…³é”®å¸§æ—¶é—´è½´
 
-		public TransformTimeAxis tta;			//¸¨Öú
+		public TransformTimeAxis tta;			//è¾…åŠ©
 	}
 
-	class Animation //¶¯×÷
+	class Animation //åŠ¨ä½œ
 	{
 		public string name;
 		public int num_related_bone;
-		public BoneAnimationEntry[] bae; //ÖØ¸´num_related_bone´Î
+		public BoneAnimationEntry[] bae; //é‡å¤num_related_boneæ¬¡
 	}
 }

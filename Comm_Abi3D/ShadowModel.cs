@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -13,16 +13,16 @@ namespace Comm_Abi3D
 		ABI abi;
 		AnimatedModel am;
 		
-		int model_idx;								//µ±Ç°Ä£ĞÍ±àºÅ
-		int color;									//¶¥µãÑÕÉ«
-		Vector3 n0;									//¹âÏß·½Ïò
+		int model_idx;								//å½“å‰æ¨¡å‹ç¼–å·
+		int color;									//é¡¶ç‚¹é¢œè‰²
+		Vector3 n0;									//å…‰çº¿æ–¹å‘
 
-		Vector3[] shadowv;							//¸ù¾İtransv¼ÆËãËùµÃµÄX-YÆÁÄ»ÉÏµÄÓ°×Ó¶¥µã¼¯ºÏ
-		CustomVertex.PositionColored[] shadowarray; //¶¥µã»º³åÊı¾İ
+		Vector3[] shadowv;							//æ ¹æ®transvè®¡ç®—æ‰€å¾—çš„X-Yå±å¹•ä¸Šçš„å½±å­é¡¶ç‚¹é›†åˆ
+		CustomVertex.PositionColored[] shadowarray; //é¡¶ç‚¹ç¼“å†²æ•°æ®
 		
 		//-------------------------------------------------------------------------------------------------------
-		public VertexBuffer shadowbuf;	//¶¥µã»º³åÇø
-		public int totalf;				//Êµ¼ÊÈı½ÇĞÎ×ÜÃæÊı
+		public VertexBuffer shadowbuf;	//é¡¶ç‚¹ç¼“å†²åŒº
+		public int totalf;				//å®é™…ä¸‰è§’å½¢æ€»é¢æ•°
 
 		//-------------------------------------------------------------------------------------------------------
 		public ShadowModel(ABI abi, AnimatedModel am, Vector3 n, int color)
@@ -33,7 +33,7 @@ namespace Comm_Abi3D
 
 			n0 = n;
 			n0.Normalize();
-			Debug.Assert(Math.Abs(n0.Z) > float.Epsilon); //n.Z²»ÄÜµÈÓÚ0
+			Debug.Assert(Math.Abs(n0.Z) > float.Epsilon); //n.Zä¸èƒ½ç­‰äº0
 
 			model_idx = 0;
 
@@ -43,9 +43,9 @@ namespace Comm_Abi3D
 		//-------------------------------------------------------------------------------------------------------
 		void CalculateAll()
 		{
-			//¼ÆËãÒõÓ°²¢Éú³ÉÒõÓ°¶¥µã
-			//¼ÆËã¹ı³ÌÖ»ºÍmodel_idxÒÔ¼°am.transvÓĞ¹Ø£¬ÓëanimationÎŞ¹Ø
-			UpdateVertexSet(n0); //×îÖÕÊä³öÎªshadowv
+			//è®¡ç®—é˜´å½±å¹¶ç”Ÿæˆé˜´å½±é¡¶ç‚¹
+			//è®¡ç®—è¿‡ç¨‹åªå’Œmodel_idxä»¥åŠam.transvæœ‰å…³ï¼Œä¸animationæ— å…³
+			UpdateVertexSet(n0); //æœ€ç»ˆè¾“å‡ºä¸ºshadowv
 			GenerateVertexBuf(color);
 		}
 
@@ -57,7 +57,7 @@ namespace Comm_Abi3D
 			{
 				CalculateAll();
 
-				//Ä£ĞÍÒ»µ©¸Ä±äµÄ»°£¬±ØĞëÖØ½¨¶¥µã»º³å
+				//æ¨¡å‹ä¸€æ—¦æ”¹å˜çš„è¯ï¼Œå¿…é¡»é‡å»ºé¡¶ç‚¹ç¼“å†²
 				shadowbuf.Dispose();
 				CreateVertexBuffer(device);
 			}
@@ -69,16 +69,16 @@ namespace Comm_Abi3D
 			{
 				CalculateAll();
 
-				//ÎŞĞèÖØ½¨£¬Ö±½ÓÉèÖÃ¶¥µã»º³å
+				//æ— éœ€é‡å»ºï¼Œç›´æ¥è®¾ç½®é¡¶ç‚¹ç¼“å†²
 				shadowbuf.SetData(shadowarray, 0, LockFlags.Discard);
 			}
 		}
 
 		//-------------------------------------------------------------------------------------------------------
-		//¸ù¾İ·½Ïò¹âÔ´ºÍtransv¼ÆËã¶¥µã¼¯ºÏÔÚX-YÆ½ÃæÉÏµÄÍ¶Ó°µã£¬¼´ÒõÓ°¶¥µã¼¯ºÏ£¬×îÖÕ½á¹ûÎªshadow[]
+		//æ ¹æ®æ–¹å‘å…‰æºå’Œtransvè®¡ç®—é¡¶ç‚¹é›†åˆåœ¨X-Yå¹³é¢ä¸Šçš„æŠ•å½±ç‚¹ï¼Œå³é˜´å½±é¡¶ç‚¹é›†åˆï¼Œæœ€ç»ˆç»“æœä¸ºshadow[]
 		void UpdateVertexSet(Vector3 n0)
 		{
-			Vertex[] transv = am.transv; //BAD SMELL£¬²»Ì«ÓÅÑÅ.......
+			Vertex[] transv = am.transv; //BAD SMELLï¼Œä¸å¤ªä¼˜é›….......
 
 			shadowv = new Vector3[transv.Length];
 			for (int i = 0; i < transv.Length; i++)
@@ -90,20 +90,20 @@ namespace Comm_Abi3D
 		}
 		
 		//-------------------------------------------------------------------------------------------------------
-		void GenerateVertexBuf(int color) //½«shadowĞ´Èëºó±¸¶¥µã»º³å
+		void GenerateVertexBuf(int color) //å°†shadowå†™å…¥åå¤‡é¡¶ç‚¹ç¼“å†²
 		{
-			totalf = 0; //Èı½ÇĞÎÊıÄ¿
+			totalf = 0; //ä¸‰è§’å½¢æ•°ç›®
 			foreach (Polygon po in abi.models[model_idx].polygon)
 				totalf += po.num_lines - 2;
 
-			int totalv = 3 * totalf;  //¶¥µãÊıÄ¿
-			shadowarray = new CustomVertex.PositionColored[totalv]; //°´ÕÕ×î´ó¿ÉÄÜ¶¥µãÊıÁ¿À´´´½¨¶¥µã¼¯
+			int totalv = 3 * totalf;  //é¡¶ç‚¹æ•°ç›®
+			shadowarray = new CustomVertex.PositionColored[totalv]; //æŒ‰ç…§æœ€å¤§å¯èƒ½é¡¶ç‚¹æ•°é‡æ¥åˆ›å»ºé¡¶ç‚¹é›†
 
 			int pos = 0;
 			foreach (Polygon po in abi.models[model_idx].polygon)
 			{
 				//-------------------------------------------------------------------------------
-				//É¸Ñ¡³öËùÓĞÓ°×ÓµÄÏò¹âÃæ£¬¼´ÈÃÓ°×Ó²»ÊÇË«ÃæµÄ£¬ÉÙ»­¼¸¸öÃæ¶øÒÑ£¬Ğ§ÂÊÌáÉı²»´ó		
+				//ç­›é€‰å‡ºæ‰€æœ‰å½±å­çš„å‘å…‰é¢ï¼Œå³è®©å½±å­ä¸æ˜¯åŒé¢çš„ï¼Œå°‘ç”»å‡ ä¸ªé¢è€Œå·²ï¼Œæ•ˆç‡æå‡ä¸å¤§		
 				int idx0, idx1, idx2;
 				idx0 = po.map_points[0].vertex_id;
 				idx1 = po.map_points[1].vertex_id;
@@ -122,10 +122,10 @@ namespace Comm_Abi3D
 				if (Vector2.Ccw(b, a) < 0) continue;
 
 				//-------------------------------------------------------------------------------
-				for (int j = 0; j < po.num_lines - 2; j++) //°Ñ¶à±ßĞÎ×ª»»ÎªÈı½ÇĞÎ£¬·Åµ½¶¥µã¼¯ºÏÖĞ
+				for (int j = 0; j < po.num_lines - 2; j++) //æŠŠå¤šè¾¹å½¢è½¬æ¢ä¸ºä¸‰è§’å½¢ï¼Œæ”¾åˆ°é¡¶ç‚¹é›†åˆä¸­
 				{
-					//×¢Òâ!Ä£ĞÍ¼ÆËã¶¼ÊÇÓÒÊÖÏµ
-					//Ëã·¨ÓĞºÜ´óÌá¸ßµÄ¿Õ¼ä£¬ĞèÒªÊµÏÖÒõÓ°ÃæÊı×îĞ¡»¯£¬ÇÒÖ»ÓĞÏò¹âÃæ
+					//æ³¨æ„!æ¨¡å‹è®¡ç®—éƒ½æ˜¯å³æ‰‹ç³»
+					//ç®—æ³•æœ‰å¾ˆå¤§æé«˜çš„ç©ºé—´ï¼Œéœ€è¦å®ç°é˜´å½±é¢æ•°æœ€å°åŒ–ï¼Œä¸”åªæœ‰å‘å…‰é¢
 					int idx = po.map_points[0].vertex_id;
 					shadowarray[pos].X = shadowv[idx].X;
 					shadowarray[pos].Y = shadowv[idx].Y;
@@ -149,18 +149,18 @@ namespace Comm_Abi3D
 				}
 			}
 
-			totalf = pos / 3; //Êµ¼ÊĞèÒª»­µÄÏò¹âÃæ
+			totalf = pos / 3; //å®é™…éœ€è¦ç”»çš„å‘å…‰é¢
 		}
 
 		//-------------------------------------------------------------------------------------------------------
 		public void CreateVertexBuffer(Device device)
 		{
 			shadowbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColored),	//¶¥µãÀàĞÍ
-			   shadowarray.Length,						//×¢Òâ£¡×î´ó¿ÉÄÜµÄ¶¥µã¸öÊı£¡£¡
+			   typeof(CustomVertex.PositionColored),	//é¡¶ç‚¹ç±»å‹
+			   shadowarray.Length,						//æ³¨æ„ï¼æœ€å¤§å¯èƒ½çš„é¡¶ç‚¹ä¸ªæ•°ï¼ï¼
 			   device,
 			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColored.Format,		//¶¥µã¸ñÊ½
+			   CustomVertex.PositionColored.Format,		//é¡¶ç‚¹æ ¼å¼
 			   Pool.Default);
 
 			shadowbuf.SetData(shadowarray, 0, LockFlags.Discard);

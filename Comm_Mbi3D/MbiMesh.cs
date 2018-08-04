@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -10,17 +10,17 @@ namespace Comm_Mbi3D
 {
 	class MbiMesh
 	{
-		public Vector3 center;		//Mesh°üÂçÇòÖĞĞÄ
-		public float radius;		//Mesh°üÂçÇò°ë¾¶
+		public Vector3 center;		//MeshåŒ…ç»œçƒä¸­å¿ƒ
+		public float radius;		//MeshåŒ…ç»œçƒåŠå¾„
 
-		public Texture[] texture;	//ÌùÍ¼Êı×é
+		public Texture[] texture;	//è´´å›¾æ•°ç»„
 
 		public VertexBuffer vexbuf;
-		public int[] txtoffset; //¶¥µã¼¯ºÏÖĞĞèÒªÇĞ»»textureµÄµØ·½£¡		
+		public int[] txtoffset; //é¡¶ç‚¹é›†åˆä¸­éœ€è¦åˆ‡æ¢textureçš„åœ°æ–¹ï¼		
 
-		private CustomVertex.PositionColoredTextured[] vexarray;  //¶¥µã¼¯ºÏ
+		private CustomVertex.PositionColoredTextured[] vexarray;  //é¡¶ç‚¹é›†åˆ
 
-		private MBI mbi; //MBIÎÄ¼ş
+		private MBI mbi; //MBIæ–‡ä»¶
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public MbiMesh(MBI mbi)
@@ -34,11 +34,11 @@ namespace Comm_Mbi3D
 		/*
 		private bool Validate()
 		{
-			for (int i = 0; i < mbi.objects.Length; i++) //±éÀú¶ÔÏó
+			for (int i = 0; i < mbi.objects.Length; i++) //éå†å¯¹è±¡
 			{
 				Object obj = mbi.objects[i];
 				int pic_id = mbi.districts[obj.start_district_id].pic_id;
-				for (int j = obj.start_district_id + 1; j <= obj.end_district_id; j++) //±éÀú¶ÔÏóËùÓµÓĞµÄ¶à±ßĞÎ
+				for (int j = obj.start_district_id + 1; j <= obj.end_district_id; j++) //éå†å¯¹è±¡æ‰€æ‹¥æœ‰çš„å¤šè¾¹å½¢
 				{
 					District dis = mbi.districts[j];
 					if (dis.pic_id != pic_id) 
@@ -68,29 +68,29 @@ namespace Comm_Mbi3D
 
 		private void GenVertexBuf()
 		{
-			int totalf = 0; //Èı½ÇĞÎÊıÄ¿
+			int totalf = 0; //ä¸‰è§’å½¢æ•°ç›®
 			for (int i = 0; i < mbi.polygons.Length; i++)
 			{
 				Polygon di = mbi.polygons[i];
 				totalf += di.num_lines - 2;
 			}
 
-			int totalv = 3 * totalf;  //¶¥µãÊıÄ¿
-			vexarray = new CustomVertex.PositionColoredTextured[totalv];//´´½¨¶¥µã¼¯ºÏ
+			int totalv = 3 * totalf;  //é¡¶ç‚¹æ•°ç›®
+			vexarray = new CustomVertex.PositionColoredTextured[totalv];//åˆ›å»ºé¡¶ç‚¹é›†åˆ
 
 			txtoffset = new int[mbi.txtinfos.Length + 1];
 			txtoffset[mbi.txtinfos.Length] = totalv;
 
 			int pos = 0;
-			for (int i = 0; i < mbi.txtinfos.Length; i++) //µÚi¸öÌùÍ¼
+			for (int i = 0; i < mbi.txtinfos.Length; i++) //ç¬¬iä¸ªè´´å›¾
 			{
 				txtoffset[i] = pos;
-				foreach (Polygon poly in lpoly[i]) //Ê¹ÓÃµÚi¸öÌùÍ¼µÄËùÓĞ¶à±ßĞÎ
+				foreach (Polygon poly in lpoly[i]) //ä½¿ç”¨ç¬¬iä¸ªè´´å›¾çš„æ‰€æœ‰å¤šè¾¹å½¢
 				{
 					Debug.Assert(poly.texture_id == i);
-					for (int j = 0; j < poly.num_lines - 2; j++) //°Ñ¶à±ßĞÎ×ª»»ÎªÈı½ÇĞÎ£¬·Åµ½¶¥µã¼¯ºÏÖĞ
+					for (int j = 0; j < poly.num_lines - 2; j++) //æŠŠå¤šè¾¹å½¢è½¬æ¢ä¸ºä¸‰è§’å½¢ï¼Œæ”¾åˆ°é¡¶ç‚¹é›†åˆä¸­
 					{
-						//×¢Òâ£ºÒÔÏÂÊı¾İ¶¼ÊÇÓÒÊÖÏµµÄ£¬Òò´ËÔÚÏÔÊ¾Ê±£¬±ØĞë½øĞĞRHtoLH×ª»»
+						//æ³¨æ„ï¼šä»¥ä¸‹æ•°æ®éƒ½æ˜¯å³æ‰‹ç³»çš„ï¼Œå› æ­¤åœ¨æ˜¾ç¤ºæ—¶ï¼Œå¿…é¡»è¿›è¡ŒRHtoLHè½¬æ¢
 						vexarray[pos].X = poly.map_points[0].vertex.X;
 						vexarray[pos].Y = poly.map_points[0].vertex.Y;
 						vexarray[pos].Z = poly.map_points[0].vertex.Z;
@@ -123,11 +123,11 @@ namespace Comm_Mbi3D
 		public void CreateVertexBuffer(Device device)
 		{
 			vexbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColoredTextured),	//¶¥µãÀàĞÍ
-			   vexarray.Length,									//¶¥µã¸öÊı
+			   typeof(CustomVertex.PositionColoredTextured),	//é¡¶ç‚¹ç±»å‹
+			   vexarray.Length,									//é¡¶ç‚¹ä¸ªæ•°
 			   device,
 			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColoredTextured.Format,		//¶¥µã¸ñÊ½
+			   CustomVertex.PositionColoredTextured.Format,		//é¡¶ç‚¹æ ¼å¼
 			   Pool.Default);
 
 			vexbuf.SetData(vexarray, 0, LockFlags.Discard);
@@ -138,17 +138,17 @@ namespace Comm_Mbi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void CreateAllTextures(Device device)
 		{
-			Debug.WriteLine("[Texture] ¿ªÊ¼´´½¨...");
+			Debug.WriteLine("[Texture] å¼€å§‹åˆ›å»º...");
 			texture = new Texture[mbi.txtinfos.Length];
 			for (int i = 0; i < texture.Length; i++)
 			{
 				Debug.WriteLine(String.Format("[Texture] {0}/{1}", i + 1, texture.Length));
 				CreateSingleTexture(device, i, mbi.texturetype[i]);
 			}
-			Debug.WriteLine("[Texture] ´´½¨½áÊø");
+			Debug.WriteLine("[Texture] åˆ›å»ºç»“æŸ");
 		}
 
-		//¸ù¾İ²»Í¬µÄÌùÍ¼ÀàĞÍtypeÀ´´´½¨ÌùÍ¼
+		//æ ¹æ®ä¸åŒçš„è´´å›¾ç±»å‹typeæ¥åˆ›å»ºè´´å›¾
 		private unsafe void CreateSingleTexture(Device device, int idx, byte type)
 		{
 			TextureInfo txt = mbi.txtinfos[idx];
@@ -165,22 +165,22 @@ namespace Comm_Mbi3D
 					int pal = txt.data[pos++];
 					uint color = txt.color[pal];
 
-					switch (type)	//ÅĞ¶ÏÌùÍ¼ÀàĞÍ
+					switch (type)	//åˆ¤æ–­è´´å›¾ç±»å‹
 					{
-						case 0:		//ÆÕÍ¨ÌùÍ¼
-						case 1:		//transparent key color! ARGBÍ¸Ã÷É«:0xffff00ff
+						case 0:		//æ™®é€šè´´å›¾
+						case 1:		//transparent key color! ARGBé€æ˜è‰²:0xffff00ff
 							if (color == 0xffff00ff)
 								*pData++ = (uint)0x0;
 							else
 								*pData++ = (uint)color;
 							break;
-						case 2:		//Alpha¹âÔÎĞ§¹û
+						case 2:		//Alphaå…‰æ™•æ•ˆæœ
 							*pData++ = (uint)((((color & 0xff) / 4) << 24) | 0xffffff);
 							break;
-						case 4:		//´óÀíÊ¯µØ°å·´ÉäĞ§¹û(ÆäÊµÊÇÍ¸Ã÷Ğ§¹û)
+						case 4:		//å¤§ç†çŸ³åœ°æ¿åå°„æ•ˆæœ(å…¶å®æ˜¯é€æ˜æ•ˆæœ)
 							*pData++ = (uint)((0xE0 << 24) | (color & 0xffffff));
 							break;
-						default:	//Ç¿ÁÒµÄÊÓ¾õ¾¯¸æ£¬Î´ÖªµÄĞÂÌùÍ¼ÀàĞÍ!
+						default:	//å¼ºçƒˆçš„è§†è§‰è­¦å‘Šï¼ŒæœªçŸ¥çš„æ–°è´´å›¾ç±»å‹!
 							*pData++ = 0xffff00ff;
 							break;
 					}

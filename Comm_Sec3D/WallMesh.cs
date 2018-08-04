@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -10,15 +10,15 @@ using Microsoft.DirectX;
 namespace Comm_Sec3D
 {
 	////////////////////////////////////////////////////////////////////////////////////
-	//´¹Ö±Æ½ÃæÍø¸ñ
+	//å‚ç›´å¹³é¢ç½‘æ ¼
 	class WallMesh
 	{
 		Sec sec;
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		Color color;
-		short[] idxbuf;									//Ãæ¼¯ºÏ(Ë÷Òı),Ö»ÄÜ¶¨Òå³Éshort[]
-		CustomVertex.PositionNormalColored[] vexbuf;	//¶¥µã¼¯ºÏ
+		short[] idxbuf;									//é¢é›†åˆ(ç´¢å¼•),åªèƒ½å®šä¹‰æˆshort[]
+		CustomVertex.PositionNormalColored[] vexbuf;	//é¡¶ç‚¹é›†åˆ
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		public Mesh mesh;
@@ -35,37 +35,37 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		private void GenerateAllVertexsAndFacets()
 		{
-			//¼ÆËãËùÓĞ´¹Ö±¾ØĞÎµÄ¶¥µã¼¯ºÏ
-			//¶¥µãÊı=±ßÊı* 4¸ö¶¥µã * ±ß¿ÉÄÜÖØ¸´´ÎÊı(1 or 2) * ´¹Ö±Ãæ¿ÉÄÜÖØ¸´´ÎÊı(1 or 2)
+			//è®¡ç®—æ‰€æœ‰å‚ç›´çŸ©å½¢çš„é¡¶ç‚¹é›†åˆ
+			//é¡¶ç‚¹æ•°=è¾¹æ•°* 4ä¸ªé¡¶ç‚¹ * è¾¹å¯èƒ½é‡å¤æ¬¡æ•°(1 or 2) * å‚ç›´é¢å¯èƒ½é‡å¤æ¬¡æ•°(1 or 2)
 			CustomVertex.PositionNormalColored[] v =
 				new CustomVertex.PositionNormalColored[sec.num_borders * 4 * 2];
 
-			//ÓÃÓÚÏû³ı±ßÖØ¸´µÄHash Table
+			//ç”¨äºæ¶ˆé™¤è¾¹é‡å¤çš„Hash Table
 			Dictionary<ulong, bool> dict = new Dictionary<ulong, bool>(sec.num_borders);
 
-			float epsilon = 0.5F; //²»ÄÜĞ¡ÓÚ0.2£¬·ñÔòTu01ex.secÖĞÈı½ÇÃæ²»Õı³£
+			float epsilon = 0.5F; //ä¸èƒ½å°äº0.2ï¼Œå¦åˆ™Tu01ex.secä¸­ä¸‰è§’é¢ä¸æ­£å¸¸
 			int pos = 0;
 			for (int i = 0; i < sec.num_borders; i++)
 			{
 				Border b = sec.borders[i];
-				if (b.belong_district == -1 || b.neighbor_district == -1) continue; //ÌØÊâÃæ£¬²»»­´¹Ö±Ãæ
+				if (b.belong_district == -1 || b.neighbor_district == -1) continue; //ç‰¹æ®Šé¢ï¼Œä¸ç”»å‚ç›´é¢
 
 				////////////////////////////////////////////////////////////////////////////////////////////
-				//×¢Òâ£¡²»ÄÜÓÃÈçÏÂ·½·¨À´Ïû³ı±ßÖØ¸´(ÀıÈçRYºÍPT£¬È±Ãæ)
-				//if (b.belong_district >= b.neighbor_district) continue; //ÃæÒÑ¾­ÖØ¸´ÁË£¬Ã»ÓĞ±ØÒªÖØ»æ
+				//æ³¨æ„ï¼ä¸èƒ½ç”¨å¦‚ä¸‹æ–¹æ³•æ¥æ¶ˆé™¤è¾¹é‡å¤(ä¾‹å¦‚RYå’ŒPTï¼Œç¼ºé¢)
+				//if (b.belong_district >= b.neighbor_district) continue; //é¢å·²ç»é‡å¤äº†ï¼Œæ²¡æœ‰å¿…è¦é‡ç»˜
 
-				//Òò´Ë£¬Ö»ÄÜ²ÉÓÃ¼¯ºÏ±¡¼ÇµÄ·½Ê½À´·ÀÖ¹±ßÖØ¸´
+				//å› æ­¤ï¼Œåªèƒ½é‡‡ç”¨é›†åˆè–„è®°çš„æ–¹å¼æ¥é˜²æ­¢è¾¹é‡å¤
 				bool ret;
 				ulong x = (ulong)b.belong_district;
 				ulong y = (ulong)b.neighbor_district;
 				ulong key = (x << 32) | y;
 
 				if (dict.TryGetValue(key, out ret))
-					//ÒÑ¾­µÇ¼Ç¹ıÁË£¬·¢ÉúÖØ¸´ÁË
+					//å·²ç»ç™»è®°è¿‡äº†ï¼Œå‘ç”Ÿé‡å¤äº†
 					continue;
 				else
 				{
-					//Ã»ÓĞµÇ¼Ç¹ı£¬µÇ¼Ç½øHash Table
+					//æ²¡æœ‰ç™»è®°è¿‡ï¼Œç™»è®°è¿›Hash Table
 					key = (y << 32) | x;
 					dict.Add(key, true);
 				}
@@ -87,7 +87,7 @@ namespace Comm_Sec3D
 				z3 = -z3;
 				z4 = -z4;
 
-				if (Math.Abs(z1 - z3) <= epsilon && Math.Abs(z2 - z4) <= epsilon) continue; //¾ØĞÎÁ½±ß¸ß¶È¾ùÎª0£¬ÎŞĞè»­ÁË
+				if (Math.Abs(z1 - z3) <= epsilon && Math.Abs(z2 - z4) <= epsilon) continue; //çŸ©å½¢ä¸¤è¾¹é«˜åº¦å‡ä¸º0ï¼Œæ— éœ€ç”»äº†
 
 				v[pos++] = new CustomVertex.PositionNormalColored(from.x, from.y, z1, 0, 0, 0, color.ToArgb());
 				v[pos++] = new CustomVertex.PositionNormalColored(to.x, to.y, z2, 0, 0, 0, color.ToArgb());
@@ -98,16 +98,16 @@ namespace Comm_Sec3D
 			if (pos == 0)
 			{
 				vexbuf = null;
-				return; //¸ù±¾Ã»ÓĞ´¹Ö±ÃæĞèÒª»­£¬Ö±½ÓÍË³ö£¡
+				return; //æ ¹æœ¬æ²¡æœ‰å‚ç›´é¢éœ€è¦ç”»ï¼Œç›´æ¥é€€å‡ºï¼
 			}
 
 			vexbuf = new CustomVertex.PositionNormalColored[pos];
 			for (int i = 0; i < pos; i++)
 				vexbuf[i] = v[i];
 
-			v = null;//Å×ÆúÊı×év
+			v = null;//æŠ›å¼ƒæ•°ç»„v
 
-			//¼ÆËã·¨Ïß£¬¾ØĞÎ±ä³ÉÁËÈı½ÇĞÎ£¬»òÕßÉÏÏÂ±ßÆ½ĞĞÊ±£¬Çé¿öºÜÎ¢Ãî
+			//è®¡ç®—æ³•çº¿ï¼ŒçŸ©å½¢å˜æˆäº†ä¸‰è§’å½¢ï¼Œæˆ–è€…ä¸Šä¸‹è¾¹å¹³è¡Œæ—¶ï¼Œæƒ…å†µå¾ˆå¾®å¦™
 			Vector3[] normals = new Vector3[pos / 4];
 			for (int i = 0; i < pos / 4; i++)
 			{
@@ -123,19 +123,19 @@ namespace Comm_Sec3D
 			for (int i = 0; i < pos; i++)
 				vexbuf[i].Normal = normals[i / 4];
 
-			int totalf = vexbuf.Length / 4 * 2; //Èı½ÇÃæ×ÜÊı
-			int totalv = vexbuf.Length;			//¶¥µã×ÜÊı
+			int totalf = vexbuf.Length / 4 * 2; //ä¸‰è§’é¢æ€»æ•°
+			int totalv = vexbuf.Length;			//é¡¶ç‚¹æ€»æ•°
 
-			//´´½¨Èı½ÇÃæ¼¯ºÏ
-			idxbuf = new short[totalf * 3]; //×¢Òâ£¬Ö»ÄÜÊÇshort! WHY?
+			//åˆ›å»ºä¸‰è§’é¢é›†åˆ
+			idxbuf = new short[totalf * 3]; //æ³¨æ„ï¼Œåªèƒ½æ˜¯short! WHY?
 
 			pos = 0;
-			for (int i = 0; i < totalf / 2; i++) //´¹Ö±¶à±ßĞÎÊıÎªtotalf/2
+			for (int i = 0; i < totalf / 2; i++) //å‚ç›´å¤šè¾¹å½¢æ•°ä¸ºtotalf/2
 			{
-				//·Ö½â³É2¸öÈı½ÇĞÎ, triangle fans
+				//åˆ†è§£æˆ2ä¸ªä¸‰è§’å½¢, triangle fans
 				for (int j = 0; j < 2; j++)
 				{
-					//v0, v1, v2Èı¸öµã¹¹³ÉÁËÒ»¸ö×óÊÖÈı½ÇĞÎ
+					//v0, v1, v2ä¸‰ä¸ªç‚¹æ„æˆäº†ä¸€ä¸ªå·¦æ‰‹ä¸‰è§’å½¢
 					int v0 = 4 * i;
 					int v1 = v0 + j + 1;
 					int v2 = v1 + 1;
@@ -148,10 +148,10 @@ namespace Comm_Sec3D
 		}
 
 		///////////////////////////     UTILITYs     ///////////////////////////////
-		//¼ÆËã¼ò»¯ºóµÄÈı½ÇĞÎ»òËÄ±ßĞÎµÄ·¨Ïß
+		//è®¡ç®—ç®€åŒ–åçš„ä¸‰è§’å½¢æˆ–å››è¾¹å½¢çš„æ³•çº¿
 		Vector3 CalculateNormalOfSimplifiedPolygon(CustomVertex.PositionNormalColored[] poly)
 		{
-			Debug.Assert(poly.Length >= 3); //²»ÄÜ¼ÆËãÖ±ÏßµÄ·¨Ïß
+			Debug.Assert(poly.Length >= 3); //ä¸èƒ½è®¡ç®—ç›´çº¿çš„æ³•çº¿
 
 			Vector3 from = poly[1].Position - poly[0].Position;
 			Vector3 to = poly[2].Position - poly[1].Position;
@@ -162,10 +162,10 @@ namespace Comm_Sec3D
 			return n;
 		}
 
-		//½«ËÄ±ßĞÎ¼ò»¯ÎªÏß¡¢Èı½ÇĞÎ»òÕßÊÇËÄ±ßĞÎ
+		//å°†å››è¾¹å½¢ç®€åŒ–ä¸ºçº¿ã€ä¸‰è§’å½¢æˆ–è€…æ˜¯å››è¾¹å½¢
 		CustomVertex.PositionNormalColored[] SimplifyQuadrangle(CustomVertex.PositionNormalColored[] poly4, int offset, float epsilon)
 		{
-			//poly4Îª×óÊÖÏµ
+			//poly4ä¸ºå·¦æ‰‹ç³»
 			CustomVertex.PositionNormalColored v0 = poly4[offset];
 			CustomVertex.PositionNormalColored v1 = poly4[offset + 1];
 			CustomVertex.PositionNormalColored v2 = poly4[offset + 2];
@@ -176,13 +176,13 @@ namespace Comm_Sec3D
 
 			if (Math.Abs(v0.Z - v3.Z) < epsilon)
 			{
-				//ºÏ²¢0£­3
+				//åˆå¹¶0ï¼3
 				total--;
 				m[0] = false;
 			}
 			if (Math.Abs(v1.Z - v2.Z) < epsilon)
 			{
-				//ºÏ²¢1£­2
+				//åˆå¹¶1ï¼2
 				total--;
 				m[1] = false;
 			}
@@ -192,7 +192,7 @@ namespace Comm_Sec3D
 			for (int i = 0; i < 4; i++)
 				if (m[i]) v[pos++] = poly4[offset + i];
 
-			return v; //¼ò»¯³ÉÏß¡¢Èı½ÇĞÎ»òÕßÊÇËÄ±ßĞÎ
+			return v; //ç®€åŒ–æˆçº¿ã€ä¸‰è§’å½¢æˆ–è€…æ˜¯å››è¾¹å½¢
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
@@ -200,36 +200,36 @@ namespace Comm_Sec3D
 		{
 			if (vexbuf == null)
 			{
-				Debug.WriteLine("[WallMesh] ¿ÕÊı¾İ"); //´ËÊ±¸ù±¾ÎŞĞè´æÔÚÈÎºÎ´¹Ö±ÃæĞèÒª»æÖÆ
+				Debug.WriteLine("[WallMesh] ç©ºæ•°æ®"); //æ­¤æ—¶æ ¹æœ¬æ— éœ€å­˜åœ¨ä»»ä½•å‚ç›´é¢éœ€è¦ç»˜åˆ¶
 				mesh = null; 
 				return;
 			}
 			
-			int totalf = vexbuf.Length / 4 * 2; //Èı½ÇÃæ×ÜÊı
-			int totalv = vexbuf.Length;			//¶¥µã×ÜÊı
+			int totalf = vexbuf.Length / 4 * 2; //ä¸‰è§’é¢æ€»æ•°
+			int totalv = vexbuf.Length;			//é¡¶ç‚¹æ€»æ•°
 
-			//´´½¨Íø¸ñ¶ÔÏó
+			//åˆ›å»ºç½‘æ ¼å¯¹è±¡
 			mesh = new Mesh(totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format, device);
 
-			//ÉèÖÃmesh
+			//è®¾ç½®mesh
 			mesh.SetVertexBufferData(vexbuf, LockFlags.None);
 			mesh.SetIndexBufferData(idxbuf, LockFlags.None);
-			DEBUG_PrintMeshInfo("[WallMesh] Ã»ÓĞÓÅ»¯");
+			DEBUG_PrintMeshInfo("[WallMesh] æ²¡æœ‰ä¼˜åŒ–");
 
-			//ÓÅ»¯¶¥µãÊıÁ¿£¬É¾³ı¶àÓà¶¥µã£¬Ö»ÓĞ¼¸ºõ¾ø¶ÔÖØ¸´µÄ¶¥µã²Å½øĞĞÈÚ½Ó
+			//ä¼˜åŒ–é¡¶ç‚¹æ•°é‡ï¼Œåˆ é™¤å¤šä½™é¡¶ç‚¹ï¼Œåªæœ‰å‡ ä¹ç»å¯¹é‡å¤çš„é¡¶ç‚¹æ‰è¿›è¡Œèæ¥
 			WeldEpsilons epsilon = new WeldEpsilons();
 			epsilon.Diffuse = 0.01F;
 			epsilon.Position = 0.01F;
 			epsilon.Normal = 0.01F;
 			mesh.WeldVertices(WeldEpsilonsFlags.WeldPartialMatches, epsilon, null, null);
-			DEBUG_PrintMeshInfo("[WallMesh] ¶¥µãÓÅ»¯");
+			DEBUG_PrintMeshInfo("[WallMesh] é¡¶ç‚¹ä¼˜åŒ–");
 
-			//Õë¶ÔcacheÃüÖĞÂÊ½øĞĞÓÅ»¯ÅÅĞò
+			//é’ˆå¯¹cacheå‘½ä¸­ç‡è¿›è¡Œä¼˜åŒ–æ’åº
 			int[] adjacency = new int[mesh.NumberFaces * 3];
 			mesh.GenerateAdjacency(0.01F, adjacency);
 			mesh.OptimizeInPlace(MeshFlags.OptimizeVertexCache | MeshFlags.OptimizeCompact, adjacency);
 
-			//½«mesh±ä³ÉÊÇwriteonlyµÄ£¬¼Ó¿ìĞ§ÂÊ£¡
+			//å°†meshå˜æˆæ˜¯writeonlyçš„ï¼ŒåŠ å¿«æ•ˆç‡ï¼
 			Mesh m = mesh.Clone(MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format, device);
 			mesh.Dispose();
 			mesh = m;

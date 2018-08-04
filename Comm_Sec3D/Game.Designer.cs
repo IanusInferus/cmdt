@@ -1,4 +1,4 @@
-namespace Comm_Sec3D
+﻿namespace Comm_Sec3D
 {
 	partial class Game
 	{

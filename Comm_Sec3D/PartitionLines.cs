@@ -1,4 +1,4 @@
-//TO THINK: »á²»»á³öÏÖ¸ù±¾²»´æÔÚÇøÓòÏß¿òĞèÒª»æÖÆµÄÇé¿ö£¿
+ï»¿//TO THINK: ä¼šä¸ä¼šå‡ºç°æ ¹æœ¬ä¸å­˜åœ¨åŒºåŸŸçº¿æ¡†éœ€è¦ç»˜åˆ¶çš„æƒ…å†µï¼Ÿ
 
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using Microsoft.DirectX.Direct3D;
 namespace Comm_Sec3D
 {
 	////////////////////////////////////////////////////////////////////////////////////
-	//Ë®Æ½ÇøÓò·Ö¸îÏß¿ò
+	//æ°´å¹³åŒºåŸŸåˆ†å‰²çº¿æ¡†
 	class PartitionLines
 	{
 		CustomVertex.PositionColored[] pvexs;
@@ -33,7 +33,7 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		private void GenerateAllPartitionLines(Polygon[] p)
 		{
-			int total = 0; //ËùÓĞ±ß×ÜºÍ(´Ë´¦Ã»ÓĞÖØ¸´£¡)
+			int total = 0; //æ‰€æœ‰è¾¹æ€»å’Œ(æ­¤å¤„æ²¡æœ‰é‡å¤ï¼)
 			for (int i = 0; i < p.Length; i++)
 				total += p[i].vertex.Length;
 
@@ -70,7 +70,7 @@ namespace Comm_Sec3D
 
 			vertexbuf.Unlock();
 
-			string msg = String.Format("[Lines] Ã»ÓĞÓÅ»¯\t v:{0}", pvexs.Length);
+			string msg = String.Format("[Lines] æ²¡æœ‰ä¼˜åŒ–\t v:{0}", pvexs.Length);
 			Debug.WriteLine(msg);
 		}
 	}
