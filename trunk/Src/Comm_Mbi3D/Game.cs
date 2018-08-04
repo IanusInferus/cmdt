@@ -54,7 +54,7 @@ namespace Comm_Mbi3D
 
 			//设置标题栏
 			FileInfo fi = new FileInfo(filename);
-			filename = fi.Name.ToLower();
+			//filename = fi.Name.ToLower();
 			Text = "3D .Mbi Viewer - " + filename;
 
 			//背景色相关
