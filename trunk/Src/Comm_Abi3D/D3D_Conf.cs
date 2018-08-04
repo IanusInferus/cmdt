@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
@@ -29,7 +29,7 @@ namespace Comm_Abi3D
 			else
 				cf = CreateFlags.SoftwareVertexProcessing;
 
-			//ÔİÊ±»¹²»ÄÜÊ¹ÓÃpuredevice
+			//æš‚æ—¶è¿˜ä¸èƒ½ä½¿ç”¨puredevice
 			//if (caps.DeviceCaps.SupportsPureDevice)
 			//	cf |= CreateFlags.PureDevice;
 
@@ -47,8 +47,8 @@ namespace Comm_Abi3D
 				df = DepthFormat.D16;
 			else
 			{
-				MessageBox.Show("È±·¦×î»ù±¾µÄ16Î»É«ÉîÖ§³Ö£¬³ÌĞòÎŞ·¨¼ÌĞø", "ÏÔ¿¨ÅäÖÃ¾¯¸æ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("ÏÔ¿¨ÅäÖÃ¾¯¸æ£ºÈ±·¦×î»ù±¾µÄ16Î»É«ÉîÖ§³Ö£¬Ç¿ÖÆÍË³ö");
+				MessageBox.Show("ç¼ºä¹æœ€åŸºæœ¬çš„16ä½è‰²æ·±æ”¯æŒï¼Œç¨‹åºæ— æ³•ç»§ç»­", "æ˜¾å¡é…ç½®è­¦å‘Š", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				throw new Direct3DXException("æ˜¾å¡é…ç½®è­¦å‘Šï¼šç¼ºä¹æœ€åŸºæœ¬çš„16ä½è‰²æ·±æ”¯æŒï¼Œå¼ºåˆ¶é€€å‡º");
 			}
 			return df;
 		}
@@ -73,8 +73,8 @@ namespace Comm_Abi3D
 				return TextureFilter.Point;
 			else
 			{
-				MessageBox.Show("È±·¦×î»ù±¾µÄÌùÍ¼¹ıÂËÖ§³Ö£¬³ÌĞòÎŞ·¨¼ÌĞø", "ÏÔ¿¨ÅäÖÃ¾¯¸æ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("ÏÔ¿¨ÅäÖÃ¾¯¸æ£ºÈ±·¦×î»ù±¾µÄÌùÍ¼¹ıÂËÖ§³Ö£¬Ç¿ÖÆÍË³ö");
+				MessageBox.Show("ç¼ºä¹æœ€åŸºæœ¬çš„è´´å›¾è¿‡æ»¤æ”¯æŒï¼Œç¨‹åºæ— æ³•ç»§ç»­", "æ˜¾å¡é…ç½®è­¦å‘Š", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				throw new Direct3DXException("æ˜¾å¡é…ç½®è­¦å‘Šï¼šç¼ºä¹æœ€åŸºæœ¬çš„è´´å›¾è¿‡æ»¤æ”¯æŒï¼Œå¼ºåˆ¶é€€å‡º");
 			}
 		}
 
@@ -89,8 +89,8 @@ namespace Comm_Abi3D
 				return TextureFilter.Point;
 			else
 			{
-				MessageBox.Show("È±·¦×î»ù±¾µÄÌùÍ¼¹ıÂËÖ§³Ö£¬³ÌĞòÎŞ·¨¼ÌĞø", "ÏÔ¿¨ÅäÖÃ¾¯¸æ", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("ÏÔ¿¨ÅäÖÃ¾¯¸æ£ºÈ±·¦×î»ù±¾µÄÌùÍ¼¹ıÂËÖ§³Ö£¬Ç¿ÖÆÍË³ö");
+				MessageBox.Show("ç¼ºä¹æœ€åŸºæœ¬çš„è´´å›¾è¿‡æ»¤æ”¯æŒï¼Œç¨‹åºæ— æ³•ç»§ç»­", "æ˜¾å¡é…ç½®è­¦å‘Š", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				throw new Direct3DXException("æ˜¾å¡é…ç½®è­¦å‘Šï¼šç¼ºä¹æœ€åŸºæœ¬çš„è´´å›¾è¿‡æ»¤æ”¯æŒï¼Œå¼ºåˆ¶é€€å‡º");
 			}
 		}
 	}

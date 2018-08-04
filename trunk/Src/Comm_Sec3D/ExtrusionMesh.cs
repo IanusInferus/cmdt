@@ -1,4 +1,4 @@
-//TO THINK: »á²»»á³öÏÖ¸ù±¾²»´æÔÚ¼·Ñ¹Æ½ÃæĞèÒª»æÖÆµÄÇé¿ö£¿
+ï»¿//TO THINK: ä¼šä¸ä¼šå‡ºç°æ ¹æœ¬ä¸å­˜åœ¨æŒ¤å‹å¹³é¢éœ€è¦ç»˜åˆ¶çš„æƒ…å†µï¼Ÿ
 
 using System;
 using System.Collections.Generic;
@@ -12,16 +12,16 @@ using Microsoft.DirectX;
 namespace Comm_Sec3D
 {
 	////////////////////////////////////////////////////////////////////////////////////			
-	//¼·Ñ¹Æ½Ãæ¶à±ßĞÎ
+	//æŒ¤å‹å¹³é¢å¤šè¾¹å½¢
 	public class Polygon
 	{
-		public CustomVertex.PositionNormalColored[] vertex; //×óÊÖÏµÅÅÁĞ
+		public CustomVertex.PositionNormalColored[] vertex; //å·¦æ‰‹ç³»æ’åˆ—
 		public Polygon(CustomVertex.PositionNormalColored[] v)
 		{
 			vertex = v;
 		}
 
-		//¼ÆËã¶à±ßĞÎÔÚXOYÆ½ÃæÉÏÍ¶Ó°µÄÃæ»ı
+		//è®¡ç®—å¤šè¾¹å½¢åœ¨XOYå¹³é¢ä¸ŠæŠ•å½±çš„é¢ç§¯
 		float GetAreaOfXY()
 		{
 			float result = 0.0F;
@@ -32,10 +32,10 @@ namespace Comm_Sec3D
 				result += (to.X - from.X) * (to.Y + from.Y) / 2;
 			}
 
-			return -result; //×¢Òâ·ûºÅÎÊÌâ£¡
+			return -result; //æ³¨æ„ç¬¦å·é—®é¢˜ï¼
 		}
 
-		//¼ÆËã¶à±ßĞÎÖÊĞÄÎ»ÖÃ£¬ÆäÖĞµÄZ×ø±êÎªËùÓĞ¶¥µãZ×ø±êµÄ¾ùÖµ
+		//è®¡ç®—å¤šè¾¹å½¢è´¨å¿ƒä½ç½®ï¼Œå…¶ä¸­çš„Zåæ ‡ä¸ºæ‰€æœ‰é¡¶ç‚¹Zåæ ‡çš„å‡å€¼
 		public Vector3 GetCentroid()
 		{
 			float area = GetAreaOfXY();
@@ -53,7 +53,7 @@ namespace Comm_Sec3D
 				z += from.Z;
 			}
 
-			//×¢Òâ·ûºÅÎÊÌâ£¡
+			//æ³¨æ„ç¬¦å·é—®é¢˜ï¼
 			x /= 6 * area;
 			y /= 6 * area;				
 			z /= vertex.Length;
@@ -63,16 +63,16 @@ namespace Comm_Sec3D
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////			
-	//¼·Ñ¹Æ½ÃæÍø¸ñ
+	//æŒ¤å‹å¹³é¢ç½‘æ ¼
 	class ExtrusionMesh
 	{
 		////////////////////////////////////////////////////////////////////////////////////			
 		Sec sec;
-		short[] idxbuf;									//Ãæ¼¯ºÏ(Ë÷Òı)£¬Ö»ÄÜ¶¨Òå³Éshort[]
-		CustomVertex.PositionNormalColored[] vexbuf;	//¶¥µã¼¯ºÏ
+		short[] idxbuf;									//é¢é›†åˆ(ç´¢å¼•)ï¼Œåªèƒ½å®šä¹‰æˆshort[]
+		CustomVertex.PositionNormalColored[] vexbuf;	//é¡¶ç‚¹é›†åˆ
 
-		Color color;	//Ä¬ÈÏ¶¥µãÑÕÉ«(²»½øĞĞµØĞÎÊôĞÔ×ÅÉ«Ê±)
-		bool att_color; //ÊÇ·ñĞèÒª¸ù¾İÊôĞÔ×ÅÉ«
+		Color color;	//é»˜è®¤é¡¶ç‚¹é¢œè‰²(ä¸è¿›è¡Œåœ°å½¢å±æ€§ç€è‰²æ—¶)
+		bool att_color; //æ˜¯å¦éœ€è¦æ ¹æ®å±æ€§ç€è‰²
 		
 		////////////////////////////////////////////////////////////////////////////////////
 		public Mesh mesh;
@@ -84,30 +84,30 @@ namespace Comm_Sec3D
 			this.color = color;
 			this.att_color = att_color;
 
-			//¼ÆËãËùÓĞµÄ¶¥µã¼¯ºÏ¼°ÃæË÷Òı
+			//è®¡ç®—æ‰€æœ‰çš„é¡¶ç‚¹é›†åˆåŠé¢ç´¢å¼•
 			GenerateAllVertexsAndFacets();
 		}
 		////////////////////////////////////////////////////////////////////////////////////
-		public Polygon[] polys; //ËùÓĞµÄ¶à±ßĞÎÊı¾İ
-		int[] start_triangle;	//¶à±ßĞÎ-ÆğÊ¼Èı½ÇÃæ±àºÅÓ³Éä±í£¬ÒÑÖª¶à±ßĞÎ±àºÅ£¬²éÆäÆğÊ¼Èı½ÇÃæ±àºÅ
+		public Polygon[] polys; //æ‰€æœ‰çš„å¤šè¾¹å½¢æ•°æ®
+		int[] start_triangle;	//å¤šè¾¹å½¢-èµ·å§‹ä¸‰è§’é¢ç¼–å·æ˜ å°„è¡¨ï¼Œå·²çŸ¥å¤šè¾¹å½¢ç¼–å·ï¼ŒæŸ¥å…¶èµ·å§‹ä¸‰è§’é¢ç¼–å·
 
-		//¼ÆËãËùÓĞµÄ¶¥µã¼¯ºÏ¼°ÃæË÷Òı
+		//è®¡ç®—æ‰€æœ‰çš„é¡¶ç‚¹é›†åˆåŠé¢ç´¢å¼•
 		private void GenerateAllVertexsAndFacets()
 		{
 			polys = GenerateAllPolygonWithVertexNormal();
 
-			int totalf = 0;	//×ÜÈı½ÇÃæÊı
-			int totalv = 0;	//×Ü¶¥µãÊı
+			int totalf = 0;	//æ€»ä¸‰è§’é¢æ•°
+			int totalv = 0;	//æ€»é¡¶ç‚¹æ•°
 			for (int i = 0; i < polys.Length; i++)
 			{
 				totalf += polys[i].vertex.Length - 2;
 				totalv += polys[i].vertex.Length;
 			}
 
-			//´´½¨¶¥µã¼¯ºÏ
+			//åˆ›å»ºé¡¶ç‚¹é›†åˆ
 			vexbuf = new CustomVertex.PositionNormalColored[totalv];
 			int pos = 0;
-			int[] poly_idx = new int[polys.Length];//Ã¿¸ö¶à±ßĞÎµÄÆğÊ¼Î»ÖÃ
+			int[] poly_idx = new int[polys.Length];//æ¯ä¸ªå¤šè¾¹å½¢çš„èµ·å§‹ä½ç½®
 			for (int i = 0; i < polys.Length; i++)
 			{
 				poly_idx[i] = pos;
@@ -115,22 +115,22 @@ namespace Comm_Sec3D
 					vexbuf[pos++] = polys[i].vertex[j];
 			}
 
-			//´´½¨Èı½ÇÃæ¼¯ºÏ
-			idxbuf = new short[totalf * 3]; //×¢Òâ£¬Ö»ÄÜÊÇshort! WHY?
+			//åˆ›å»ºä¸‰è§’é¢é›†åˆ
+			idxbuf = new short[totalf * 3]; //æ³¨æ„ï¼Œåªèƒ½æ˜¯short! WHY?
 
-			//³õÊ¼»¯ÆğÊ¼Èı½ÇĞÎ±àºÅË÷ÒıÊı×é
-			//ÒÑÖªpolygon±àºÅ£¬ËÙ²é¸ÃPolygonµÄÆğÊ¼Èı½ÇĞÎ±àºÅ
+			//åˆå§‹åŒ–èµ·å§‹ä¸‰è§’å½¢ç¼–å·ç´¢å¼•æ•°ç»„
+			//å·²çŸ¥polygonç¼–å·ï¼Œé€ŸæŸ¥è¯¥Polygonçš„èµ·å§‹ä¸‰è§’å½¢ç¼–å·
 			start_triangle = new int[polys.Length + 1];
 
 			pos = 0;
 			for (int i = 0; i < polys.Length; i++)
 			{
-				//·Ö½â³É(polys[i].vertex.Length - 2)¸öÈı½ÇĞÎ, triangle fans
+				//åˆ†è§£æˆ(polys[i].vertex.Length - 2)ä¸ªä¸‰è§’å½¢, triangle fans
 				start_triangle[i] = pos / 3;
 				
 				for (int j = 0; j < polys[i].vertex.Length - 2; j++)
 				{
-					//baseptr, v1, v2Èı¸öµã¹¹³ÉÁËÒ»¸ö×óÊÖÈı½ÇĞÎ
+					//baseptr, v1, v2ä¸‰ä¸ªç‚¹æ„æˆäº†ä¸€ä¸ªå·¦æ‰‹ä¸‰è§’å½¢
 					int v0 = poly_idx[i];
 					int v1 = v0 + j + 1;
 					int v2 = v1 + 1;
@@ -144,16 +144,16 @@ namespace Comm_Sec3D
 			start_triangle[polys.Length] = pos;
 		}
 		////////////////////////////////////////////////////////////////////////////////////
-		#region ¼ÆËãËùÓĞ¶à±ßĞÎ¼°Æä¶¥µã·¨Ïß
+		#region è®¡ç®—æ‰€æœ‰å¤šè¾¹å½¢åŠå…¶é¡¶ç‚¹æ³•çº¿
 		Polygon[] GenerateAllPolygonWithVertexNormal()
 		{
 			Polygon[] p = new Polygon[sec.num_districts];
 
-			//½ö¼ÆËãËùÓĞµÄ¶¥µãxyz×ø±ê
+			//ä»…è®¡ç®—æ‰€æœ‰çš„é¡¶ç‚¹xyzåæ ‡
 			for (int i = 0; i < sec.num_districts; i++)
 				p[i] = GeneratePolyPos(i);
 
-			//½ö¼ÆËãËùÓĞ¶¥µãµÄ·¨Ïß·½Ïò
+			//ä»…è®¡ç®—æ‰€æœ‰é¡¶ç‚¹çš„æ³•çº¿æ–¹å‘
 			GenerateAllNormalsOfPolys(p);
 
 			return p;
@@ -174,8 +174,8 @@ namespace Comm_Sec3D
 				Vector3 A = new Vector3(v2.X - v1.X, v2.Y - v1.Y, v2.Z - v1.Z);
 				Vector3 B = new Vector3(v0.X - v1.X, v0.Y - v1.Y, v0.Z - v1.Z);
 
-				normals[i] = Vector3.Cross(A, B); //Õâ¸ö²æ³Ë¾ÓÈ»Ò²ÊÇ×óÊÖµÄ£¿faint
-				normals[i].Normalize(); //±ØĞë±ê×¼»¯
+				normals[i] = Vector3.Cross(A, B); //è¿™ä¸ªå‰ä¹˜å±…ç„¶ä¹Ÿæ˜¯å·¦æ‰‹çš„ï¼Ÿfaint
+				normals[i].Normalize(); //å¿…é¡»æ ‡å‡†åŒ–
 			}
 
 			for (int i = 0; i < poly.Length; i++)
@@ -189,30 +189,30 @@ namespace Comm_Sec3D
 
 			CustomVertex.PositionNormalColored[] v = new CustomVertex.PositionNormalColored[d.num_borders];
 
-			for (int i = d.num_borders - 1; i >= 0; i--) //ÓÒÊÖÏµ->×óÊÖÏµ
+			for (int i = d.num_borders - 1; i >= 0; i--) //å³æ‰‹ç³»->å·¦æ‰‹ç³»
 			{
 				Border b = d.borders[i];
 				float z = b.to.x * d.tanX + b.to.y * d.tanY + d.M;
 
-				//ÕâÀïµÄ-zÊÇ½«ÓÒÊÖÏµ->×óÊÖÏµ
+				//è¿™é‡Œçš„-zæ˜¯å°†å³æ‰‹ç³»->å·¦æ‰‹ç³»
 				v[d.num_borders - 1 - i] = new CustomVertex.PositionNormalColored();
 				v[d.num_borders - 1 - i].Position = new Vector3(b.to.x, b.to.y, -z);
 
 				if (att_color)
 				{
-					//¸ù¾İÇøÓòµÄµØĞÎÌØÕ÷À´×ÅÉ«
+					//æ ¹æ®åŒºåŸŸçš„åœ°å½¢ç‰¹å¾æ¥ç€è‰²
 					ColoredByCategory(d.attributes[0], ref v[d.num_borders - 1 - i]);
 					ColoredBySubCategory(d.attributes[1], ref v[d.num_borders - 1 - i]);
 
-					//¸ù¾İÇøÓòÊÇ·ñ¿É½øÈëÀ´×ÅÉ«
+					//æ ¹æ®åŒºåŸŸæ˜¯å¦å¯è¿›å…¥æ¥ç€è‰²
 					ColoredByEnterable(d.attributes[4], ref v[d.num_borders - 1 - i]);
 
-					//¸ù¾İÇøÓòÁÁ¶ÈÀ´×ÅÉ«
+					//æ ¹æ®åŒºåŸŸäº®åº¦æ¥ç€è‰²
 					ColoredByIllumination(d.attributes[5], ref v[d.num_borders - 1 - i]);
 
-					//¶Ô±ßÔµÉÏµÄ¿ò¼ÜÇøÓò×ÅÉ«
+					//å¯¹è¾¹ç¼˜ä¸Šçš„æ¡†æ¶åŒºåŸŸç€è‰²
 					if (d.attributes[6] == 0x2)
-						v[d.num_borders - 1 - i].Color = 0x25;//·Ç³£ÉîµÄÀ¶É«
+						v[d.num_borders - 1 - i].Color = 0x25;//éå¸¸æ·±çš„è“è‰²
 				}
 				else
 					v[d.num_borders - 1 - i].Color = color.ToArgb();
@@ -222,7 +222,7 @@ namespace Comm_Sec3D
 		}
 		#endregion
 		////////////////////////////////////////////////////////////////////////////////////
-		#region »ùÓÚµØĞÎÊôĞÔ½øĞĞ¶¥µã×ÅÉ«
+		#region åŸºäºåœ°å½¢å±æ€§è¿›è¡Œé¡¶ç‚¹ç€è‰²
 		void ColoredByIllumination(int brightness, ref CustomVertex.PositionNormalColored vex)
 		{
 			float m = (255 - brightness) / (float)255;
@@ -256,19 +256,19 @@ namespace Comm_Sec3D
 		{
 			switch (category)
 			{
-				case 0: //Â½µØ
+				case 0: //é™†åœ°
 					vex.Color = Color.DarkOrange.ToArgb();
 					break;
-				case 1: //Ñ©µØ
+				case 1: //é›ªåœ°
 					vex.Color = Color.White.ToArgb();
 					break;
-				case 2: //ÉîË®
+				case 2: //æ·±æ°´
 					vex.Color = Color.Blue.ToArgb();
 					break;
-				case 3: //Ç³Ë®
+				case 3: //æµ…æ°´
 					vex.Color = Color.LightBlue.ToArgb();
 					break;
-				case 4: //ÎŞ
+				case 4: //æ— 
 					vex.Color = Color.RoyalBlue.ToArgb();
 					break;
 				default:
@@ -281,47 +281,47 @@ namespace Comm_Sec3D
 		{
 			switch (sub_category)
 			{
-				case 0: //É³×Ó»òÕßÍÁÈÀ
+				case 0: //æ²™å­æˆ–è€…åœŸå£¤
 					vex.Color = Color.DarkOrange.ToArgb();
 					break;
-				case 1: //²İµØ
+				case 1: //è‰åœ°
 					vex.Color = Color.LimeGreen.ToArgb();
 					break;
-				case 2://Â·
+				case 2://è·¯
 					vex.Color = Color.Silver.ToArgb();
 					break;
-				case 3://²»ºÃÅĞ¶Ï
+				case 3://ä¸å¥½åˆ¤æ–­
 					break;
-				case 4://ÎŞ
+				case 4://æ— 
 					break;
-				case 5://Ä¾ÖÊµØÃæ
+				case 5://æœ¨è´¨åœ°é¢
 					vex.Color = Color.Gold.ToArgb();
 					break;
-				case 6://ÄàÉ³µØĞÎ£¬ºÓ±ßµÄ¾Ó¶à£¬²»ºÃÅĞ¶Ï
+				case 6://æ³¥æ²™åœ°å½¢ï¼Œæ²³è¾¹çš„å±…å¤šï¼Œä¸å¥½åˆ¤æ–­
 					vex.Color = Color.Khaki.ToArgb();
 					break;
-				case 7://Ñ©µØ
+				case 7://é›ªåœ°
 					vex.Color = Color.White.ToArgb();
 					break;
-				case 8://ÎŞ
+				case 8://æ— 
 					break;
-				case 9://´ÓºÓ±ßÂÑÊ¯µ½ÍÁÈÀ£¬²»ºÃÅĞ¶Ï
+				case 9://ä»æ²³è¾¹åµçŸ³åˆ°åœŸå£¤ï¼Œä¸å¥½åˆ¤æ–­
 					vex.Color = Color.Linen.ToArgb();
 					break;
-				case 10://ÎŞ
+				case 10://æ— 
 					break;
-				case 11: //ÌúÖÊµØĞÎ£¬ÌúÀ¸¸Ë£¬ÌúÂ¥Ìİ
+				case 11: //é“è´¨åœ°å½¢ï¼Œé“æ æ†ï¼Œé“æ¥¼æ¢¯
 					vex.Color = Color.DarkSlateGray.ToArgb();
 					break;
-				case 12: //ÎŞ
+				case 12: //æ— 
 					break;
-				case 13: //Ç³Ë®Ğ±ÆÂ
+				case 13: //æµ…æ°´æ–œå¡
 					vex.Color = Color.CornflowerBlue.ToArgb();
 					break;
-				case 14: //ÉîË®
+				case 14: //æ·±æ°´
 					vex.Color = Color.DarkBlue.ToArgb();
 					break;
-				case 15: //ÂÑÊ¯
+				case 15: //åµçŸ³
 					vex.Color = Color.Gainsboro.ToArgb();
 					break;
 			}
@@ -329,34 +329,34 @@ namespace Comm_Sec3D
 		}
 		#endregion
 		////////////////////////////////////////////////////////////////////////////////////
-		#region ¸ù¾İ¶¥µã¼¯¼°ÆäÃæË÷Òı´´½¨Mesh£¬²¢ÓÅ»¯Ö®
+		#region æ ¹æ®é¡¶ç‚¹é›†åŠå…¶é¢ç´¢å¼•åˆ›å»ºMeshï¼Œå¹¶ä¼˜åŒ–ä¹‹
 		public void CreateExtrusionMesh(Device device)
 		{
-			int totalf = idxbuf.Length / 3;	//×ÜÈı½ÇÃæÊı
-			int totalv = vexbuf.Length;	//×Ü¶¥µãÊı
+			int totalf = idxbuf.Length / 3;	//æ€»ä¸‰è§’é¢æ•°
+			int totalv = vexbuf.Length;	//æ€»é¡¶ç‚¹æ•°
 
-			//´´½¨Íø¸ñ¶ÔÏó
+			//åˆ›å»ºç½‘æ ¼å¯¹è±¡
 			mesh = new Mesh(totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format, device);
 
-			//ÉèÖÃmesh
+			//è®¾ç½®mesh
 			mesh.SetVertexBufferData(vexbuf, LockFlags.None);
 			mesh.SetIndexBufferData(idxbuf, LockFlags.None);
-			DEBUG_PrintMeshInfo("[Mesh] Ã»ÓĞÓÅ»¯");
+			DEBUG_PrintMeshInfo("[Mesh] æ²¡æœ‰ä¼˜åŒ–");
 			
-			//ÓÅ»¯¶¥µãÊıÁ¿£¬É¾³ı¶àÓà¶¥µã£¬Ö»ÓĞ¼¸ºõ¾ø¶ÔÖØ¸´µÄµã²ÅÉ¾³ı
+			//ä¼˜åŒ–é¡¶ç‚¹æ•°é‡ï¼Œåˆ é™¤å¤šä½™é¡¶ç‚¹ï¼Œåªæœ‰å‡ ä¹ç»å¯¹é‡å¤çš„ç‚¹æ‰åˆ é™¤
 			WeldEpsilons epsilon = new WeldEpsilons();
 			epsilon.Diffuse = 0.01F;
 			epsilon.Position = 0.01F;
 			epsilon.Normal = 0.01F;
 			mesh.WeldVertices(WeldEpsilonsFlags.WeldPartialMatches, epsilon, null, null);
-			DEBUG_PrintMeshInfo("[Mesh] ¶¥µãÓÅ»¯");
+			DEBUG_PrintMeshInfo("[Mesh] é¡¶ç‚¹ä¼˜åŒ–");
 			
-			//ÓÅ»¯mesh£¬²¢ÓÉOptimizeInPlace×Ô¶¯¼ÆËãSubSet¸öÊı
+			//ä¼˜åŒ–meshï¼Œå¹¶ç”±OptimizeInPlaceè‡ªåŠ¨è®¡ç®—SubSetä¸ªæ•°
 			int[] adjacency = new int[mesh.NumberFaces * 3];
 			mesh.GenerateAdjacency(0.01F, adjacency);
 			mesh.OptimizeInPlace(MeshFlags.OptimizeVertexCache | MeshFlags.OptimizeCompact, adjacency);
 
-			//½«mesh±ä³ÉÊÇwriteonlyµÄ£¬¼Ó¿ìĞ§ÂÊ£¡
+			//å°†meshå˜æˆæ˜¯writeonlyçš„ï¼ŒåŠ å¿«æ•ˆç‡ï¼
 			Mesh m = mesh.Clone(MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format, device);
 			mesh.Dispose();
 			mesh = m;
@@ -370,9 +370,9 @@ namespace Comm_Sec3D
 		}
 		#endregion
 		////////////////////////////////////////////////////////////////////////////////////
-		#region Picking SystemÏà¹Ø
+		#region Picking Systemç›¸å…³
 		
-		//ÒÑÖªÆ¥ÅäÈı½ÇĞÎµÄ±àºÅÎªidx£¬Çó³öÆäËùÊôµÄ¶à±ßĞÎ±àºÅ
+		//å·²çŸ¥åŒ¹é…ä¸‰è§’å½¢çš„ç¼–å·ä¸ºidxï¼Œæ±‚å‡ºå…¶æ‰€å±çš„å¤šè¾¹å½¢ç¼–å·
 		int FindPolygonByTriangleIdx(int idx)
 		{
 			if (idx < 0 && idx >= idxbuf.Length) return -1;
@@ -384,12 +384,12 @@ namespace Comm_Sec3D
 
 		public int MatchPicking(Device device, Vector3 raypos, Vector3 raydir)
 		{
-			int idx = -1; //-1´ú±íÃ»ÓĞÆ¥Åä£¬·ñÔò£¬idxÎªÆ¥ÅäÈı½ÇÃæ±àºÅ
-			float min_z = float.PositiveInfinity; //ÓÃÓÚ±È½Ï¶à¸öÆ¥ÅäÈı½ÇÃæµÄZÉî¶È
+			int idx = -1; //-1ä»£è¡¨æ²¡æœ‰åŒ¹é…ï¼Œå¦åˆ™ï¼Œidxä¸ºåŒ¹é…ä¸‰è§’é¢ç¼–å·
+			float min_z = float.PositiveInfinity; //ç”¨äºæ¯”è¾ƒå¤šä¸ªåŒ¹é…ä¸‰è§’é¢çš„Zæ·±åº¦
 
-			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //³£ÊıÌáÈ¡
+			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //å¸¸æ•°æå–
 			
-			//±éÀúËùÓĞÈı½ÇĞÎ...ÕâÀïĞ§ÂÊ±È½ÏµÍ£¬ĞèÒªÏëÏë°ì·¨
+			//éå†æ‰€æœ‰ä¸‰è§’å½¢...è¿™é‡Œæ•ˆç‡æ¯”è¾ƒä½ï¼Œéœ€è¦æƒ³æƒ³åŠæ³•
 			for (int i = 0; i < idxbuf.Length / 3; i++)
 			{
 				IntersectInformation hitlocation;
@@ -402,20 +402,20 @@ namespace Comm_Sec3D
 				Vector3 v1 = vexbuf[v1_idx].Position;
 				Vector3 v2 = vexbuf[v2_idx].Position;
 
-				//²âÊÔpicking rayÓëÈı½ÇĞÎµÄ½»µãÊÇ·ñÏà½»
+				//æµ‹è¯•picking rayä¸ä¸‰è§’å½¢çš„äº¤ç‚¹æ˜¯å¦ç›¸äº¤
 				bool result = Geometry.IntersectTri(
 					v0, v1, v2,
 					raypos,
 					raydir,
 					out hitlocation);
 				
-				if (result) //ÏßÃæÊÇÏà½»µÄ
+				if (result) //çº¿é¢æ˜¯ç›¸äº¤çš„
 				{				
-					//¼ÆËãworldÏÂµÄ½»µã£¬½«Æä×ª»»ÖÁprojection windows£¬²¢²âÊÔÆäÉî¶È
+					//è®¡ç®—worldä¸‹çš„äº¤ç‚¹ï¼Œå°†å…¶è½¬æ¢è‡³projection windowsï¼Œå¹¶æµ‹è¯•å…¶æ·±åº¦
 					Vector3 p = v0 + hitlocation.U * (v1 - v0) + hitlocation.V * (v2 - v0);
 					p.TransformCoordinate(trans);
 					
-					if (p.Z < min_z) //±È½ÏZ depth£¬Ñ¡È¡Éî¶È×îĞ¡µÄÈı½ÇĞÎ
+					if (p.Z < min_z) //æ¯”è¾ƒZ depthï¼Œé€‰å–æ·±åº¦æœ€å°çš„ä¸‰è§’å½¢
 					{
 						idx = i;
 						min_z = p.Z;
@@ -423,17 +423,17 @@ namespace Comm_Sec3D
 				}
 			}
 
-			if (idx != -1) //Èç¹û´æÔÚ×ÅÆ¥Åä
+			if (idx != -1) //å¦‚æœå­˜åœ¨ç€åŒ¹é…
 			{
-				//idxÎªzÉî¶È×îĞ¡µÄÆ¥ÅäÈı½ÇÃæ±àºÅ£¬¸ù¾İÆä²é³ö¶ÔÓ¦µÄ¶à±ßĞÎ±àºÅ
+				//idxä¸ºzæ·±åº¦æœ€å°çš„åŒ¹é…ä¸‰è§’é¢ç¼–å·ï¼Œæ ¹æ®å…¶æŸ¥å‡ºå¯¹åº”çš„å¤šè¾¹å½¢ç¼–å·
 				int polyid = FindPolygonByTriangleIdx(idx);
 				
-				//·µ»Ø²éÕÒµ½µÄ¶à±ßĞÎ±àºÅ
+				//è¿”å›æŸ¥æ‰¾åˆ°çš„å¤šè¾¹å½¢ç¼–å·
 				Debug.Assert(polyid != -1);			
 				return polyid;
 			}
 			else
-				return -1; //·ñÔò£¬·µ»Ø-1£¬²»´æÔÚÆ¥Åä¶à±ßĞÎ
+				return -1; //å¦åˆ™ï¼Œè¿”å›-1ï¼Œä¸å­˜åœ¨åŒ¹é…å¤šè¾¹å½¢
 		}
 		#endregion
 		////////////////////////////////////////////////////////////////////////////////////

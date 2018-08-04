@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -51,7 +51,7 @@ namespace Comm_Sec_Astar
 		public Vector3 max;
 		public Vector3 min_bak;
 		public Vector3 max_bak;
-		public Edge[] edges;		//num_borders¸ö
+		public Edge[] edges;		//num_bordersä¸ª
 
 		public bool enterable;
 		public FPoint centroid;
@@ -84,7 +84,7 @@ namespace Comm_Sec_Astar
 		Polygon[] polys;
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ÔİÊ±Ã»ÓĞÓÃµ½
+		#region æš‚æ—¶æ²¡æœ‰ç”¨åˆ°
 		//Po[] po;
 		
 		float GetDistance(Polygon from, Polygon to)
@@ -95,7 +95,7 @@ namespace Comm_Sec_Astar
 			return x * x + y * y;
 		}
 
-		Po[] GenPo() //Éú³ÉÓÃÀ´A*µÄÍØÆË
+		Po[] GenPo() //ç”Ÿæˆç”¨æ¥A*çš„æ‹“æ‰‘
 		{
 			Po[] p = new Po[num_polys];
 			for (int i = 0; i < num_polys; i++)
@@ -146,7 +146,7 @@ namespace Comm_Sec_Astar
 					/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 					points = new FPoint[num_points];
-					backup = new FPoint[num_points]; //backupÊÇlpµÄÖµ±¸·İ
+					backup = new FPoint[num_points]; //backupæ˜¯lpçš„å€¼å¤‡ä»½
 
 					for (int i = 0; i < num_points; i++)
 					{
@@ -229,18 +229,18 @@ namespace Comm_Sec_Astar
 						polys[i] = dd;
 					}
 
-					//¶Ôbackup½øĞĞ±ê×¼»¯
+					//å¯¹backupè¿›è¡Œæ ‡å‡†åŒ–
 					NormalizeAllPoints();
 
-					//´´½¨¼¸ºÎÀà
+					//åˆ›å»ºå‡ ä½•ç±»
 					geo = new Geometry(points, edges, polys);
 
-					//¸üĞÂËùÓĞÖÊĞÄ
+					//æ›´æ–°æ‰€æœ‰è´¨å¿ƒ
 					geo.UpdateAllCentroid();
 				}
 			}
 
-			//¸øËùÓĞedge´òÉÏÕÏ°­±ê¼Ç
+			//ç»™æ‰€æœ‰edgeæ‰“ä¸Šéšœç¢æ ‡è®°
 			foreach (Edge e in edges)
 			{
 				if (e.neighbor_poly == -1)
@@ -254,7 +254,7 @@ namespace Comm_Sec_Astar
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
 		float b_minx, b_maxx;
 		float b_miny, b_maxy;
-		public void NormalizeAllPoints() //µ÷ÕûËùÓĞµÄbackup
+		public void NormalizeAllPoints() //è°ƒæ•´æ‰€æœ‰çš„backup
 		{
 			b_maxx = float.NegativeInfinity;
 			b_minx = float.PositiveInfinity;
@@ -293,7 +293,7 @@ namespace Comm_Sec_Astar
 		//--------------------------------------------------------------------------------------------------------
 		float minx, maxx;
 		float miny, maxy;
-		public void ZoomAllPoints(float n)//n±¶·Å´ó
+		public void ZoomAllPoints(float n)//nå€æ”¾å¤§
 		{
 			for (int i = 0; i < num_points; i++)
 			{
@@ -322,15 +322,15 @@ namespace Comm_Sec_Astar
 		Vector2 fromv, tov;
 		public Bitmap StartRay(float n)
 		{
-			ZoomAllPoints(n); //Ëõ·Å£¡
+			ZoomAllPoints(n); //ç¼©æ”¾ï¼
 
-			//ÔÚÏß¶ÎÉÏ£¬ÇÒÑØ×ÅÏß¶ÎµÄÓÃÀı
+			//åœ¨çº¿æ®µä¸Šï¼Œä¸”æ²¿ç€çº¿æ®µçš„ç”¨ä¾‹
 			//fromv = polys[107].edges[0].from.ToVector2();
 			//tov = polys[107].edges[0].to.ToVector2();
 			//Vector2 n0 = tov - fromv;
 			//fromv = fromv + 0.2f * n0;
 
-			//ÔÚÏß¶ÎÉÏ£¬µ«²»ÑØ×ÅÏß¶ÎµÄÓÃÀı
+			//åœ¨çº¿æ®µä¸Šï¼Œä½†ä¸æ²¿ç€çº¿æ®µçš„ç”¨ä¾‹
 			//fromv = polys[107].edges[0].from.ToVector2();
 			//tov = polys[107].edges[0].to.ToVector2();
 			//Vector2 n0 = tov - fromv;
@@ -338,7 +338,7 @@ namespace Comm_Sec_Astar
 			//n0 = new Vector2(1, 0);
 			//tov = fromv + 1f * n0;
 
-			//ÔÚÏß¶ÎµÄÁ½¸öµãÉÏµÄÓÃÀı
+			//åœ¨çº¿æ®µçš„ä¸¤ä¸ªç‚¹ä¸Šçš„ç”¨ä¾‹
 			fromv = polys[107].edges[0].from.ToVector2();
 			tov = polys[107].edges[0].to.ToVector2();
 
@@ -392,7 +392,7 @@ namespace Comm_Sec_Astar
 
 		public Bitmap Update(float n)
 		{
-			ZoomAllPoints(n); //Ëõ·Å£¡
+			ZoomAllPoints(n); //ç¼©æ”¾ï¼
 			Bitmap bmp = DrawSketch(n, fromv, tov);
 			return bmp;
 		}
@@ -400,7 +400,7 @@ namespace Comm_Sec_Astar
 		//---------------------------------------------------------------------------------------------------------
 		public Bitmap DrawSketch(float n,Vector2 from, Vector2 to)
 		{
-			//ÎÒÈÕ£¬±ßÅÅÁĞµÄË³ĞòÊÇÓÒÊÖµÄ£¬¶ø¶¥µãÅÅÁĞË³ĞòÊÇ×óÊÖµÄ£¬²Ù£¡
+			//æˆ‘æ—¥ï¼Œè¾¹æ’åˆ—çš„é¡ºåºæ˜¯å³æ‰‹çš„ï¼Œè€Œé¡¶ç‚¹æ’åˆ—é¡ºåºæ˜¯å·¦æ‰‹çš„ï¼Œæ“ï¼
 			//LOS_RESULT ret = geo.LOS_Test(
 			//    polys[254].edges[2].from.ToVector2(),
 			//    polys[254].edges[1].from.ToVector2(),
@@ -439,9 +439,9 @@ namespace Comm_Sec_Astar
 				font.Dispose();
 				brush.Dispose();
 
-				DrawRayPath(g);//°ÑÂ·¾¶»­³öÀ´£¡
+				DrawRayPath(g);//æŠŠè·¯å¾„ç”»å‡ºæ¥ï¼
 
-				//°Ñ²âÊÔ¶à±ßĞÎµÄAABB»­³öÀ´£¡
+				//æŠŠæµ‹è¯•å¤šè¾¹å½¢çš„AABBç”»å‡ºæ¥ï¼
 				//for (int i = 0; i < num_polys; i++) DrawAABB(g, i);
 				DrawAABB(g, 1);
 			}
@@ -478,7 +478,7 @@ namespace Comm_Sec_Astar
 			}
 		}
 		//---------------------------------------------------------------------------------------------------------
-		public void DrawAllIndex(Bitmap bmp, int fontsize) //»æÖÆËùÓĞ¶à±ßĞÎ±àºÅ
+		public void DrawAllIndex(Bitmap bmp, int fontsize) //ç»˜åˆ¶æ‰€æœ‰å¤šè¾¹å½¢ç¼–å·
 		{
 			using (Graphics g = Graphics.FromImage(bmp))
 			{
@@ -499,7 +499,7 @@ namespace Comm_Sec_Astar
 
 					g.DrawString(i.ToString(), font, brush, x - size.Width / 2, y - size.Height / 2);
 
-					//»æÖÆÖÊĞÄÎ»ÖÃ±ê¼Ç
+					//ç»˜åˆ¶è´¨å¿ƒä½ç½®æ ‡è®°
 					//g.DrawEllipse(new Pen(Color.LightBlue), x - 2, y - 2, 3, 3);
 					//g.FillEllipse(new SolidBrush(Color.LightBlue), x - 2, y - 2, 3, 3);
 				}
@@ -509,7 +509,7 @@ namespace Comm_Sec_Astar
 			}
 		}
 		//---------------------------------------------------------------------------------------------------------
-		public void DrawPolygonEdges(Graphics g, Pen pen, int idx) //»­³öÒ»¸ö¶à±ßĞÎµÄËùÓĞ±ß
+		public void DrawPolygonEdges(Graphics g, Pen pen, int idx) //ç”»å‡ºä¸€ä¸ªå¤šè¾¹å½¢çš„æ‰€æœ‰è¾¹
 		{
 			Polygon d = polys[idx];
 

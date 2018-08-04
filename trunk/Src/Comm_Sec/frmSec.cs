@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -20,15 +20,15 @@ namespace Comm_Sec
 		DisplayTopology display;
 		PathFinder pf;
 
-		float zoom;			//Ëõ·ÅµÈ¼¶(1/zoomÎªËõ·Å±¶ÂÊ)
-		bool show_idx;		//ÏÔÊ¾¶à±ßĞÎ±àºÅ·ñ
-		bool show_grids;	//ÏÔÊ¾¼ÓËÙÍø¸ñ·ñ
-		bool full_screen;	//È«ÆÁÏÔÊ¾
-		bool colored;		//¶à±ßĞÎÊôĞÔ×ÅÉ«·ñ
+		float zoom;			//ç¼©æ”¾ç­‰çº§(1/zoomä¸ºç¼©æ”¾å€ç‡)
+		bool show_idx;		//æ˜¾ç¤ºå¤šè¾¹å½¢ç¼–å·å¦
+		bool show_grids;	//æ˜¾ç¤ºåŠ é€Ÿç½‘æ ¼å¦
+		bool full_screen;	//å…¨å±æ˜¾ç¤º
+		bool colored;		//å¤šè¾¹å½¢å±æ€§ç€è‰²å¦
 
-		int selected;		//Ñ¡ÖĞµÄ¶à±ßĞÎ±àºÅ
+		int selected;		//é€‰ä¸­çš„å¤šè¾¹å½¢ç¼–å·
 
-		Bitmap bmp;			//»º³åÎ»Í¼
+		Bitmap bmp;			//ç¼“å†²ä½å›¾
 
 		//------------------------------------------------------------------------------------------------
 		public frmSec()
@@ -70,7 +70,7 @@ namespace Comm_Sec
 				Close();
 			}
 
-			Activate();//ºÜÓĞĞ§£¡
+			Activate();//å¾ˆæœ‰æ•ˆï¼
 		}
 
 		//------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace Comm_Sec
 			Width = bmp.Width + 8;
 			Height = bmp.Height + 34;
 
-			UpdateMapping(); //¸üĞÂÓ³Éä!!
+			UpdateMapping(); //æ›´æ–°æ˜ å°„!!
 		}
 
 		//------------------------------------------------------------------------------------------------	
@@ -138,7 +138,7 @@ namespace Comm_Sec
 						WindowState = FormWindowState.Normal;
 					}
 
-					UpdateMapping(); //¸üĞÂÓ³Éä!
+					UpdateMapping(); //æ›´æ–°æ˜ å°„!
 					Refresh();
 					return;
 				case '.':
@@ -206,10 +206,10 @@ namespace Comm_Sec
 					if (msfg.ShowDialog() == DialogResult.OK)
 					{
 						using (Graphics refg = this.CreateGraphics())
-						using (Metafile meta = new Metafile(msfg.FileName, refg.GetHdc(), EmfType.EmfPlusDual)) //Èç¹ûÓÃEmfType.EmfPlusOnlyÔò³ß´çÖè¼õ£¬µ«²»±ã¿ØÖÆ³ß´ç
+						using (Metafile meta = new Metafile(msfg.FileName, refg.GetHdc(), EmfType.EmfPlusDual)) //å¦‚æœç”¨EmfType.EmfPlusOnlyåˆ™å°ºå¯¸éª¤å‡ï¼Œä½†ä¸ä¾¿æ§åˆ¶å°ºå¯¸
 						using (Graphics g = Graphics.FromImage(meta))
 						{
-							Matrix2D trans = new Matrix2D(1, 0, 0, -1, 0, display.maxy);//Y·­×ª
+							Matrix2D trans = new Matrix2D(1, 0, 0, -1, 0, display.maxy);//Yç¿»è½¬
 							trans.Scale(1 / zoom, 1 / zoom, MatrixOrder.Append);
 
 							display.DrawSketch(g, 1 / zoom, show_idx, colored);
@@ -263,13 +263,13 @@ namespace Comm_Sec
 		List<FPoint> losw;
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
-		Waypoint w;		//Ñ°¾¶ËùµÃµÄÎ»µãÁ´
-		FPoint s, d;	//Ñ°¾¶µÄÆğµãºÍÖÕµã
+		Waypoint w;		//å¯»å¾„æ‰€å¾—çš„ä½ç‚¹é“¾
+		FPoint s, d;	//å¯»å¾„çš„èµ·ç‚¹å’Œç»ˆç‚¹
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 
-		Point from = new Point();	//Ç°Ò»Êó±êÎ»ÖÃ
-		Point delta = new Point();	//Êó±êÊÖ¶¯Æ«ÒÆÁ¿
+		Point from = new Point();	//å‰ä¸€é¼ æ ‡ä½ç½®
+		Point delta = new Point();	//é¼ æ ‡æ‰‹åŠ¨åç§»é‡
 
 		private void frmSec_MouseDown(object sender, MouseEventArgs e)
 		{
@@ -280,7 +280,7 @@ namespace Comm_Sec
 			}
 			else
 			{
-				//Íê³ÉÆÁÄ»×ø±ê->DisplayTopologyÓ³Éä
+				//å®Œæˆå±å¹•åæ ‡->DisplayTopologyæ˜ å°„
 				PointF[] pos ={ new PointF(e.X, e.Y) };
 				trans_C2D.TransformPoints(pos);
 
@@ -289,13 +289,13 @@ namespace Comm_Sec
 				else if (e.Button == MouseButtons.Right)
 					s = new FPoint(pos[0].X, pos[0].Y);
 
-				//¸ß¾«¶È¼ÆÊ±Æ÷²âÁ¿Ñ°¾¶ºÄÊ±
+				//é«˜ç²¾åº¦è®¡æ—¶å™¨æµ‹é‡å¯»å¾„è€—æ—¶
 				QueryPerformance.Start();
 				w = pf.PathFinding(s, d);
 				QueryPerformance.End();
 				this.Text = QueryPerformance.GetMessage();
 
-				//Ñ¡Ôñ¶à±ßĞÎ
+				//é€‰æ‹©å¤šè¾¹å½¢
 				selected = display.SelectPolygon(pos[0].X, pos[0].Y);
 
 				Refresh();
@@ -350,29 +350,29 @@ namespace Comm_Sec
 		/////////////////////////////////////////////////////////////////////////////////////////////////
 		private void frmSec_Resize(object sender, EventArgs e)
 		{
-			UpdateMapping(); //¸üĞÂÓ³Éä
+			UpdateMapping(); //æ›´æ–°æ˜ å°„
 			Refresh();
 		}
 
 		/////////////////////////////////////////////////////////////////////////////////////////////////
-		Matrix2D trans_C2D; //´°¿Ú¿Í»§Çø×ø±êÏµ->ÏÔÊ¾ÍØÆË×ø±êÏµ(Ô­µãÔÚminx,miny´¦)
-		Matrix2D trans_D2C; //ÏÔÊ¾ÍØÆË×ø±êÏµ(Ô­µãÔÚminx,miny´¦)->´°¿Ú¿Í»§Çø×ø±êÏµ
+		Matrix2D trans_C2D; //çª—å£å®¢æˆ·åŒºåæ ‡ç³»->æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»(åŸç‚¹åœ¨minx,minyå¤„)
+		Matrix2D trans_D2C; //æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»(åŸç‚¹åœ¨minx,minyå¤„)->çª—å£å®¢æˆ·åŒºåæ ‡ç³»
 
-		void UpdateMapping() //¸üĞÂÓ³Éä¹ØÏµ
+		void UpdateMapping() //æ›´æ–°æ˜ å°„å…³ç³»
 		{
 			int offset_x = (ClientSize.Width - bmp.Width) / 2;
 			int offset_y = (ClientSize.Height - bmp.Height) / 2;
 
-			trans_D2C = new Matrix2D(1, 0, 0, -1, 0, display.maxy);		//Y·­×ª
-			trans_D2C.Scale(1 / zoom, 1 / zoom, MatrixOrder.Append);	//ÔÙËõ·Å
-			trans_D2C.Translate(offset_x, offset_y, MatrixOrder.Append);//ÔÙÆ½ÒÆ
-			trans_D2C.Translate(delta.X, delta.Y, MatrixOrder.Append);	//ÔÙÆ½ÒÆ£¨Êó±êÆ½ÒÆ·ÖÁ¿£©
+			trans_D2C = new Matrix2D(1, 0, 0, -1, 0, display.maxy);		//Yç¿»è½¬
+			trans_D2C.Scale(1 / zoom, 1 / zoom, MatrixOrder.Append);	//å†ç¼©æ”¾
+			trans_D2C.Translate(offset_x, offset_y, MatrixOrder.Append);//å†å¹³ç§»
+			trans_D2C.Translate(delta.X, delta.Y, MatrixOrder.Append);	//å†å¹³ç§»ï¼ˆé¼ æ ‡å¹³ç§»åˆ†é‡ï¼‰
 
 			//trans_C2D = new Matrix2D();
-			//trans_C2D.Translate(-delta.X, -delta.Y, MatrixOrder.Append);	//ÏÈµÖÏûÊó±êÆ½ÒÆ·ÖÁ¿
-			//trans_C2D.Translate(-offset_x, -offset_y, MatrixOrder.Append);	//ÏÈÆ½ÒÆ»ØÔ­µã
-			//trans_C2D.Scale(zoom, zoom, MatrixOrder.Append);				//·´ÏòËõ·Å
-			//trans_C2D.Multiply(new Matrix2D(1, 0, 0, -1, 0, display.maxy), MatrixOrder.Append);//µßµ¹Y×ø±êÖá
+			//trans_C2D.Translate(-delta.X, -delta.Y, MatrixOrder.Append);	//å…ˆæŠµæ¶ˆé¼ æ ‡å¹³ç§»åˆ†é‡
+			//trans_C2D.Translate(-offset_x, -offset_y, MatrixOrder.Append);	//å…ˆå¹³ç§»å›åŸç‚¹
+			//trans_C2D.Scale(zoom, zoom, MatrixOrder.Append);				//åå‘ç¼©æ”¾
+			//trans_C2D.Multiply(new Matrix2D(1, 0, 0, -1, 0, display.maxy), MatrixOrder.Append);//é¢ å€’Yåæ ‡è½´
 
 			trans_C2D = trans_D2C.Clone();
 			trans_C2D.Invert();
@@ -412,7 +412,7 @@ namespace Comm_Sec
 		public static string GetMessage()
 		{
 			double t = (end_ticks - start_ticks) / (double)freq;
-			string msg = string.Format("ºÄÊ±: {0,6:F2} ms", t * 1000d);
+			string msg = string.Format("è€—æ—¶: {0,6:F2} ms", t * 1000d);
 			return msg;
 		}
 	}

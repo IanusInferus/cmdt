@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -10,13 +10,13 @@ namespace Comm_Y64
 {
 	public class Y64 : IDisposable
 	{
-		private long[,] ptr_pics; //ËùÓĞÍ¼Æ¬µÄÎÄ¼şÎ»ÖÃ£¬ptr_pics[num_view,num_pic_per_view]
+		private long[,] ptr_pics; //æ‰€æœ‰å›¾ç‰‡çš„æ–‡ä»¶ä½ç½®ï¼Œptr_pics[num_view,num_pic_per_view]
 		public YCrCbPalette palette;
 		public RGBPalette rgb;
 
-		public int num_view; //ÊÓ½ÇÊı
-		public int num_pic_per_view; //Ã¿Ò»ÊÓ½ÇµÄÍ¼Æ¬Êı
-		public int version; //°æ±¾ĞÅÏ¢
+		public int num_view; //è§†è§’æ•°
+		public int num_pic_per_view; //æ¯ä¸€è§†è§’çš„å›¾ç‰‡æ•°
+		public int version; //ç‰ˆæœ¬ä¿¡æ¯
 
 		FileStream fs;
 		BinaryReader br;
@@ -26,29 +26,29 @@ namespace Comm_Y64
 			fs = new FileStream(fn, FileMode.Open, FileAccess.Read);
 			br = new BinaryReader(fs);
 
-			//¼ì²âY74µÄ6×Ö½ÚÎÄ¼ş±êÖ¾46 43 44 45 00 00
+			//æ£€æµ‹Y74çš„6å­—èŠ‚æ–‡ä»¶æ ‡å¿—46 43 44 45 00 00
 			int id = br.ReadInt32();
 			Debug.Assert(id == 0x45444346);
 			id = br.ReadInt16();
 			Debug.Assert(id == 0);
 
-			//°æ±¾±êÖ¾£ºcommandos 2 or commandos 3
+			//ç‰ˆæœ¬æ ‡å¿—ï¼šcommandos 2 or commandos 3
 			version = br.ReadInt16();
 			Debug.Assert(version >= 2 && version <= 4);
 			if (version > 2) version = 3;
 
-			//»ñµÃYCrCbÉ«°åºÍRGBÉ«°å
+			//è·å¾—YCrCbè‰²æ¿å’ŒRGBè‰²æ¿
 			if (version == 2)
 				palette = new YCrCbPalette(br, 48);
 			else
 				palette = new YCrCbPalette(br, 113);
 			rgb = new RGBPalette(palette);
 
-			//»ñµÃÊÓ½ÇÊıºÍÃ¿ÊÓ½ÇµÄÍ¼Æ¬Êı
+			//è·å¾—è§†è§’æ•°å’Œæ¯è§†è§’çš„å›¾ç‰‡æ•°
 			num_view = br.ReadInt32();
 			num_pic_per_view = br.ReadInt32();
 
-			//»ñµÃÃ¿Ò»Í¼Æ¬µÄÆğÊ¼Î»ÖÃ
+			//è·å¾—æ¯ä¸€å›¾ç‰‡çš„èµ·å§‹ä½ç½®
 			ptr_pics = new long[num_view, num_pic_per_view];
 			for (int i = 0; i < num_view; i++)
 				for (int j = 0; j < num_pic_per_view; j++)
@@ -60,7 +60,7 @@ namespace Comm_Y64
 			Debug.Assert(view >= 0 && view < num_view);
 			Debug.Assert(idx >= 0 && idx < num_pic_per_view);
 
-			//Éú³ÉÖ¸¶¨µÄÍ¼Æ¬
+			//ç”ŸæˆæŒ‡å®šçš„å›¾ç‰‡
 			return new Picture(br, ptr_pics[view, idx], version);
 		}
 
@@ -100,56 +100,56 @@ namespace Comm_Y64
 	{
 		public Block[,] blocks; //Block[y,x]
 
-		int zoom;				//Ëõ·ÅµÈ¼¶
-		public int width;		//ÏóËØ¿í
-		public int height;		//ÏóËØ¸ß
-		int num_block;			//block×ÜÊı£¬°üÀ¨extra block£¬²»°üÀ¨null block£¬¼´ÓĞĞ§¿é×ÜÊı
-		int num_xblock;			//extra block×ÜÊı 
+		int zoom;				//ç¼©æ”¾ç­‰çº§
+		public int width;		//è±¡ç´ å®½
+		public int height;		//è±¡ç´ é«˜
+		int num_block;			//blockæ€»æ•°ï¼ŒåŒ…æ‹¬extra blockï¼Œä¸åŒ…æ‹¬null blockï¼Œå³æœ‰æ•ˆå—æ€»æ•°
+		int num_xblock;			//extra blockæ€»æ•° 
 
-		long address;			//Í¼Æ¬ÔÚY64ÎÄ¼şÖĞµÄÆğÊ¼Î»ÖÃ
+		long address;			//å›¾ç‰‡åœ¨Y64æ–‡ä»¶ä¸­çš„èµ·å§‹ä½ç½®
 
 		public Picture(BinaryReader br, long address, int version)
 		{
 			br.BaseStream.Seek(address, SeekOrigin.Begin);
 			this.address = address;
 
-			//¶ÁÈ¡Ëõ·ÅµÈ¼¶¡¢ÏóËØ¿í¡¢¸ß¡¢ÓĞĞ§block¼°extrablock×ÜÊı
+			//è¯»å–ç¼©æ”¾ç­‰çº§ã€è±¡ç´ å®½ã€é«˜ã€æœ‰æ•ˆblockåŠextrablockæ€»æ•°
 			zoom = br.ReadInt32();
 			width = br.ReadInt32();
 			height = br.ReadInt32();
 			num_block = br.ReadInt32();
 			num_xblock = br.ReadInt32();
 
-			//¼ÆËãÕû¸ö»­ÃæÊµ¼ÊËùĞèµÄ64*64Í¼¿éÊı
-			//×¢Òâ´Ë´¦width¡¢height²»Ò»¶¨ÄÜ±»64Õû³ı
+			//è®¡ç®—æ•´ä¸ªç”»é¢å®é™…æ‰€éœ€çš„64*64å›¾å—æ•°
+			//æ³¨æ„æ­¤å¤„widthã€heightä¸ä¸€å®šèƒ½è¢«64æ•´é™¤
 			int W = (width >> 6) + ((width & 63) != 0 ? 1 : 0);
 			int H = (height >> 6) + ((height & 63) != 0 ? 1 : 0);
 
-			//¼ÆËãÃ¿Ò»¸ö64*64Í¼¿éÔÚÎÄ¼şÖĞµÄËùÔÚÎ»ÖÃ
+			//è®¡ç®—æ¯ä¸€ä¸ª64*64å›¾å—åœ¨æ–‡ä»¶ä¸­çš„æ‰€åœ¨ä½ç½®
 			long[,] ptr_block = new long[H, W];
 			switch (version)
 			{
-				case 2://commandos2: ´Ë´¦Îª¶à¸ö16Î»Ë÷Òı£¬Òª¾­¹ıÒ»µÀ¶îÍâ¼ÆËã
+				case 2://commandos2: æ­¤å¤„ä¸ºå¤šä¸ª16ä½ç´¢å¼•ï¼Œè¦ç»è¿‡ä¸€é“é¢å¤–è®¡ç®—
 					for (int h = 0; h < H; h++)
 						for (int w = 0; w < W; w++)
 						{
 							int idx = br.ReadUInt16();
-							if (idx != 0xffff)			//0xffffÎªnull block±ê¼Ç
+							if (idx != 0xffff)			//0xffffä¸ºnull blockæ ‡è®°
 								ptr_block[h, w] = address + 20 + 2 * W * H + 16 * num_xblock + idx * 3592;
 							else
 								ptr_block[h, w] = 0;	//null block
 						}
 					break;
-				case 3: //commandos3: ´Ë´¦Îª¶à¸ö32Î»ÎÄ¼şÎ»ÖÃÖ¸Õë£¬ÎŞĞè¶îÍâ¼ÆËã
+				case 3: //commandos3: æ­¤å¤„ä¸ºå¤šä¸ª32ä½æ–‡ä»¶ä½ç½®æŒ‡é’ˆï¼Œæ— éœ€é¢å¤–è®¡ç®—
 					for (int h = 0; h < H; h++)
 						for (int w = 0; w < W; w++)
-							ptr_block[h, w] = br.ReadInt32();	//commandos3²»´æÔÚnull blockµÄÇé¿ö
+							ptr_block[h, w] = br.ReadInt32();	//commandos3ä¸å­˜åœ¨null blockçš„æƒ…å†µ
 					break;
 				default:
 					Debug.Assert(false); break;
 			}
 
-			//Éú³ÉÃ¿Ò»¸ö64*64Í¼¿é
+			//ç”Ÿæˆæ¯ä¸€ä¸ª64*64å›¾å—
 			blocks = new Block[H, W];
 			for (int h = 0; h < H; h++)
 				for (int w = 0; w < W; w++)
@@ -159,12 +159,12 @@ namespace Comm_Y64
 						blocks[h, w] = null;
 		}
 
-		#region Í¼Æ¬»æÖÆ¡¢±£´æÏà¹Ø
+		#region å›¾ç‰‡ç»˜åˆ¶ã€ä¿å­˜ç›¸å…³
 
-		//¸ßËÙ»æÖÆBitmap£¬²»½øĞĞ²Ã¼ô£¬Í¼Æ¬¿í¡¢¸ß·Ö±ğÊÇW¡¢HµÄÕûÊı±¶
+		//é«˜é€Ÿç»˜åˆ¶Bitmapï¼Œä¸è¿›è¡Œè£å‰ªï¼Œå›¾ç‰‡å®½ã€é«˜åˆ†åˆ«æ˜¯Wã€Hçš„æ•´æ•°å€
 		public unsafe Bitmap DrawAllWithoutCrop(RGBPalette rgb)
 		{
-			//width¡¢height²»Ò»¶¨ÄÜ±»64Õû³ı
+			//widthã€heightä¸ä¸€å®šèƒ½è¢«64æ•´é™¤
 			int W = (width >> 6) + ((width & 63) != 0 ? 1 : 0);
 			int H = (height >> 6) + ((height & 63) != 0 ? 1 : 0);
 
@@ -172,32 +172,32 @@ namespace Comm_Y64
 
 			BitmapData bmpdata = bmp.LockBits(new Rectangle(0, 0, W * 64, H * 64), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-			IntPtr ptr = bmpdata.Scan0;			//BitmapÏóËØÖ¸Õë
-			int pitch = bmpdata.Stride / 4;		//Ò»ĞĞ¶àÉÙ¸öÏóËØ,¶ø²»ÊÇÒ»ĞĞ¶àÉÙ×Ö½Ú!
+			IntPtr ptr = bmpdata.Scan0;			//Bitmapè±¡ç´ æŒ‡é’ˆ
+			int pitch = bmpdata.Stride / 4;		//ä¸€è¡Œå¤šå°‘ä¸ªè±¡ç´ ,è€Œä¸æ˜¯ä¸€è¡Œå¤šå°‘å­—èŠ‚!
 
-			//ÒÀ´Î»æÖÆÃ¿Ò»¸ö64*64Í¼¿é
+			//ä¾æ¬¡ç»˜åˆ¶æ¯ä¸€ä¸ª64*64å›¾å—
 			for (int h = 0; h < H; h++)
 				for (int w = 0; w < W; w++)
 				{
-					int* line = (int*)ptr + h * 64 * pitch + w * 64; //¶¨Î»block
+					int* line = (int*)ptr + h * 64 * pitch + w * 64; //å®šä½block
 
 					Block b = blocks[h, w];
-					if (b == null) //ÓÃ·ÛºìÉ«»æÖÆËùÓĞµÄnull block
+					if (b == null) //ç”¨ç²‰çº¢è‰²ç»˜åˆ¶æ‰€æœ‰çš„null block
 					{
 						int pink = Color.Fuchsia.ToArgb();
 						for (int y = 0; y < 64; y++, line += pitch)
 							for (int x = 0; x < 64; x++)
-								line[x] = pink;//·ÛÉ«Ìî³ä
+								line[x] = pink;//ç²‰è‰²å¡«å……
 					}
 					else
 					{
-						//ÒÀ´Î»æÖÆÃ¿Ò»¸ö8*8×ÓÍ¼¿é
+						//ä¾æ¬¡ç»˜åˆ¶æ¯ä¸€ä¸ª8*8å­å›¾å—
 						for (int sh = 0; sh < 8; sh++)
 							for (int sw = 0; sw < 8; sw++)
 							{
 								SubBlock sb = b.subs[sh, sw];
-								int* p = line + sh * 8 * pitch + sw * 8; //¶¨Î»subblock
-								//ÒÀ´Î»æÖÆ8*8×ÓÍ¼¿éÖĞµÄÃ¿Ò»¸öÏóËØ
+								int* p = line + sh * 8 * pitch + sw * 8; //å®šä½subblock
+								//ä¾æ¬¡ç»˜åˆ¶8*8å­å›¾å—ä¸­çš„æ¯ä¸€ä¸ªè±¡ç´ 
 								for (int y = 0; y < 8; y++, p += pitch)
 									for (int x = 0; x < 8; x++)
 										p[x] = (int)rgb.RGB32[sb.pixels[y, x]];
@@ -210,10 +210,10 @@ namespace Comm_Y64
 			return bmp;
 		}
 
-		//¸ßËÙ»æÖÆBitmap£¬²¢Í¬Ê±½øĞĞ²Ã¼ô£¬²»¹»ÓÅ»¯
+		//é«˜é€Ÿç»˜åˆ¶Bitmapï¼Œå¹¶åŒæ—¶è¿›è¡Œè£å‰ªï¼Œä¸å¤Ÿä¼˜åŒ–
 		public unsafe Bitmap DrawAllWithCrop(RGBPalette rgb)
 		{
-			//width¡¢height²»Ò»¶¨ÄÜ±»64Õû³ı
+			//widthã€heightä¸ä¸€å®šèƒ½è¢«64æ•´é™¤
 			int W = (width >> 6) + ((width & 63) != 0 ? 1 : 0);
 			int H = (height >> 6) + ((height & 63) != 0 ? 1 : 0);
 
@@ -221,18 +221,18 @@ namespace Comm_Y64
 
 			BitmapData bmpdata = bmp.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 
-			IntPtr ptr = bmpdata.Scan0;			//BitmapÏóËØÖ¸Õë
-			int pitch = bmpdata.Stride / 4;		//Ò»ĞĞ¶àÉÙ¸öÏóËØ,¶ø²»ÊÇÒ»ĞĞ¶àÉÙ×Ö½Ú!
+			IntPtr ptr = bmpdata.Scan0;			//Bitmapè±¡ç´ æŒ‡é’ˆ
+			int pitch = bmpdata.Stride / 4;		//ä¸€è¡Œå¤šå°‘ä¸ªè±¡ç´ ,è€Œä¸æ˜¯ä¸€è¡Œå¤šå°‘å­—èŠ‚!
 
-			//ÒÀ´Î»æÖÆÃ¿Ò»¸ö64*64Í¼¿é
+			//ä¾æ¬¡ç»˜åˆ¶æ¯ä¸€ä¸ª64*64å›¾å—
 			for (int h = 0; h < H; h++)
 				for (int w = 0; w < W; w++)
 				{
-					int* line = (int*)ptr + h * 64 * pitch + w * 64; //¶¨Î»block
+					int* line = (int*)ptr + h * 64 * pitch + w * 64; //å®šä½block
 
 					Block b = blocks[h, w];
 
-					if (b == null) //ÓÃ·ÛºìÉ«»æÖÆËùÓĞµÄnull block
+					if (b == null) //ç”¨ç²‰çº¢è‰²ç»˜åˆ¶æ‰€æœ‰çš„null block
 					{
 						int pink = Color.Fuchsia.ToArgb();
 
@@ -245,22 +245,22 @@ namespace Comm_Y64
 							for (int x = 0; x < 64; x++, abx++)
 							{
 								if (abx >= width) break;
-								line[x] = pink;//·ÛÉ«Ìî³ä
+								line[x] = pink;//ç²‰è‰²å¡«å……
 							}
 							line += pitch;
 						}
-						continue; //¼ÌĞø»­ÏÂÒ»¸öÍ¼¿é
+						continue; //ç»§ç»­ç”»ä¸‹ä¸€ä¸ªå›¾å—
 					}
 
-					//ÒÀ´Î»æÖÆÃ¿Ò»¸ö8*8×ÓÍ¼¿é
+					//ä¾æ¬¡ç»˜åˆ¶æ¯ä¸€ä¸ª8*8å­å›¾å—
 					for (int sh = 0; sh < 8; sh++)
 					{
 						for (int sw = 0; sw < 8; sw++)
 						{
 							SubBlock sb = b.subs[sh, sw];
-							int* p = line + sh * 8 * pitch + sw * 8; //¶¨Î»subblock
+							int* p = line + sh * 8 * pitch + sw * 8; //å®šä½subblock
 
-							//ÒÀ´Î»æÖÆ8*8×ÓÍ¼¿éÖĞµÄÃ¿Ò»¸öÏóËØ
+							//ä¾æ¬¡ç»˜åˆ¶8*8å­å›¾å—ä¸­çš„æ¯ä¸€ä¸ªè±¡ç´ 
 							int aby = h * 64 + sh * 8;
 							for (int y = 0; y < 8; y++, aby++)
 							{
@@ -283,14 +283,14 @@ namespace Comm_Y64
 			return bmp;
 		}
 
-		//ÒÔÖ¸¶¨¸ñÊ½±£´æÍ¼Æ¬
+		//ä»¥æŒ‡å®šæ ¼å¼ä¿å­˜å›¾ç‰‡
 		public void SaveToFile(string fn, ImageFormat format, RGBPalette rgb)
 		{
 			Bitmap bmp = DrawAllWithCrop(rgb);
 			bmp.Save(fn, format);
 			bmp.Dispose();
 
-			//¶ÔDrawAllÉú³ÉµÄW*64-H*64½øĞĞÕæÊµ³ß´çCrop£¬Ã²ËÆ´ú¼Û»¹ÊÇºÜ¸ß£¬×îºÃÓÃ¶¨ÒåµÄDrawÀ´ÊµÏÖ
+			//å¯¹DrawAllç”Ÿæˆçš„W*64-H*64è¿›è¡ŒçœŸå®å°ºå¯¸Cropï¼Œè²Œä¼¼ä»£ä»·è¿˜æ˜¯å¾ˆé«˜ï¼Œæœ€å¥½ç”¨å®šä¹‰çš„Drawæ¥å®ç°
 			//Bitmap dest = bmp.Clone(new Rectangle(0, 0, width, height), PixelFormat.Format32bppArgb);		
 			//bmp.Dispose();
 
@@ -304,22 +304,22 @@ namespace Comm_Y64
 	public class Block
 	{
 		public SubBlock[,] subs;	//SubBlock[y,x]
-		long address;				//64*64Í¼¿éÔÚY64ÎÄ¼şÖĞµÄÆğÊ¼Î»ÖÃ
+		long address;				//64*64å›¾å—åœ¨Y64æ–‡ä»¶ä¸­çš„èµ·å§‹ä½ç½®
 
 		public Block(BinaryReader br, long address)
 		{
 			this.address = address;
 			br.BaseStream.Seek(address, SeekOrigin.Begin);
 
-			//Ìø¹ıSeperator£¬Ëü²»Ò»¶¨ÊÇ0xffffffffffffffff!
+			//è·³è¿‡Seperatorï¼Œå®ƒä¸ä¸€å®šæ˜¯0xffffffffffffffff!
 			br.BaseStream.Seek(8, SeekOrigin.Current);
 
 			subs = new SubBlock[8, 8];
 			for (int h = 0; h < 8; h++)
 				for (int w = 0; w < 8; w++)
 				{
-					//ÒÀ´Î¼ÆËã¸÷8*8×ÓÍ¼¿éµÄÆğÊ¼Î»ÖÃ£¬²¢Éú³É¸÷×ÓÍ¼¿é
-					long off = address + 8 + 56 * (h * 8 + w); //Ã¿¸ösubblock³¤56×Ö½Ú
+					//ä¾æ¬¡è®¡ç®—å„8*8å­å›¾å—çš„èµ·å§‹ä½ç½®ï¼Œå¹¶ç”Ÿæˆå„å­å›¾å—
+					long off = address + 8 + 56 * (h * 8 + w); //æ¯ä¸ªsubblocké•¿56å­—èŠ‚
 					subs[h, w] = new SubBlock(br, off);
 				}
 		}
@@ -328,30 +328,30 @@ namespace Comm_Y64
 	public class SubBlock
 	{
 		public int[,] pixels;	//pixels[y,x]
-		long address;			//8*8×ÓÍ¼¿éµÄÎÄ¼şÆğÊ¼Î»ÖÃ
+		long address;			//8*8å­å›¾å—çš„æ–‡ä»¶èµ·å§‹ä½ç½®
 
 		public SubBlock(BinaryReader br, long address)
 		{
 			this.address = address;
 			br.BaseStream.Seek(address, SeekOrigin.Begin);
 
-			//Ã¿Ò»¸öpixelsÔªËØ¾ùÎªYCbCrÈı·ÖÁ¿µÄºÏ³ÉÊ¸Á¿
-			//Æä¿ÉÊÓÎªÊÇ¶ÔRGBÉ«°åµÄË÷Òı
+			//æ¯ä¸€ä¸ªpixelså…ƒç´ å‡ä¸ºYCbCrä¸‰åˆ†é‡çš„åˆæˆçŸ¢é‡
+			//å…¶å¯è§†ä¸ºæ˜¯å¯¹RGBè‰²æ¿çš„ç´¢å¼•
 			pixels = new int[8, 8];
 
-			DecodeDS0(br); //½âÂëY·ÖÁ¿µÄ¸ß4Î»
+			DecodeDS0(br); //è§£ç Yåˆ†é‡çš„é«˜4ä½
 			br.ReadInt16();
-			DecodeDS1(br); //½âÂëCb¡¢Cr·ÖÁ¿
-			DecodeDS2(br); //½âÂëY·ÖÁ¿µÄµÍ4Î»
+			DecodeDS1(br); //è§£ç Cbã€Cråˆ†é‡
+			DecodeDS2(br); //è§£ç Yåˆ†é‡çš„ä½4ä½
 		}
 
-		#region Î´ÓÅ»¯µÄDS0¡¢DS1½âÂë¹ı³Ì
+		#region æœªä¼˜åŒ–çš„DS0ã€DS1è§£ç è¿‡ç¨‹
 		/*
-		public void DecodeDS0(BinaryReader br) //Î´ÓÅ»¯µÄÔ­Ê¼°æ±¾
+		public void DecodeDS0(BinaryReader br) //æœªä¼˜åŒ–çš„åŸå§‹ç‰ˆæœ¬
 		{
 			int[,] DS0=new int[2,2];
 
-			for (int y=1;y>=0;y--) //·´£¡
+			for (int y=1;y>=0;y--) //åï¼
 			{
 				int t=br.ReadByte();
 				DS0[y,0] = t >> 4;
@@ -363,10 +363,10 @@ namespace Comm_Y64
 					pixels[y, x] |= (DS0[y / 4, x / 4] << 4);
 		}
 
-		public void DecodeDS1(BinaryReader br) //Î´ÓÅ»¯µÄÔ­Ê¼°æ±¾
+		public void DecodeDS1(BinaryReader br) //æœªä¼˜åŒ–çš„åŸå§‹ç‰ˆæœ¬
 		{
 			byte[] DS1 = br.ReadBytes(20);
-			for (int j = 0; j < 5; j++) //Ã¿4×Ö½Ú·´×ª
+			for (int j = 0; j < 5; j++) //æ¯4å­—èŠ‚åè½¬
 			{
 				byte t;
 				int i = j * 4;
@@ -401,35 +401,35 @@ namespace Comm_Y64
 		*/
 		#endregion
 
-		public void DecodeDS0(BinaryReader br) //DS0½âÂë¼ÓËÙ°æ
+		public void DecodeDS0(BinaryReader br) //DS0è§£ç åŠ é€Ÿç‰ˆ
 		{
-			ushort DS0 = br.ReadUInt16();//2×Ö½Ú·´×ª
+			ushort DS0 = br.ReadUInt16();//2å­—èŠ‚åè½¬
 
 			int i, j;
 			for (int y = 0; y < 8; y++)
 				for (int x = 0; x < 8; x++)
 				{
 					//i = (y / 4 * 2 + x / 4) * 4;
-					i = (((y >> 1) & 14) + (x >> 2)) << 2; //ÓëÉÏÊ½µÈ¼Û
+					i = (((y >> 1) & 14) + (x >> 2)) << 2; //ä¸ä¸Šå¼ç­‰ä»·
 					j = ((DS0 << i) & 0xffff) >> 12;
 
 					pixels[y, x] |= j << 4;
 				}
 		}
 
-		public void DecodeDS1(BinaryReader br) //ÇáÎ¢ÓÅ»¯µÄDS1½âÂë¹ı³Ì
+		public void DecodeDS1(BinaryReader br) //è½»å¾®ä¼˜åŒ–çš„DS1è§£ç è¿‡ç¨‹
 		{
 			byte[] DS1 = br.ReadBytes(20);
 
-			//4¸ö×Ö½Ú4¸ö×Ö½ÚÒ»·´×ª
-			for (int j = 0; j < 5; j++) //Ã¿Ò»´Î4×Ö½Ú·´×ªĞèÒª2´Î±äÁ¿½»»»
+			//4ä¸ªå­—èŠ‚4ä¸ªå­—èŠ‚ä¸€åè½¬
+			for (int j = 0; j < 5; j++) //æ¯ä¸€æ¬¡4å­—èŠ‚åè½¬éœ€è¦2æ¬¡å˜é‡äº¤æ¢
 			{
 				int i = j << 2;
 				DS1[i] ^= DS1[i + 3]; DS1[i + 3] ^= DS1[i]; DS1[i] ^= DS1[i + 3];
 				DS1[i + 1] ^= DS1[i + 2]; DS1[i + 2] ^= DS1[i + 1]; DS1[i + 1] ^= DS1[i + 2];
 			}
 
-			//5¸ö×Ö½Ú5¸ö×Ö½ÚÒ»¿³¶Ï£¬¿³¶Ï³ÉÈô¸É10bits
+			//5ä¸ªå­—èŠ‚5ä¸ªå­—èŠ‚ä¸€ç æ–­ï¼Œç æ–­æˆè‹¥å¹²10bits
 			int A, B, C, D, E;
 			int[] Ret = new int[4];
 			for (int i = 0; i < 4; i++)
@@ -451,11 +451,11 @@ namespace Comm_Y64
 			}
 		}
 
-		public void DecodeDS2(BinaryReader br) //ÎŞĞèÌØ±ğÓÅ»¯
+		public void DecodeDS2(BinaryReader br) //æ— éœ€ç‰¹åˆ«ä¼˜åŒ–
 		{
 			int t;
 			for (int y = 0; y < 8; y++)
-				for (int i = 3; i >= 0; i--) //Ã¿4×Ö½Ú·´×ª!
+				for (int i = 3; i >= 0; i--) //æ¯4å­—èŠ‚åè½¬!
 				{
 					t = br.ReadByte();
 					pixels[y, i << 1] |= (t >> 4);
@@ -470,7 +470,7 @@ namespace Comm_Y64
 		public byte[] Cb; //5bit
 		public byte[] Cr; //5bit;
 
-		long address;     //palette DBÔÚÎÄ¼şÖĞµÄÆğÊ¼Î»ÖÃ
+		long address;     //palette DBåœ¨æ–‡ä»¶ä¸­çš„èµ·å§‹ä½ç½®
 
 		public YCrCbPalette(BinaryReader br, long address)
 		{
@@ -485,19 +485,19 @@ namespace Comm_Y64
 
 	public class RGBPalette
 	{
-		public uint[] RGB32 = new uint[(1 << 18)]; //ÕıºÃ1M Bytes
+		public uint[] RGB32 = new uint[(1 << 18)]; //æ­£å¥½1M Bytes
 
-		//RGBÉ«°åÊÇ¸ù¾İYCrCbPaletteÖĞµÄÈıÉ«·ÖÁ¿É«°åÉú³ÉµÄ
+		//RGBè‰²æ¿æ˜¯æ ¹æ®YCrCbPaletteä¸­çš„ä¸‰è‰²åˆ†é‡è‰²æ¿ç”Ÿæˆçš„
 		public RGBPalette(YCrCbPalette ycc)
 		{
 			for (int y = 0; y < 256; y++)
 				for (int cr = 0; cr < 32; cr++)
 					for (int cb = 0; cb < 32; cb++)
-						//ÒÔYCbCrÈı·ÖÁ¿µÄºÏ³ÉÊ¸Á¿×÷ÎªRGBÉ«°åË÷Òı
+						//ä»¥YCbCrä¸‰åˆ†é‡çš„åˆæˆçŸ¢é‡ä½œä¸ºRGBè‰²æ¿ç´¢å¼•
 						RGB32[(cb << 13) | (cr << 8) | y] = YCbCr2RGB(ycc.Y[y], ycc.Cb[cb], ycc.Cr[cr]);
 		}
 
-		public uint YCbCr2RGB(int Y, int Cb, int Cr) //½«YCbCr×ª»»³ÉARGB
+		public uint YCbCr2RGB(int Y, int Cb, int Cr) //å°†YCbCrè½¬æ¢æˆARGB
 		{
 			int R, G, B;
 			R = (int)(Y + 1.402 * (Cr - 128));

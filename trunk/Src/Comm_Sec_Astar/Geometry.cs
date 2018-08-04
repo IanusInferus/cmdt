@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -8,8 +8,8 @@ namespace Comm_Sec_Astar
 {
 	class WayPoint
 	{
-		public Vector2 inter; //Éä³öµã
-		public int poly_idx;  //¸ÃwpÓëÉÏÒ»wpÖ®¼äËù´©Ô½µÄ¶à±ßĞÎ±àºÅ
+		public Vector2 inter; //å°„å‡ºç‚¹
+		public int poly_idx;  //è¯¥wpä¸ä¸Šä¸€wpä¹‹é—´æ‰€ç©¿è¶Šçš„å¤šè¾¹å½¢ç¼–å·
 
 		public WayPoint() { }
 		public WayPoint(Vector2 inter, int poly_idx)
@@ -21,11 +21,11 @@ namespace Comm_Sec_Astar
 
 	enum LOS_RESULT { CLEAR, BLOCKED, FAILED };
 
-	//Belong_Status.Polygon		: Î»ÓÚÄ³¶à±ßĞÎÖĞ
-	//Belong_Status.Edge		: Î»ÓÚÄ³±ßÉÏ 
-	//Belong_Status.Vertex		: Î»ÓÚÄ³¶¥µãÉÏ
-	//Belong_Status.OutOfPolygon: ÔÚÄ³¶à±ßĞÎÖ®Íâ
-	//Belong_Status.Invalid		: ÔÚµ¼º½Íø¸ñµÄºÏ·¨·¶Î§Ö®Íâ
+	//Belong_Status.Polygon		: ä½äºæŸå¤šè¾¹å½¢ä¸­
+	//Belong_Status.Edge		: ä½äºæŸè¾¹ä¸Š 
+	//Belong_Status.Vertex		: ä½äºæŸé¡¶ç‚¹ä¸Š
+	//Belong_Status.OutOfPolygon: åœ¨æŸå¤šè¾¹å½¢ä¹‹å¤–
+	//Belong_Status.Invalid		: åœ¨å¯¼èˆªç½‘æ ¼çš„åˆæ³•èŒƒå›´ä¹‹å¤–
 	enum Belong_Status { Polygon, Edge, Vertex, OutOfPolygon, Invalid };
 
 	class Geometry
@@ -41,11 +41,11 @@ namespace Comm_Sec_Astar
 			polys = p;
 		}
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ¿ìËÙ¼ì²âµã´¦ÓÚÄÄ¸ö¶à±ßĞÎÖĞ
+		#region å¿«é€Ÿæ£€æµ‹ç‚¹å¤„äºå“ªä¸ªå¤šè¾¹å½¢ä¸­
 		
-		//¿ìËÙ¼ì²âµãµÄÎ»ÖÃ
-		//- retobj: ÒªÃ´·µ»ØÒ»¸ö¶à±ßĞÎ£¬ÒªÃ´·µ»ØÒ»Ìõ±ß£¬ÒªÃ´·µ»ØÒ»¸öµã
-		//- ·µ»ØÖµ: true£¬³É¹¦¼ì²â³öÁËµãµÄÎ»ÖÃ£»false£¬µã´¦ÓÚ²»ºÏ·¨Î»ÖÃ
+		//å¿«é€Ÿæ£€æµ‹ç‚¹çš„ä½ç½®
+		//- retobj: è¦ä¹ˆè¿”å›ä¸€ä¸ªå¤šè¾¹å½¢ï¼Œè¦ä¹ˆè¿”å›ä¸€æ¡è¾¹ï¼Œè¦ä¹ˆè¿”å›ä¸€ä¸ªç‚¹
+		//- è¿”å›å€¼: trueï¼ŒæˆåŠŸæ£€æµ‹å‡ºäº†ç‚¹çš„ä½ç½®ï¼›falseï¼Œç‚¹å¤„äºä¸åˆæ³•ä½ç½®
 		public Belong_Status GetPointLocation(Vector2 p,out Object retobj)
 		{
 			retobj = null;
@@ -63,7 +63,7 @@ namespace Comm_Sec_Astar
 					if (result == Belong_Status.Polygon)
 					{
 						ret = result; retobj = obj;
-						Debug.WriteLine(string.Format("(µãÎ»ÖÃ¼ì²â) P:{0}", poly.idx));
+						Debug.WriteLine(string.Format("(ç‚¹ä½ç½®æ£€æµ‹) P:{0}", poly.idx));
 						break;
 					}
 					else if (result == Belong_Status.Edge)
@@ -71,7 +71,7 @@ namespace Comm_Sec_Astar
 						ret = result; retobj = obj;
 
 						Edge e = (Edge)obj;
-						Debug.WriteLine(string.Format("(µãÎ»ÖÃ¼ì²â) P:{0} E:({1}-{2})", poly.idx, e.belong_poly, e.neighbor_poly));
+						Debug.WriteLine(string.Format("(ç‚¹ä½ç½®æ£€æµ‹) P:{0} E:({1}-{2})", poly.idx, e.belong_poly, e.neighbor_poly));
 						break;
 					}
 					else if (result == Belong_Status.Vertex)
@@ -79,7 +79,7 @@ namespace Comm_Sec_Astar
 						ret = result; retobj = obj;
 
 						FPoint pos = (FPoint)obj;
-						Debug.WriteLine(string.Format("(µãÎ»ÖÃ¼ì²â) P:{0} V:({1},{2})", poly.idx, pos.x, pos.y));
+						Debug.WriteLine(string.Format("(ç‚¹ä½ç½®æ£€æµ‹) P:{0} V:({1},{2})", poly.idx, pos.x, pos.y));
 						break;
 					}
 				}
@@ -87,14 +87,14 @@ namespace Comm_Sec_Astar
 			return ret;
 		}
 
-		//µãÓëµ¥¸ö¶à±ßĞÎµÄ¹ØÏµ¼ì²â
-		//- Èç¹ûµãÔÚ¶à±ßĞÎÄÚ²¿£¬retobj·µ»Ø¸Ã¶à±ßĞÎ
-		//- Èç¹ûµãÔÚ¶à±ßĞÎµÄ±ßÉÏ£¬retobj·µ»Ø¸Ã±ß
-		//- Èç¹ûµãÔÚ¶à±ßĞÎµÄ¶¥µãÉÏ£¬retobj·µ»Ø¸Ãµã
-		//- Èç¹ûµãÔÚ¶à±ßĞÎÖ®Íâ£¬retobj·µ»Ønull
+		//ç‚¹ä¸å•ä¸ªå¤šè¾¹å½¢çš„å…³ç³»æ£€æµ‹
+		//- å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢å†…éƒ¨ï¼Œretobjè¿”å›è¯¥å¤šè¾¹å½¢
+		//- å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢çš„è¾¹ä¸Šï¼Œretobjè¿”å›è¯¥è¾¹
+		//- å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢çš„é¡¶ç‚¹ä¸Šï¼Œretobjè¿”å›è¯¥ç‚¹
+		//- å¦‚æœç‚¹åœ¨å¤šè¾¹å½¢ä¹‹å¤–ï¼Œretobjè¿”å›null
 		public Belong_Status PointPolygonRelationshipTest(Vector2 pos, Polygon poly,out Object retobj)
 		{
-			//Ä¬ÈÏÇé¿ö£ºµã´¦ÓÚ¶à±ßĞÎÒÔÄÚ
+			//é»˜è®¤æƒ…å†µï¼šç‚¹å¤„äºå¤šè¾¹å½¢ä»¥å†…
 			retobj = poly;
 			Belong_Status result = Belong_Status.Polygon;
 
@@ -105,28 +105,28 @@ namespace Comm_Sec_Astar
 
 				float test = Vector2.Ccw(between, from);
 
-				if (FloatEqual(test, 0))						//ÔÚ±ßÉÏ»òÔÚ¶¥µãÉÏ
+				if (FloatEqual(test, 0))						//åœ¨è¾¹ä¸Šæˆ–åœ¨é¡¶ç‚¹ä¸Š
 				{
 					Vector2 to = new Vector2(pos.X - e.to.x, pos.Y - e.to.y);
 
-					if (FloatEqual(from.LengthSq(), 0))			//ÔÚ¶¥µãe.fromÉÏ
+					if (FloatEqual(from.LengthSq(), 0))			//åœ¨é¡¶ç‚¹e.fromä¸Š
 					{
 						retobj = e.from;
 						result = Belong_Status.Vertex;
 					} 
-					else if (FloatEqual(to.LengthSq(), 0))		//ÔÚ¶¥µãe.toÉÏ
+					else if (FloatEqual(to.LengthSq(), 0))		//åœ¨é¡¶ç‚¹e.toä¸Š
 					{
 						retobj = e.to;
 						result = Belong_Status.Vertex;
 					}
-					else										//ÔÚ±ßÉÏ
+					else										//åœ¨è¾¹ä¸Š
 					{
 						retobj = e;
 						result = Belong_Status.Edge;
 					}
 					break;
 				}
-				if (test < 0)									//µã´¦ÓÚpolygonÖ®Íâ
+				if (test < 0)									//ç‚¹å¤„äºpolygonä¹‹å¤–
 				{
 					retobj = null;
 					result = Belong_Status.OutOfPolygon;
@@ -137,22 +137,22 @@ namespace Comm_Sec_Astar
 		}
 		#endregion
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region LOSÊÓÏß¼ì²âÏà¹Ø
+		#region LOSè§†çº¿æ£€æµ‹ç›¸å…³
 
 		//---------------------------------------------------------------------------------------------------------
-		//ËÉ³ÚÁÆ·¨£¬Î¢µ÷pos£¬Ö±µ½¸ÃµãÕæÕıµØ´¦ÓÚÄ³¸ö¶à±ßĞÎÖĞÎªÖ¹
-		//¡¾ÒÅÁôÎÊÌâ¡¿Ã»ÓĞ¿¼ÂÇËÉ³Ú¹ı³ÌÖĞ·¢Éú½øÈë²»¿É½øÈëÇøÓòµÄÇé¿ö
+		//æ¾å¼›ç–—æ³•ï¼Œå¾®è°ƒposï¼Œç›´åˆ°è¯¥ç‚¹çœŸæ­£åœ°å¤„äºæŸä¸ªå¤šè¾¹å½¢ä¸­ä¸ºæ­¢
+		//ã€é—ç•™é—®é¢˜ã€‘æ²¡æœ‰è€ƒè™‘æ¾å¼›è¿‡ç¨‹ä¸­å‘ç”Ÿè¿›å…¥ä¸å¯è¿›å…¥åŒºåŸŸçš„æƒ…å†µ
 		Belong_Status RelaxPostion(ref Vector2 pos, out Polygon poly)
 		{
 			Vector2 p = pos;		
 
 			Object obj = null;
-			Belong_Status ret = GetPointLocation(p, out obj); //µÚÒ»´Î
+			Belong_Status ret = GetPointLocation(p, out obj); //ç¬¬ä¸€æ¬¡
 			
 			if (ret == Belong_Status.Invalid)
 			{
 					poly = null;
-					return ret; //²»ÓÃËÉ³ÚÁË£¬Ö±½Ó·µ»Ø
+					return ret; //ä¸ç”¨æ¾å¼›äº†ï¼Œç›´æ¥è¿”å›
 			}
 
 			Random rand = new Random((int)DateTime.Now.Ticks);
@@ -171,7 +171,7 @@ namespace Comm_Sec_Astar
 		}
 
 		//---------------------------------------------------------------------------------------------------------
-		//from:Æğµã£»to:ÖÕµã£»waypoint:ËùÓĞÊÓÏßÍ¾¾­Î»µã
+		//from:èµ·ç‚¹ï¼›to:ç»ˆç‚¹ï¼›waypoint:æ‰€æœ‰è§†çº¿é€”ç»ä½ç‚¹
 		public LOS_RESULT LOS_Test(Vector2 from, Vector2 to, out List<WayPoint> waypoint)
 		{
 			Belong_Status ret;
@@ -179,29 +179,29 @@ namespace Comm_Sec_Astar
 			
 			////////////////////////////////////////////////////////////////////////////////////////
 			Polygon dstpoly;
-			Debug.Write("(Ä¿±ê) ");		
-			ret = RelaxPostion(ref to, out dstpoly); //ËÉ³ÚÄ¿±êµã	
+			Debug.Write("(ç›®æ ‡) ");		
+			ret = RelaxPostion(ref to, out dstpoly); //æ¾å¼›ç›®æ ‡ç‚¹	
 			if (ret != Belong_Status.Polygon || !dstpoly.enterable)
 			{
 				waypoint = null;
-				return LOS_RESULT.FAILED;  //Ä¿±êµã²»ºÏ·¨
+				return LOS_RESULT.FAILED;  //ç›®æ ‡ç‚¹ä¸åˆæ³•
 			}
 
-			int dstidx = dstpoly.idx; //¹Ø¼ü£¡Ä¿±êµãËù´¦µÄ¶à±ßĞÎ
+			int dstidx = dstpoly.idx; //å…³é”®ï¼ç›®æ ‡ç‚¹æ‰€å¤„çš„å¤šè¾¹å½¢
 			
 			////////////////////////////////////////////////////////////////////////////////////////
 			Polygon srcpoly;
-			Debug.Write("(Ô´µã) ");
-			ret = RelaxPostion(ref from, out srcpoly); //ËÉ³ÚÔ´µã	
+			Debug.Write("(æºç‚¹) ");
+			ret = RelaxPostion(ref from, out srcpoly); //æ¾å¼›æºç‚¹	
 			if (ret != Belong_Status.Polygon || !srcpoly.enterable)
 			{
 				waypoint = null;
-				return LOS_RESULT.FAILED; //Ô´µã²»ºÏ·¨
+				return LOS_RESULT.FAILED; //æºç‚¹ä¸åˆæ³•
 			}
 			
 			////////////////////////////////////////////////////////////////////////////////////////
 			w = new List<WayPoint>();
-			w.Add(new WayPoint(from, -1)); //ÕâÊÇ¶ÔµÄ£¡
+			w.Add(new WayPoint(from, -1)); //è¿™æ˜¯å¯¹çš„ï¼
 			PrintDebugPosition(-1, from);
 
 			////////////////////////////////////////////////////////////////////////////////////////	
@@ -211,10 +211,10 @@ namespace Comm_Sec_Astar
 			////////////////////////////////////////////////////////////////////////////////////////
 			LOS_RESULT los=LOS_RESULT.FAILED;
 
-			if (!FloatEqual(n0.LengthSq(),0))  //from/toÁ½µã²»ÈİĞíÖØºÏ
+			if (!FloatEqual(n0.LengthSq(),0))  //from/toä¸¤ç‚¹ä¸å®¹è®¸é‡åˆ
 			{
 				Debug.Assert(ret == Belong_Status.Polygon);			
-				los = StartLOS_P(n0, from, srcpoly, dstidx); //´Ë¿ÌfromÔÚsrcpolyÄÚ²¿
+				los = StartLOS_P(n0, from, srcpoly, dstidx); //æ­¤åˆ»fromåœ¨srcpolyå†…éƒ¨
 			}
 
 			if (los == LOS_RESULT.CLEAR)
@@ -223,7 +223,7 @@ namespace Comm_Sec_Astar
 				PrintDebugPosition(dstidx, to);
 			}
 
-			Debug.WriteLine(string.Format("({0}) ¹²¼Æ {1} ¸öÎ»µã", los.ToString(),w.Count));
+			Debug.WriteLine(string.Format("({0}) å…±è®¡ {1} ä¸ªä½ç‚¹", los.ToString(),w.Count));
 			Debug.WriteLine("----------------------------------------------------");
 
 			waypoint = w;
@@ -233,7 +233,7 @@ namespace Comm_Sec_Astar
 		//---------------------------------------------------------------------------------------------------------
 		List<WayPoint> w;
 
-		//µ÷ÓÃ¸Ãº¯ÊıÊ±£¬ÔÚ´ó¶àÊıÇé¿öÏÂ£¬p0ÔÚtargetµÄÄÚ²¿¡¢±ß»òµãÉÏ
+		//è°ƒç”¨è¯¥å‡½æ•°æ—¶ï¼Œåœ¨å¤§å¤šæ•°æƒ…å†µä¸‹ï¼Œp0åœ¨targetçš„å†…éƒ¨ã€è¾¹æˆ–ç‚¹ä¸Š
 		LOS_RESULT StartLOS_P(Vector2 n0, Vector2 p0, Polygon target, int dstidx)
 		{
 			LOS_RESULT los = LOS_RESULT.FAILED;
@@ -242,7 +242,7 @@ namespace Comm_Sec_Astar
 			{
 				los = LOS_RESULT.CLEAR;
 			}
-			else //±£Ö¤srcÓëdstµã²»´¦ÓÚÍ¬Ò»¶à±ßĞÎ
+			else //ä¿è¯srcä¸dstç‚¹ä¸å¤„äºåŒä¸€å¤šè¾¹å½¢
 			{
 				int i;
 				for (i = 0; i < target.num_edges; i++)
@@ -257,12 +257,12 @@ namespace Comm_Sec_Astar
 					float ra = Vector2.Ccw(from, n0);
 					float rb = Vector2.Ccw(to, n0);
 
-					bool ta = FloatEqual(ra, 0); //V cross V = ÁãÊ¸Á¿ 
+					bool ta = FloatEqual(ra, 0); //V cross V = é›¶çŸ¢é‡ 
 					bool tb = FloatEqual(rb, 0);
 
 					/*
-					//ÌØÊâÇé¿ö1£º´©³öÊÓÏßÓë¶à±ßĞÎÄ³±ßÍêÈ«ÖØºÏ£¬¼ÆËã¾«¶Èµ¼ÖÂ
-					if (ta && tb) //from/to/p0-n0ÈıÕß¹²Ïß
+					//ç‰¹æ®Šæƒ…å†µ1ï¼šç©¿å‡ºè§†çº¿ä¸å¤šè¾¹å½¢æŸè¾¹å®Œå…¨é‡åˆï¼Œè®¡ç®—ç²¾åº¦å¯¼è‡´
+					if (ta && tb) //from/to/p0-n0ä¸‰è€…å…±çº¿
 					{
 						if (edge.neighbor_poly == dstidx || edge.belong_poly==dstidx )
 						{
@@ -276,14 +276,14 @@ namespace Comm_Sec_Astar
 							float da = Vector2.Dot(from, n0);
 							float db = Vector2.Dot(to, n0);
 
-							if (FloatEqual(da, 1))			//fromÓën0Í¬Ïò
+							if (FloatEqual(da, 1))			//fromä¸n0åŒå‘
 								pos = edge.from.ToVector2();
-							else if (FloatEqual(db, 1))		//toÓën0Í¬Ïò
+							else if (FloatEqual(db, 1))		//toä¸n0åŒå‘
 								pos = edge.to.ToVector2();
 							else
-								Debug.Assert(false);		//Ó¦¸Ã²»¿ÉÄÜ
+								Debug.Assert(false);		//åº”è¯¥ä¸å¯èƒ½
 
-							w.Add(new WayPoint(pos, edge.belong_poly)); //×îºÃÈ¡e.belong_poly£¬È¡e.neighbor_polyÓĞ¿ÉÄÜ==-1
+							w.Add(new WayPoint(pos, edge.belong_poly)); //æœ€å¥½å–e.belong_polyï¼Œå–e.neighbor_polyæœ‰å¯èƒ½==-1
 							PrintDebugPosition(edge.belong_poly, pos);
 
 							los = StartLOS_V(n0, pos, dstidx);
@@ -291,15 +291,15 @@ namespace Comm_Sec_Astar
 						}
 					}
 
-					//ÌØÊâÇé¿ö2£º´©³öµãÕıºÃÊÇ¶à±ßĞÎµÄÒ»¸ö¶¥µã
-					//if (ta || tb) £ºÕâ¾ä»°µ¼ÖÂËÀÑ­»·£¬ËüÃ»ÓĞÅÅ³ıÉäÈë±ßµÄÇé¿ö
-					if ((ta && rb < 0) || (ra > 0 && tb)) //ta || tb ÇÒ±£Ö¤±ßÎª´©³ö±ß
+					//ç‰¹æ®Šæƒ…å†µ2ï¼šç©¿å‡ºç‚¹æ­£å¥½æ˜¯å¤šè¾¹å½¢çš„ä¸€ä¸ªé¡¶ç‚¹
+					//if (ta || tb) ï¼šè¿™å¥è¯å¯¼è‡´æ­»å¾ªç¯ï¼Œå®ƒæ²¡æœ‰æ’é™¤å°„å…¥è¾¹çš„æƒ…å†µ
+					if ((ta && rb < 0) || (ra > 0 && tb)) //ta || tb ä¸”ä¿è¯è¾¹ä¸ºç©¿å‡ºè¾¹
 					{
 						Vector2 pos = new Vector2();
 						if (ta) pos = edge.from.ToVector2();
 						if (tb) pos = edge.to.ToVector2();
 
-						w.Add(new WayPoint(pos, edge.belong_poly)); //×îºÃÈ¡e.belong_poly£¬È¡e.neighbor_polyÓĞ¿ÉÄÜ==-1
+						w.Add(new WayPoint(pos, edge.belong_poly)); //æœ€å¥½å–e.belong_polyï¼Œå–e.neighbor_polyæœ‰å¯èƒ½==-1
 						PrintDebugPosition(edge.belong_poly, pos);
 
 						los = StartLOS_V(n0, pos, dstidx);
@@ -307,16 +307,16 @@ namespace Comm_Sec_Astar
 					}
 					*/
 
-					//ÆÕÍ¨Çé¿ö£º´©³öµãÔÚ¶à±ßĞÎµÄ±ßÉÏ
-					if (ra > 0 && rb < 0) //ÕÒµ½´©³ö±ß£¬¼´fromÔÚn0×ó±ß£¬toÔÚn0ÓÒ±ß
+					//æ™®é€šæƒ…å†µï¼šç©¿å‡ºç‚¹åœ¨å¤šè¾¹å½¢çš„è¾¹ä¸Š
+					if (ra > 0 && rb < 0) //æ‰¾åˆ°ç©¿å‡ºè¾¹ï¼Œå³fromåœ¨n0å·¦è¾¹ï¼Œtoåœ¨n0å³è¾¹
 					{
-						//ÔÚÈ·ĞÅÉäÏßÓë´©³ö±ßÏà½»ºó£¬ÇóÆä½»µã
+						//åœ¨ç¡®ä¿¡å°„çº¿ä¸ç©¿å‡ºè¾¹ç›¸äº¤åï¼Œæ±‚å…¶äº¤ç‚¹
 						Vector2 pos = CrossedRayLineSegIntersection(n0, p0, edge.from.ToVector2(), edge.to.ToVector2());
 
 						w.Add(new WayPoint(pos, edge.belong_poly));
 						PrintDebugPosition(edge.belong_poly, pos);
 
-						if (!edge.wall) //´©³ö±ßÊÇ¿ÉÒÔ´©Í¸µÄÃ´£¿
+						if (!edge.wall) //ç©¿å‡ºè¾¹æ˜¯å¯ä»¥ç©¿é€çš„ä¹ˆï¼Ÿ
 						{
 							Polygon newtarget = polys[edge.neighbor_poly];
 							if (newtarget.idx == dstidx)
@@ -327,10 +327,10 @@ namespace Comm_Sec_Astar
 						else
 							los = LOS_RESULT.BLOCKED;
 
-						break; //Ö»ÓĞÒ»¸ù´©³ö±ß£¬ÕÒµ½ÁË¾ÍoverÁË
+						break; //åªæœ‰ä¸€æ ¹ç©¿å‡ºè¾¹ï¼Œæ‰¾åˆ°äº†å°±overäº†
 					}
 				}
-				Debug.Assert(i != target.num_edges); //È·ĞÅµ÷ÓÃ¸Ãº¯ÊıÊ±£¬p0Ê¼ÖÕÔÚtargetµÄÄÚ²¿¡¢±ßÉÏ»ò¶¥µãÉÏ
+				Debug.Assert(i != target.num_edges); //ç¡®ä¿¡è°ƒç”¨è¯¥å‡½æ•°æ—¶ï¼Œp0å§‹ç»ˆåœ¨targetçš„å†…éƒ¨ã€è¾¹ä¸Šæˆ–é¡¶ç‚¹ä¸Š
 			}
 
 			return los;
@@ -340,29 +340,29 @@ namespace Comm_Sec_Astar
 		//{
 		//    LOS_RESULT los = LOS_RESULT.FAILED;
 
-		//    Vector2 pos = 0.005f * n0 + p0; //²»µÃÒÑµÄµãÌ½²â£¬¾àÀë±ØĞëÈ¡µÃ×ã¹»Ğ¡(×îĞ¡µÄµØÍ¼Îª100*10O)
+		//    Vector2 pos = 0.005f * n0 + p0; //ä¸å¾—å·²çš„ç‚¹æ¢æµ‹ï¼Œè·ç¦»å¿…é¡»å–å¾—è¶³å¤Ÿå°(æœ€å°çš„åœ°å›¾ä¸º100*10O)
 			
 		//    Object obj;
-		//    Belong_Status ret = GetPointLocation(pos, out obj); //¼ì²âÌ½²âµãµÄÎ»ÖÃ
+		//    Belong_Status ret = GetPointLocation(pos, out obj); //æ£€æµ‹æ¢æµ‹ç‚¹çš„ä½ç½®
 
 		//    switch (ret)
 		//    {
-		//        case Belong_Status.Invalid: //Ì½²âµã´¦ÓÚ²»ºÏ·¨Î»ÖÃ£¬LOSTÖĞÖ¹£¬ok
+		//        case Belong_Status.Invalid: //æ¢æµ‹ç‚¹å¤„äºä¸åˆæ³•ä½ç½®ï¼ŒLOSTä¸­æ­¢ï¼Œok
 		//            los = LOS_RESULT.BLOCKED; //or failed?
 		//            break;
-		//        case Belong_Status.Polygon: //¿ÉÄÜ²»¾«È·£º¼ì²âÊÇÏÂÒ»¸ö¶à±ßĞÎÁË£¬¼ÌĞøLOST
+		//        case Belong_Status.Polygon: //å¯èƒ½ä¸ç²¾ç¡®ï¼šæ£€æµ‹æ˜¯ä¸‹ä¸€ä¸ªå¤šè¾¹å½¢äº†ï¼Œç»§ç»­LOST
 		//            {
 		//                Polygon target = (Polygon)obj;
 		//                if (target.idx == dstidx)
-		//                    los = LOS_RESULT.CLEAR; //ÒÑ¾­´ïµ½Ä¿±ê¶à±ßĞÎÁË£¬LOSTÖĞÖ¹
+		//                    los = LOS_RESULT.CLEAR; //å·²ç»è¾¾åˆ°ç›®æ ‡å¤šè¾¹å½¢äº†ï¼ŒLOSTä¸­æ­¢
 		//                else
-		//                    los = StartLOS_P(n0, pos, target, dstidx); //Ö®ËùÒÔ²»ÓÃp0£¬ÊÇÒòÎªposÔÚ¶à±ßĞÎÄÚ²¿£¬±£ÏÕÒ»µã
+		//                    los = StartLOS_P(n0, pos, target, dstidx); //ä¹‹æ‰€ä»¥ä¸ç”¨p0ï¼Œæ˜¯å› ä¸ºposåœ¨å¤šè¾¹å½¢å†…éƒ¨ï¼Œä¿é™©ä¸€ç‚¹
 		//                break;
 		//            }
-		//        case Belong_Status.Edge:	//¿ÉÄÜ²»¾«È·£ºÌ½²âµã´¦ÓÚÒ»¸ö±ßeÉÏ£¬ÇÒÔ­À´µÄµãÎªÒ»¸ö¶¥µãv
+		//        case Belong_Status.Edge:	//å¯èƒ½ä¸ç²¾ç¡®ï¼šæ¢æµ‹ç‚¹å¤„äºä¸€ä¸ªè¾¹eä¸Šï¼Œä¸”åŸæ¥çš„ç‚¹ä¸ºä¸€ä¸ªé¡¶ç‚¹v
 		//            {
-		//                //ÏÖÔÚµÄÎÊÌâÊÇ£ºÔ­À´µÄµãvÒ»¶¨ÊÇeµÄ¶¥µãÂğ£¿£¡ÓÉÓÚµãÌ½²âµÄ²»¾«È·ĞÔ£¬»¹ÓĞ¼ÆËãµÄ¾«¶È£¬ÉÏÊöÂÛ¶ÏºÜÄÑ±£Ö¤
-		//                //ÕâÀïÖ»¿¼ÂÇÁË×îÆÕÍ¨µÄÇé¿ö£ºÈ¡ÉäÏßn0·½ÏòÉÏe±ßÔ¶´¦µÄ¶Ëµã£¬È»ºó¼ÌĞø¶¥µã¼ì²â£¬¼´Ä¬ÈÏ¼ÙÉèvÊÇeµÄÒ»¸ö¶Ëµã
+		//                //ç°åœ¨çš„é—®é¢˜æ˜¯ï¼šåŸæ¥çš„ç‚¹vä¸€å®šæ˜¯eçš„é¡¶ç‚¹å—ï¼Ÿï¼ç”±äºç‚¹æ¢æµ‹çš„ä¸ç²¾ç¡®æ€§ï¼Œè¿˜æœ‰è®¡ç®—çš„ç²¾åº¦ï¼Œä¸Šè¿°è®ºæ–­å¾ˆéš¾ä¿è¯
+		//                //è¿™é‡Œåªè€ƒè™‘äº†æœ€æ™®é€šçš„æƒ…å†µï¼šå–å°„çº¿n0æ–¹å‘ä¸Šeè¾¹è¿œå¤„çš„ç«¯ç‚¹ï¼Œç„¶åç»§ç»­é¡¶ç‚¹æ£€æµ‹ï¼Œå³é»˜è®¤å‡è®¾væ˜¯eçš„ä¸€ä¸ªç«¯ç‚¹
 		//                Edge e = (Edge)obj;
 		//                if (e.belong_poly == dstidx || e.neighbor_poly == dstidx)
 		//                {
@@ -375,28 +375,28 @@ namespace Comm_Sec_Astar
 		//                    float test = Vector2.Dot(between, n0);
 
 		//                    Vector2 p = new Vector2();
-		//                    if (FloatEqual(test, 1))		// 1: to-fromÓën0Í¬Ïò
+		//                    if (FloatEqual(test, 1))		// 1: to-fromä¸n0åŒå‘
 		//                        p = e.to.ToVector2();
-		//                    else if (FloatEqual(test, -1))	//-1: to-fromÓën0·´Ïò
+		//                    else if (FloatEqual(test, -1))	//-1: to-fromä¸n0åå‘
 		//                        p = e.from.ToVector2();
-		//                    else							//Ò»°ã²»Ó¦¸Ã·¢ÉúµÄĞ¡¸ÅÂÊÊÂ¼ş,Èç¹ûÈ·Êµ·¢ÉúÁË£¬ÄÇÖ»¿ÉÄÜÊÇµãÌ½²â²»×¼È·»ò¾«¶ÈÎó²îËùÖÂ
+		//                    else							//ä¸€èˆ¬ä¸åº”è¯¥å‘ç”Ÿçš„å°æ¦‚ç‡äº‹ä»¶,å¦‚æœç¡®å®å‘ç”Ÿäº†ï¼Œé‚£åªå¯èƒ½æ˜¯ç‚¹æ¢æµ‹ä¸å‡†ç¡®æˆ–ç²¾åº¦è¯¯å·®æ‰€è‡´
 		//                    {
-		//                        Debug.WriteLine("[²»¾«È·ÊÂ¼şA]");
-		//                        los = StartLOS_V(n0, pos, dstidx);	//Èİ´í....¼ÌĞøÌ½²â...¡¾ÒÅÁôÎÊÌâ¡¿ÍòÒ»POSÔ½¹ıÁËÄ¿±êµãÔõÃ´°ì£¿
+		//                        Debug.WriteLine("[ä¸ç²¾ç¡®äº‹ä»¶A]");
+		//                        los = StartLOS_V(n0, pos, dstidx);	//å®¹é”™....ç»§ç»­æ¢æµ‹...ã€é—ç•™é—®é¢˜ã€‘ä¸‡ä¸€POSè¶Šè¿‡äº†ç›®æ ‡ç‚¹æ€ä¹ˆåŠï¼Ÿ
 		//                        break;
 		//                    }
 
-		//                    //¡¾ÒÅÁôÎÊÌâ¡¿×îºÃÑéÖ¤Ò»ÏÂ£¬²»´æÔÚe.belong_polyÎª-1µÄÇé¿ö
-		//                    w.Add(new WayPoint(p, e.belong_poly)); //Ö»ÄÜÈ¡e.belong_poly£¬È¡e.neighbor_polyÓĞ¿ÉÄÜ==-1
+		//                    //ã€é—ç•™é—®é¢˜ã€‘æœ€å¥½éªŒè¯ä¸€ä¸‹ï¼Œä¸å­˜åœ¨e.belong_polyä¸º-1çš„æƒ…å†µ
+		//                    w.Add(new WayPoint(p, e.belong_poly)); //åªèƒ½å–e.belong_polyï¼Œå–e.neighbor_polyæœ‰å¯èƒ½==-1
 		//                    PrintDebugPosition(e.belong_poly, pos);
 		//                    los = StartLOS_V(n0, p, dstidx);
 		//                }
 		//                break;
 		//            }
-		//        case Belong_Status.Vertex:	//¾ø¶Ô²»¾«È·£ºĞ¡¸ÅÂÊÊÂ¼ş£¬Ò»´ÎµãÌ½²âÖ®ºóÔÙ´ÎÅöµ½ÁíÒ»¸ö¶¥µã£¬Ö»ÄÜ²ÉÈ¡²»¾«È·´¦Àí£¬¼ÌĞøÌ½²â
+		//        case Belong_Status.Vertex:	//ç»å¯¹ä¸ç²¾ç¡®ï¼šå°æ¦‚ç‡äº‹ä»¶ï¼Œä¸€æ¬¡ç‚¹æ¢æµ‹ä¹‹åå†æ¬¡ç¢°åˆ°å¦ä¸€ä¸ªé¡¶ç‚¹ï¼Œåªèƒ½é‡‡å–ä¸ç²¾ç¡®å¤„ç†ï¼Œç»§ç»­æ¢æµ‹
 		//            {
-		//                Debug.WriteLine("[²»¾«È·ÊÂ¼şB]");
-		//                los = StartLOS_V(n0, pos, dstidx); //¡¾ÒÅÁôÎÊÌâ¡¿ÍòÒ»POSÔ½¹ıÁËÄ¿±êµãÔõÃ´°ì£¿
+		//                Debug.WriteLine("[ä¸ç²¾ç¡®äº‹ä»¶B]");
+		//                los = StartLOS_V(n0, pos, dstidx); //ã€é—ç•™é—®é¢˜ã€‘ä¸‡ä¸€POSè¶Šè¿‡äº†ç›®æ ‡ç‚¹æ€ä¹ˆåŠï¼Ÿ
 		//                break;
 		//            }
 		//    }
@@ -405,11 +405,11 @@ namespace Comm_Sec_Astar
 		//}
 	
 		//---------------------------------------------------------------------------------------------------------
-		//×¢Òâ£¡Õâ¸öº¯ÊıÓĞ¸ö¼ÙÉèÇ°Ìá£¬ÄÇ¾ÍÊÇÊäÈëµÄÉäÏßºÍÏß¶Î±ØÏà½»£¬º¯Êı±¾Éí²»¸ºÔğ²âÊÔrayºÍlineÆ½ĞĞ¡¢ÖØºÏµÄÇé¿ö
-		//Ã÷È·µÄËµ£¬Õâ¸öº¯ÊıÇóµÄÊÇÁ½ÌõÏßµÄ½»µã£¬¶øÃ»ÓĞ¿¼ÂÇÉäÏß²»ÉäÏßµÄÎÊÌâ
+		//æ³¨æ„ï¼è¿™ä¸ªå‡½æ•°æœ‰ä¸ªå‡è®¾å‰æï¼Œé‚£å°±æ˜¯è¾“å…¥çš„å°„çº¿å’Œçº¿æ®µå¿…ç›¸äº¤ï¼Œå‡½æ•°æœ¬èº«ä¸è´Ÿè´£æµ‹è¯•rayå’Œlineå¹³è¡Œã€é‡åˆçš„æƒ…å†µ
+		//æ˜ç¡®çš„è¯´ï¼Œè¿™ä¸ªå‡½æ•°æ±‚çš„æ˜¯ä¸¤æ¡çº¿çš„äº¤ç‚¹ï¼Œè€Œæ²¡æœ‰è€ƒè™‘å°„çº¿ä¸å°„çº¿çš„é—®é¢˜
 		Vector2 CrossedRayLineSegIntersection(Vector2 n, Vector2 p, Vector2 from, Vector2 to)
 		{
-			//¹«Ê½À´×ÔÓëWordware - 3D Math Primer for Graphics and Game Development pp.282
+			//å…¬å¼æ¥è‡ªä¸Wordware - 3D Math Primer for Graphics and Game Development pp.282
 			float a1, b1, d1;
 			float a2, b2, d2;
 
@@ -421,7 +421,7 @@ namespace Comm_Sec_Astar
 			b2 = -(to.X - from.X);
 			d2 = a2 * from.X + b2 * from.Y;
 
-			//a1*x+b1*y=d1ºÍa2*x+b2*y=d2ÁªÁ¢²¢Çó½â
+			//a1*x+b1*y=d1å’Œa2*x+b2*y=d2è”ç«‹å¹¶æ±‚è§£
 			float x, y;
 			x = (b2 * d1 - b1 * d2) / (a1 * b2 - a2 * b1);
 			y = (a1 * d2 - a2 * d1) / (a1 * b2 - a2 * b1);
@@ -432,14 +432,14 @@ namespace Comm_Sec_Astar
 		//---------------------------------------------------------------------------------------------------------
 		#endregion
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ¼ÆËã¶à±ßĞÎÃæ»ıÓëÖÊĞÄ
+		#region è®¡ç®—å¤šè¾¹å½¢é¢ç§¯ä¸è´¨å¿ƒ
 		public void UpdateAllCentroid()
 		{
 			for (int i = 0; i < polys.Length; i++)
 				polys[i].centroid = GetPolyonCentroid(i);
 		}
 		
-		//¼ÆËã¶à±ßĞÎÃæ»ı
+		//è®¡ç®—å¤šè¾¹å½¢é¢ç§¯
 		float GetPolygonArea(int idx)
 		{
 			Polygon d = polys[idx];
@@ -454,7 +454,7 @@ namespace Comm_Sec_Astar
 			return Math.Abs(result);
 		}
 
-		//¼ÆËã¶à±ßĞÎÖÊĞÄÎ»ÖÃ
+		//è®¡ç®—å¤šè¾¹å½¢è´¨å¿ƒä½ç½®
 		FPoint GetPolyonCentroid(int idx)
 		{
 			float area = GetPolygonArea(idx);
@@ -485,11 +485,11 @@ namespace Comm_Sec_Astar
 		}
 		#endregion
 		/////////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ³£ÓÃº¯Êı
+		#region å¸¸ç”¨å‡½æ•°
 		bool FloatEqual(float a, float b)
 		{
 			return ((a > (b - 0.00001f)) && (a < (b + 0.00001f)));
-			//return ((a >= (b - float.Epsilon)) && (a <= (b + float.Epsilon))); //±ØĞëÊÇ>=ºÍ<=£¬·ñÔòa==b==1.0Ê±²»ÕıÈ·
+			//return ((a >= (b - float.Epsilon)) && (a <= (b + float.Epsilon))); //å¿…é¡»æ˜¯>=å’Œ<=ï¼Œå¦åˆ™a==b==1.0æ—¶ä¸æ­£ç¡®
 		}
 
 		void PrintDebugPosition(int polyidx,Vector2 pos)
@@ -504,7 +504,7 @@ namespace Comm_Sec_Astar
 
 		Vector2 ConvertV3toV2(Vector3 v3)
 		{
-			return new Vector2(v3.X, v3.Y); //Ö±½Ó¶ªÆúZ
+			return new Vector2(v3.X, v3.Y); //ç›´æ¥ä¸¢å¼ƒZ
 		}
 		#endregion
 	}

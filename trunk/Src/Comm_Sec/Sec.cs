@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
@@ -11,7 +11,7 @@ using Matrix2D = System.Drawing.Drawing2D.Matrix;
 
 public class FPoint : IComparable<FPoint>, IEquatable<FPoint>
 {
-	//public int idx; //µãĞòºÅ
+	//public int idx; //ç‚¹åºå·
 	
 	public float x;
 	public float y;
@@ -35,7 +35,7 @@ public class FPoint : IComparable<FPoint>, IEquatable<FPoint>
 
 	public bool Equals(FPoint other)
 	{
-		//!!!! ¾«È·µ½Ğ¡Êıµãºó4Î»
+		//!!!! ç²¾ç¡®åˆ°å°æ•°ç‚¹å4ä½
 		long ax = (long)(x * 10000);
 		long ay = (long)(y * 10000);
 		long bx = (long)(other.x * 10000);
@@ -49,7 +49,7 @@ public class FPoint : IComparable<FPoint>, IEquatable<FPoint>
 
 	public int CompareTo(FPoint other)
 	{
-		//¾­profiling£¬¸Ãº¯ÊıÊÇÒ»¸öµ÷ÓÃ×îÎªÆµ·±µÄº¯Êı£¬Òò´ËÎªÁË¼ÓËÙ£¬È¥µôÁËËùÓĞMath.Signµ÷ÓÃ
+		//ç»profilingï¼Œè¯¥å‡½æ•°æ˜¯ä¸€ä¸ªè°ƒç”¨æœ€ä¸ºé¢‘ç¹çš„å‡½æ•°ï¼Œå› æ­¤ä¸ºäº†åŠ é€Ÿï¼Œå»æ‰äº†æ‰€æœ‰Math.Signè°ƒç”¨
 		if (x > other.x)
 			return 1;
 		else if (x < other.x)
@@ -73,8 +73,8 @@ public class FPoint : IComparable<FPoint>, IEquatable<FPoint>
 		float tx = x - other.x;
 		float ty = y - other.y;
 
-		return (float)Math.Sqrt(tx * tx + ty * ty);	//µ¼ÖÂ×îÓÅ½â
-		//return (tx * tx + ty * ty);				//µ¼ÖÂ·Ç×îÓÅ½â
+		return (float)Math.Sqrt(tx * tx + ty * ty);	//å¯¼è‡´æœ€ä¼˜è§£
+		//return (tx * tx + ty * ty);				//å¯¼è‡´éæœ€ä¼˜è§£
 	}
 }
 
@@ -99,7 +99,7 @@ public class Border
 
 public class Polygon
 {
-	public int idx; //²¹³ä£¬¶à±ßĞÎ±àºÅ
+	public int idx; //è¡¥å……ï¼Œå¤šè¾¹å½¢ç¼–å·
 
 	public int num_borders;
 	public byte[] attributes; //2*4byte
@@ -115,11 +115,11 @@ public class Polygon
 	public float maxz;
 
 	public int[] border_idxs;
-	public Border[] borders; //num_borders¸ö
+	public Border[] borders; //num_bordersä¸ª
 
 	public bool enterable;
 
-	//¼ÆËã¶à±ßĞÎÃæ»ı
+	//è®¡ç®—å¤šè¾¹å½¢é¢ç§¯
 	float GetArea()
 	{
 		float result = 0.0F;
@@ -132,7 +132,7 @@ public class Polygon
 		return Math.Abs(result);
 	}
 
-	//¼ÆËã¶à±ßĞÎÖÊĞÄÎ»ÖÃ
+	//è®¡ç®—å¤šè¾¹å½¢è´¨å¿ƒä½ç½®
 	public FPoint GetCentroid()
 	{
 		float area = GetArea();
@@ -161,7 +161,7 @@ public class Polygon
 		return fp;
 	}
 
-	//ÅĞ¶ÏÄ³µãÊÇ·ñ´¦ÓÚ¶à±ßĞÎÄÚ
+	//åˆ¤æ–­æŸç‚¹æ˜¯å¦å¤„äºå¤šè¾¹å½¢å†…
 	public bool IsWithin(Vector2 test_p)
 	{
 		float prior = 1.0F;
@@ -271,7 +271,7 @@ namespace Comm_Sec
 						dst.belong_poly = br.ReadInt32();
 						dst.neighbor_poly = br.ReadInt32();
 
-						int not_sure = br.ReadInt32(); //Î´ÓÃ
+						int not_sure = br.ReadInt32(); //æœªç”¨
 
 						borders[i] = dst;
 					}
@@ -321,8 +321,8 @@ namespace Comm_Sec
 
 					//------------------------------------------------------------------------------
 					while (br.ReadInt32() != 0x48415332) ;
-					br.ReadInt32();	//gridsÖĞpolygonÊıÁ¿µÄ×ÜºÍ£¬Î´ÓÃ
-					br.ReadInt32(); //ÓÃÍ¾Î´Öª
+					br.ReadInt32();	//gridsä¸­polygonæ•°é‡çš„æ€»å’Œï¼Œæœªç”¨
+					br.ReadInt32(); //ç”¨é€”æœªçŸ¥
 
 					num_X_grids = br.ReadInt32();
 					num_Y_grids = br.ReadInt32();
@@ -474,7 +474,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		void ValidateSecData()	//Ïû³ı²»Ò»ÖÂÏÖÏó
+		void ValidateSecData()	//æ¶ˆé™¤ä¸ä¸€è‡´ç°è±¡
 		{
 			int total = 0;
 			for (int i = 0; i < this.num_polys; i++)
@@ -491,7 +491,7 @@ namespace Comm_Sec
 			}
 			if (total != 0)
 			{
-				string msg = string.Format("µ÷ÊÔĞÅÏ¢£º¹²·¢ÏÖ{0}´¦²»Ò»ÖÂµÄÊı¾İ.", total);
+				string msg = string.Format("è°ƒè¯•ä¿¡æ¯ï¼šå…±å‘ç°{0}å¤„ä¸ä¸€è‡´çš„æ•°æ®.", total);
 				Debug.WriteLine(msg);
 			}
 		}
@@ -499,7 +499,7 @@ namespace Comm_Sec
 		//-----------------------------------------------------------------------------------------------
 		public float minx, maxx;
 		public float miny, maxy;
-		void NormalizeAllPoints()	//¹éÒ»»¯ËùÓĞ¶¥µã¼¯
+		void NormalizeAllPoints()	//å½’ä¸€åŒ–æ‰€æœ‰é¡¶ç‚¹é›†
 		{
 			minx = geo.minx; miny = geo.miny;
 			maxx = geo.maxx; maxy = geo.maxy;
@@ -515,7 +515,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		public int SelectPolygon(float x, float y) //x,y:¶¼ÊÇÏÔÊ¾ÍØÆË×ø±êÏµ
+		public int SelectPolygon(float x, float y) //x,y:éƒ½æ˜¯æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»
 		{
 			int y_idx = (int)(y / 64);
 			int x_idx = (int)(x / 64);
@@ -538,23 +538,23 @@ namespace Comm_Sec
 		{
 			Color c = Color.White;
 
-			//°´ÕÕµØĞÎ×ÓÀà±ğµãÁÁ
+			//æŒ‰ç…§åœ°å½¢å­ç±»åˆ«ç‚¹äº®
 			int category = poly.attributes[0];
 			switch (category)
 			{
-				case 0: //Â½µØ
+				case 0: //é™†åœ°
 					c = Color.DarkOrange;
 					break;
-				case 1: //Ñ©µØ
+				case 1: //é›ªåœ°
 					c = Color.White;
 					break;
-				case 2: //ÉîË®
+				case 2: //æ·±æ°´
 					c = Color.Blue;
 					break;
-				case 3: //Ç³Ë®
+				case 3: //æµ…æ°´
 					c = Color.LightBlue;
 					break;
-				case 4: //ÎŞ
+				case 4: //æ— 
 					c = Color.RoyalBlue;
 					break;
 				default:
@@ -562,62 +562,62 @@ namespace Comm_Sec
 					break;
 			}
 
-			//°´ÕÕµØĞÎ×ÓÀà±ğµãÁÁ
+			//æŒ‰ç…§åœ°å½¢å­ç±»åˆ«ç‚¹äº®
 			int sub_category = poly.attributes[1];
 			switch (sub_category)
 			{
-				case 0: //É³×Ó»òÕßÍÁÈÀ
+				case 0: //æ²™å­æˆ–è€…åœŸå£¤
 					c = Color.DarkOrange;
 					break;
-				case 1: //²İµØ
+				case 1: //è‰åœ°
 					c = Color.LimeGreen;
 					break;
-				case 2://Â·
+				case 2://è·¯
 					c = Color.Silver;
 					break;
-				case 3://²»ºÃÅĞ¶Ï
+				case 3://ä¸å¥½åˆ¤æ–­
 					break;
-				case 4://ÎŞ
+				case 4://æ— 
 					break;
-				case 5://Ä¾ÖÊµØÃæ
+				case 5://æœ¨è´¨åœ°é¢
 					c = Color.Gold;
 					break;
-				case 6://ÄàÉ³µØĞÎ£¬ºÓ±ßµÄ¾Ó¶à£¬²»ºÃÅĞ¶Ï
+				case 6://æ³¥æ²™åœ°å½¢ï¼Œæ²³è¾¹çš„å±…å¤šï¼Œä¸å¥½åˆ¤æ–­
 					c = Color.Khaki;
 					break;
-				case 7://Ñ©µØ
+				case 7://é›ªåœ°
 					c = Color.White;
 					break;
-				case 8://ÎŞ
+				case 8://æ— 
 					break;
-				case 9://´ÓºÓ±ßÂÑÊ¯µ½ÍÁÈÀ£¬²»ºÃÅĞ¶Ï
+				case 9://ä»æ²³è¾¹åµçŸ³åˆ°åœŸå£¤ï¼Œä¸å¥½åˆ¤æ–­
 					c = Color.Linen;
 					break;
-				case 10://ÎŞ
+				case 10://æ— 
 					break;
-				case 11: //ÌúÖÊµØĞÎ£¬ÌúÀ¸¸Ë£¬ÌúÂ¥Ìİ
+				case 11: //é“è´¨åœ°å½¢ï¼Œé“æ æ†ï¼Œé“æ¥¼æ¢¯
 					c = Color.DarkSlateGray;
 					break;
-				case 12: //ÎŞ
+				case 12: //æ— 
 					break;
-				case 13: //Ç³Ë®Ğ±ÆÂ
+				case 13: //æµ…æ°´æ–œå¡
 					c = Color.CornflowerBlue;
 					break;
-				case 14: //ÉîË®
+				case 14: //æ·±æ°´
 					c = Color.DarkBlue;
 					break;
-				case 15: //ÂÑÊ¯
+				case 15: //åµçŸ³
 					c = Color.Gainsboro;
 					break;
 			}
 
-			//°´ÕÕ¿É½øÈëĞÔµãÁÁ
+			//æŒ‰ç…§å¯è¿›å…¥æ€§ç‚¹äº®
 			if (!poly.enterable)
 			{
 				c = Color.Black;
 			}
 
-			//°´ÕÕ»·¾³ÁÁ¶ÈµãÁÁ
+			//æŒ‰ç…§ç¯å¢ƒäº®åº¦ç‚¹äº®
 			int brightness = poly.attributes[5];
 			float m = (255 - brightness) / (float)255;
 			int red = (int)(c.R * m);
@@ -625,14 +625,14 @@ namespace Comm_Sec
 			int blue = (int)(c.B * m);
 			c = Color.FromArgb(red, green, blue);
 
-			//µãÁÁ±ßÔµÉÏµÄ¿ò¼ÜÇøÓò
+			//ç‚¹äº®è¾¹ç¼˜ä¸Šçš„æ¡†æ¶åŒºåŸŸ
 			if (poly.attributes[6] == 0x2)
-				c = Color.FromArgb(255, 0, 0, 0x25); //·Ç³£ÉîµÄÀ¶É«
+				c = Color.FromArgb(255, 0, 0, 0x25); //éå¸¸æ·±çš„è“è‰²
 
 			return c;
 		}
 
-		void DrawColoredPolygon(Graphics g, Polygon poly) //g: Bitmap×ø±êÏµ
+		void DrawColoredPolygon(Graphics g, Polygon poly) //g: Bitmapåæ ‡ç³»
 		{
 			PointF[] ps = new PointF[poly.num_borders];
 
@@ -650,20 +650,20 @@ namespace Comm_Sec
 			}
 		}
 
-		public void DrawSketch(Graphics g, float zoom, bool show_idx, bool colored) //g: Bitmap×ø±êÏµ
+		public void DrawSketch(Graphics g, float zoom, bool show_idx, bool colored) //g: Bitmapåæ ‡ç³»
 		{
 			int W = (int)Math.Ceiling(maxx * zoom);
 			int H = (int)Math.Ceiling(maxy * zoom);
 
 			using (Brush brush = new SolidBrush(Color.Black))
-				g.FillRectangle(brush, new Rectangle(0, 0, W + 1, H + 1)); //±ØĞë+1
+				g.FillRectangle(brush, new Rectangle(0, 0, W + 1, H + 1)); //å¿…é¡»+1
 
-			//´ÓÏÔÊ¾ÍØÆË×ø±êÏµ(µÑ¿¨¶û)->BmpÉè±¸×ø±êÏµ
-			Matrix2D trans = new Matrix2D(1, 0, 0, -1, 0, maxy); //Y·­×ª
-			trans.Scale(zoom, zoom, MatrixOrder.Append);		 //ÔÙËõ·Å
+			//ä»æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»(ç¬›å¡å°”)->Bmpè®¾å¤‡åæ ‡ç³»
+			Matrix2D trans = new Matrix2D(1, 0, 0, -1, 0, maxy); //Yç¿»è½¬
+			trans.Scale(zoom, zoom, MatrixOrder.Append);		 //å†ç¼©æ”¾
 			g.Transform = trans;
 
-			//»æÖÆËùÓĞ¶à±ßĞÎ£¬¸ù¾İÊôĞÔ×ÅÉ«
+			//ç»˜åˆ¶æ‰€æœ‰å¤šè¾¹å½¢ï¼Œæ ¹æ®å±æ€§ç€è‰²
 			if (colored)
 				for (int i = 0; i < num_polys; i++)
 					DrawColoredPolygon(g, polys[i]);
@@ -709,7 +709,7 @@ namespace Comm_Sec
 						pos[0].X = fp.x;
 						pos[0].Y = fp.y;
 
-						//´ÓÏÔÊ¾ÍØÆË×ø±êÏµ->BmpÉè±¸×ø±êÏµ
+						//ä»æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»->Bmpè®¾å¤‡åæ ‡ç³»
 						trans.TransformPoints(pos);
 
 						SizeF size = g.MeasureString(i.ToString(), font);
@@ -725,11 +725,11 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		public Bitmap GetSketchBitmap(float zoom, bool show_idx, bool colored)	//zoom: ·Å´ó±¶ÂÊ£¬ÓÃµÄÊÇdisp_topo×ø±êÏµ
+		public Bitmap GetSketchBitmap(float zoom, bool show_idx, bool colored)	//zoom: æ”¾å¤§å€ç‡ï¼Œç”¨çš„æ˜¯disp_topoåæ ‡ç³»
 		{
 			int W = (int)Math.Ceiling(maxx * zoom);
 			int H = (int)Math.Ceiling(maxy * zoom);
-			Bitmap bmp = new Bitmap(W + 1, H + 1, System.Drawing.Imaging.PixelFormat.Format32bppArgb); //±ØĞë+1
+			Bitmap bmp = new Bitmap(W + 1, H + 1, System.Drawing.Imaging.PixelFormat.Format32bppArgb); //å¿…é¡»+1
 
 			using (Graphics g = Graphics.FromImage(bmp))
 			{
@@ -739,7 +739,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		public void DisplaySelectedPolygon(Graphics g, Matrix2D trans_D2C, int idx) //g: Client´°¿ÚÉè±¸×ø±êÏµ
+		public void DisplaySelectedPolygon(Graphics g, Matrix2D trans_D2C, int idx) //g: Clientçª—å£è®¾å¤‡åæ ‡ç³»
 		{
 			if (idx == -1) return;
 
@@ -748,7 +748,7 @@ namespace Comm_Sec
 
 			using (Pen pen = new Pen(Color.Blue, 4F))
 			{
-				//ÏÔÊ¾from->to¶¥µã×ßÏò
+				//æ˜¾ç¤ºfrom->toé¡¶ç‚¹èµ°å‘
 				pen.EndCap = LineCap.ArrowAnchor;
 				
 				PointF[] pos = { new PointF(), new PointF() };
@@ -764,14 +764,14 @@ namespace Comm_Sec
 					pos[1].X = to.x;
 					pos[1].Y = to.y;
 
-					//ÏÔÊ¾ÍØÆË×ø±êÏµ->´°¿Ú¿Í»§Çø×ø±êÏµ
+					//æ˜¾ç¤ºæ‹“æ‰‘åæ ‡ç³»->çª—å£å®¢æˆ·åŒºåæ ‡ç³»
 					trans_D2C.TransformPoints(pos);
 
 					g.DrawLine(pen, pos[0], pos[1]);
 				}
 			}
 
-			//ÏÔÊ¾±ßĞòºÅ
+			//æ˜¾ç¤ºè¾¹åºå·
 			using (Font font = new Font("Tahoma", 9))
 			using (Brush brush = new SolidBrush(Color.Yellow))
 			{
@@ -785,10 +785,10 @@ namespace Comm_Sec
 					pos[0].X = fp.x;
 					pos[0].Y = fp.y;
 
-					//×ø±êÏµ¼¶µ÷Õû
+					//åæ ‡ç³»çº§è°ƒæ•´
 					trans_D2C.TransformPoints(pos);
 
-					//ÏñËØ¼¶µ÷Õû
+					//åƒç´ çº§è°ƒæ•´
 					SizeF size = g.MeasureString(i.ToString(), font);
 					pos[0].X -= size.Width / 2;
 					pos[0].Y -= size.Height / 2;
@@ -802,11 +802,11 @@ namespace Comm_Sec
 			{
 				FPoint fp = polys[idx].GetCentroid();
 
-				//×ø±êÏµ¼¶µ÷Õû
+				//åæ ‡ç³»çº§è°ƒæ•´
 				PointF[] pos = { new PointF(fp.x, fp.y) };
 				trans_D2C.TransformPoints(pos);
 
-				//ÏñËØ¼¶µ÷Õû
+				//åƒç´ çº§è°ƒæ•´
 				SizeF size = g.MeasureString(idx.ToString(), font);
 				pos[0].X -= size.Width / 2;
 				pos[0].Y -= size.Height / 2;
@@ -818,7 +818,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		public void DisplayGrids(Graphics g, Matrix2D trans_D2C, float zoom) //g: Client´°¿ÚÉè±¸×ø±êÏµ
+		public void DisplayGrids(Graphics g, Matrix2D trans_D2C, float zoom) //g: Clientçª—å£è®¾å¤‡åæ ‡ç³»
 		{
 			g.Transform = trans_D2C;
 
@@ -838,12 +838,12 @@ namespace Comm_Sec
 				PointF[] pos ={ new PointF() };
 				for (int x = 0; x < num_X_grids; x++)
 				{
-					//×ø±êÏµ¼¶µ÷Õû
+					//åæ ‡ç³»çº§è°ƒæ•´
 					pos[0].X = (x << 6) + 32;
 					pos[0].Y = 0;
 					trans_D2C.TransformPoints(pos);
 
-					//ÏñËØ¼¶µ÷Õû
+					//åƒç´ çº§è°ƒæ•´
 					SizeF size = g.MeasureString(x.ToString(), font);
 					pos[0].X -= size.Width / 2;
 
@@ -852,12 +852,12 @@ namespace Comm_Sec
 
 				for (int y = 0; y < num_Y_grids; y++)
 				{
-					//×ø±êÏµ¼¶µ÷Õû
+					//åæ ‡ç³»çº§è°ƒæ•´
 					pos[0].X = 0;
 					pos[0].Y = (y << 6) + 32;
 					trans_D2C.TransformPoints(pos);
 
-					//ÏñËØ¼¶µ÷Õû
+					//åƒç´ çº§è°ƒæ•´
 					SizeF size = g.MeasureString(y.ToString(), font);
 					pos[0].X -= size.Width;
 					pos[0].Y -= size.Height / 2;
@@ -867,7 +867,7 @@ namespace Comm_Sec
 			}
 		}
 
-		public void DisplayLOS(Graphics g, Matrix2D trans_D2C, List<FPoint> losw) //g: Client´°¿ÚÉè±¸×ø±êÏµ
+		public void DisplayLOS(Graphics g, Matrix2D trans_D2C, List<FPoint> losw) //g: Clientçª—å£è®¾å¤‡åæ ‡ç³»
 		{
 			g.ResetTransform();
 			g.SmoothingMode = SmoothingMode.HighQuality;
@@ -904,7 +904,7 @@ namespace Comm_Sec
 
 
 		//-----------------------------------------------------------------------------------------------
-		public void DisplayMessage(Graphics g) //g: Client´°¿ÚÉè±¸×ø±êÏµ
+		public void DisplayMessage(Graphics g) //g: Clientçª—å£è®¾å¤‡åæ ‡ç³»
 		{
 			g.ResetTransform();
 
@@ -917,7 +917,7 @@ namespace Comm_Sec
 		}
 
 		//-----------------------------------------------------------------------------------------------
-		public void DisplayWaypoints(Graphics g, Matrix2D trans_D2C, Waypoint w) //g: Client´°¿ÚÉè±¸×ø±êÏµ
+		public void DisplayWaypoints(Graphics g, Matrix2D trans_D2C, Waypoint w) //g: Clientçª—å£è®¾å¤‡åæ ‡ç³»
 		{
 			if (w != null)
 			{
@@ -926,18 +926,18 @@ namespace Comm_Sec
 				using (Pen pen = new Pen(Color.Yellow, 3f))
 				using (Brush brush = new SolidBrush(Color.Yellow))
 				{
-					pen.EndCap = LineCap.ArrowAnchor; //ºÜ¿á...
+					pen.EndCap = LineCap.ArrowAnchor; //å¾ˆé…·...
 
 					Waypoint c = w;
 					Waypoint p = w.parent;
 
-					//»æÖÆÂ·¾¶
+					//ç»˜åˆ¶è·¯å¾„
 					while (p != null)
 					{
 						PointF[] pos = { new PointF(p.fp.x, p.fp.y), new PointF(c.fp.x, c.fp.y) };
 						trans_D2C.TransformPoints(pos);
 
-						//Â·¾¶ÆğµãÎªÒ»¸öÔ²µã
+						//è·¯å¾„èµ·ç‚¹ä¸ºä¸€ä¸ªåœ†ç‚¹
 						if (p.parent == null)
 							pen.StartCap = LineCap.RoundAnchor;
 
@@ -947,7 +947,7 @@ namespace Comm_Sec
 						p = c.parent;
 					}
 
-					//»æÖÆÎ»µã
+					//ç»˜åˆ¶ä½ç‚¹
 					//g.Transform = trans_D2C;
 
 					//c = w;
