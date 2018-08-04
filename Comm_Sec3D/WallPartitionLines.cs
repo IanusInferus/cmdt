@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -9,7 +9,7 @@ using Microsoft.DirectX.Direct3D;
 namespace Comm_Sec3D
 {
 	////////////////////////////////////////////////////////////////////////////////////
-	//´¹Ö±ÇøÓò·Ö¸îÏß¿ò
+	//å‚ç›´åŒºåŸŸåˆ†å‰²çº¿æ¡†
 	class WallPartitionLines
 	{
 		Sec sec;
@@ -32,9 +32,9 @@ namespace Comm_Sec3D
 			GenerateAllWallPartitionLines();
 		}
 		////////////////////////////////////////////////////////////////////////////////////
-		private void GenerateAllWallPartitionLines() //´æÔÚ×ÅÈßÓà
+		private void GenerateAllWallPartitionLines() //å­˜åœ¨ç€å†—ä½™
 		{
-			//ÓÃÓÚÏû³ıborderÖØ¸´µÄHash Table
+			//ç”¨äºæ¶ˆé™¤borderé‡å¤çš„Hash Table
 			Dictionary<ulong, bool> border_dict = new Dictionary<ulong, bool>(sec.num_borders);
 
 			CustomVertex.PositionColored[] v = new CustomVertex.PositionColored[sec.num_borders * 2 * 2];
@@ -46,21 +46,21 @@ namespace Comm_Sec3D
 
 				if (b.belong_district == -1 || b.neighbor_district == -1) continue;
 
-				//²»ÄÜÊ¹ÓÃÈçÏÂÕâÖÖÌŞ³ı±ßÖØ¸´µÄ·½Ê½£¬·ñÔòSBex¡¢PTex(Ç±Í§¿â¿Ú¡¢º½Ä¸Î²²¿)²»Õı³£
+				//ä¸èƒ½ä½¿ç”¨å¦‚ä¸‹è¿™ç§å‰”é™¤è¾¹é‡å¤çš„æ–¹å¼ï¼Œå¦åˆ™SBexã€PTex(æ½œè‰‡åº“å£ã€èˆªæ¯å°¾éƒ¨)ä¸æ­£å¸¸
 				//if (b.belong_district >= b.neighbor_district) continue;
 
-				//ÎªÊ²Ã´Ö»ÄÜÓÃ±¡¼Ç·½Ê½À´Ïû³ı±ßÖØ¸´£¿ÕâÊÇÒòÎª£¬.secÖĞ£¬²¢²»ÊÇÃ¿Ìõborder¶¼»áÀ´»Ø³öÏÖÁ½´ÎµÄ
+				//ä¸ºä»€ä¹ˆåªèƒ½ç”¨è–„è®°æ–¹å¼æ¥æ¶ˆé™¤è¾¹é‡å¤ï¼Ÿè¿™æ˜¯å› ä¸ºï¼Œ.secä¸­ï¼Œå¹¶ä¸æ˜¯æ¯æ¡borderéƒ½ä¼šæ¥å›å‡ºç°ä¸¤æ¬¡çš„
 				bool ret;
 				ulong x = (ulong)b.belong_district;
 				ulong y = (ulong)b.neighbor_district;
 				ulong key = (x << 32) | y;
 
 				if (border_dict.TryGetValue(key, out ret))
-					//ÒÑ¾­µÇ¼Ç¹ıÁË£¬ÖØ¸´ÁË
+					//å·²ç»ç™»è®°è¿‡äº†ï¼Œé‡å¤äº†
 					continue;
 				else
 				{
-					//Ã»ÓĞµÇ¼Ç¹ı£¬µÇ¼Ç½øHash Table
+					//æ²¡æœ‰ç™»è®°è¿‡ï¼Œç™»è®°è¿›Hash Table
 					key = (y << 32) | x;
 					border_dict.Add(key, true);
 				}
@@ -95,7 +95,7 @@ namespace Comm_Sec3D
 
 			if (pos == 0)
 			{
-				pvexs = null; //¸ù±¾²»´æÔÚ´¹Ö±ÏßĞèÒª»­£¬Ö±½ÓÍË³ö£¡
+				pvexs = null; //æ ¹æœ¬ä¸å­˜åœ¨å‚ç›´çº¿éœ€è¦ç”»ï¼Œç›´æ¥é€€å‡ºï¼
 				return;
 			}
 
@@ -107,10 +107,10 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		public void CreateWallPartitionLinesVertexBuffer(Device device)
 		{
-			//×¢Òâ! ´Ë´¦µÄpvexs.Length¿ÉÄÜµÈÓÚ0! ´ËÊ±£¬¸ù±¾²»´æÔÚ´¹Ö±ÇøÓòÍø¸ñ
+			//æ³¨æ„! æ­¤å¤„çš„pvexs.Lengthå¯èƒ½ç­‰äº0! æ­¤æ—¶ï¼Œæ ¹æœ¬ä¸å­˜åœ¨å‚ç›´åŒºåŸŸç½‘æ ¼
 			if (pvexs == null)
 			{
-				Debug.WriteLine("[WallPartitionLines] ¿ÕÊı¾İ"); 
+				Debug.WriteLine("[WallPartitionLines] ç©ºæ•°æ®"); 
 				vertexbuf = null;
 				return;
 			}
@@ -129,7 +129,7 @@ namespace Comm_Sec3D
 
 			vertexbuf.Unlock();
 
-			string msg = String.Format("[WallLines] Ã»ÓĞÓÅ»¯\t v:{0}", pvexs.Length);
+			string msg = String.Format("[WallLines] æ²¡æœ‰ä¼˜åŒ–\t v:{0}", pvexs.Length);
 			Debug.WriteLine(msg);
 		}
 	}

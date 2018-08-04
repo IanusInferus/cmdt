@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -10,13 +10,13 @@ namespace Comm_Abi3D
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	public class CoordAxies
 	{
-		AxisArrow[] arrows;							//ËùÓĞµÄ×ø±ê¼ıÍ·	
-		VertexBuffer linebuf;						//×ø±êÖá¶¥µã
-		CustomVertex.PositionColored[] linearray;	//Èı¸ùÏß
+		AxisArrow[] arrows;							//æ‰€æœ‰çš„åæ ‡ç®­å¤´	
+		VertexBuffer linebuf;						//åæ ‡è½´é¡¶ç‚¹
+		CustomVertex.PositionColored[] linearray;	//ä¸‰æ ¹çº¿
 
-		bool first;									//Ê×´Î´´½¨±êÖ¾
-		float radius;								//Ê¼ÖÕ±£´æ²Î¿¼Ä£ĞÍµÄcenter
-		Vector3 center;								//Ê¼ÖÕ±£´æ²Î¿¼Ä£ĞÍµÄcenter
+		bool first;									//é¦–æ¬¡åˆ›å»ºæ ‡å¿—
+		float radius;								//å§‹ç»ˆä¿å­˜å‚è€ƒæ¨¡å‹çš„center
+		Vector3 center;								//å§‹ç»ˆä¿å­˜å‚è€ƒæ¨¡å‹çš„center
 
 		public CoordAxies()
 		{
@@ -38,14 +38,14 @@ namespace Comm_Abi3D
 				arrows[1].CreateAllBuffer(device, AxisArrow.Point_To_Y_Axis(center, radius));
 				arrows[2].CreateAllBuffer(device, AxisArrow.Point_To_Z_Axis(center, radius));
 
-				//Ö»ÓĞµÚÒ»´Î´´½¨Ê±²Å¸üĞÂcenter,radius
+				//åªæœ‰ç¬¬ä¸€æ¬¡åˆ›å»ºæ—¶æ‰æ›´æ–°center,radius
 				this.center = center;
 				this.radius = radius;
 				this.first = false;
 			}
 			else
 			{
-				//·ÇÊ×´Î´´½¨£¬ÔòÊ¼ÖÕÊ¹ÓÃ²Î¿¼Ä£ĞÍµÄcenter¡¢radius
+				//éé¦–æ¬¡åˆ›å»ºï¼Œåˆ™å§‹ç»ˆä½¿ç”¨å‚è€ƒæ¨¡å‹çš„centerã€radius
 				CreateAxieLinesBuffer(device, this.center, this.radius);
 
 				arrows[0].CreateAllBuffer(device, AxisArrow.Point_To_X_Axis(this.center, this.radius));
@@ -132,13 +132,13 @@ namespace Comm_Abi3D
 					linearray[i].Z += center.Z;
 				}
 
-				//ÓÉÓÚÊÇÒ»´ÎĞÔ´´½¨£¬²¢²»ÊÇÃ¿Ò»Ö¡¶¼ĞŞ¸Ä£¬Òò´ËÊ¹ÓÃ¾²Ì¬¶¥µã»º³å
+				//ç”±äºæ˜¯ä¸€æ¬¡æ€§åˆ›å»ºï¼Œå¹¶ä¸æ˜¯æ¯ä¸€å¸§éƒ½ä¿®æ”¹ï¼Œå› æ­¤ä½¿ç”¨é™æ€é¡¶ç‚¹ç¼“å†²
 				linebuf = new VertexBuffer(
-					   typeof(CustomVertex.PositionColored),	//¶¥µãÀàĞÍ
-					   6,				   						//¶¥µã¸öÊı
+					   typeof(CustomVertex.PositionColored),	//é¡¶ç‚¹ç±»å‹
+					   6,				   						//é¡¶ç‚¹ä¸ªæ•°
 					   device,
 					   Usage.WriteOnly,
-					   CustomVertex.PositionColored.Format,		//¶¥µã¸ñÊ½
+					   CustomVertex.PositionColored.Format,		//é¡¶ç‚¹æ ¼å¼
 					   Pool.Default);
 
 				linebuf.SetData(linearray, 0, LockFlags.None);
@@ -191,13 +191,13 @@ namespace Comm_Abi3D
 					v[i].Position = Vector3.TransformCoordinate(vex[i].Position, trans);
 				}
 
-				//ÓÉÓÚÊÇÒ»´ÎĞÔ´´½¨£¬²¢²»ÊÇÃ¿Ò»Ö¡¶¼ĞŞ¸Ä£¬Òò´ËÊ¹ÓÃ¾²Ì¬¶¥µã»º³å
+				//ç”±äºæ˜¯ä¸€æ¬¡æ€§åˆ›å»ºï¼Œå¹¶ä¸æ˜¯æ¯ä¸€å¸§éƒ½ä¿®æ”¹ï¼Œå› æ­¤ä½¿ç”¨é™æ€é¡¶ç‚¹ç¼“å†²
 				vexbuf = new VertexBuffer(
-				   typeof(CustomVertex.PositionColored),	//¶¥µãÀàĞÍ
-				   vex.Length,								//¶¥µã¸öÊı
+				   typeof(CustomVertex.PositionColored),	//é¡¶ç‚¹ç±»å‹
+				   vex.Length,								//é¡¶ç‚¹ä¸ªæ•°
 				   device,
 				   Usage.WriteOnly,
-				   CustomVertex.PositionColored.Format,		//¶¥µã¸ñÊ½
+				   CustomVertex.PositionColored.Format,		//é¡¶ç‚¹æ ¼å¼
 				   Pool.Default);
 
 				vexbuf.SetData(v, 0, LockFlags.None);
@@ -205,7 +205,7 @@ namespace Comm_Abi3D
 
 			if (idxbuf == null)
 			{
-				//ÓÉÓÚÊÇÒ»´ÎĞÔ´´½¨£¬²¢²»ÊÇÃ¿Ò»Ö¡¶¼ĞŞ¸Ä£¬Òò´ËÊ¹ÓÃ¾²Ì¬Ë÷Òı»º³å
+				//ç”±äºæ˜¯ä¸€æ¬¡æ€§åˆ›å»ºï¼Œå¹¶ä¸æ˜¯æ¯ä¸€å¸§éƒ½ä¿®æ”¹ï¼Œå› æ­¤ä½¿ç”¨é™æ€ç´¢å¼•ç¼“å†²
 				idxbuf = new IndexBuffer(typeof(short), idx.Length, device, Usage.WriteOnly, Pool.Default);
 				idxbuf.SetData(idx, 0, LockFlags.None);
 			}

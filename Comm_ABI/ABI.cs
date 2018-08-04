@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -35,14 +35,14 @@ namespace Comm_ABI
 				{
 					Debug.Assert( br.ReadInt32() == 0x424d444c);
 					//Debug.Assert(br.ReadInt32() == 0x30363031); //1060
-					br.ReadInt32(); //ÊµÑé1050µÈ°æ±¾£¬1050µÄÊ§°Ü
+					br.ReadInt32(); //å®žéªŒ1050ç­‰ç‰ˆæœ¬ï¼Œ1050çš„å¤±è´¥
 
 					num_mesh = br.ReadInt32();
 					num_animation= br.ReadInt32();
 					num_texture = br.ReadInt32();
 
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//ËùÓÐÌùÍ¼
+					//æ‰€æœ‰è´´å›¾
 					textureinfo = new TextureInfo[num_texture];				
 					for (int i = 0; i < num_texture; i++)
 					{
@@ -66,8 +66,8 @@ namespace Comm_ABI
 					}
 
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//×Å×°Êý¾Ý
-					br.ReadByte();//Î´Öª±êÖ¾£¬²¢²»ºãÎª1
+					//ç€è£…æ•°æ®
+					br.ReadByte();//æœªçŸ¥æ ‡å¿—ï¼Œå¹¶ä¸æ’ä¸º1
 					//Debug.Assert(br.ReadByte() == 1);
 
 					num_dress = br.ReadInt32();
@@ -98,7 +98,7 @@ namespace Comm_ABI
 							
 							if (poly.num_lines != 3 && poly.num_lines != 4)
 							{
-								//µÄÈ·´æÔÚnum_lines³¬¹ý3/4µÄÇé¿ö£¬±È·½Ëµtiger.abi£¬num_lines¾ÍÓÐÎª6µÄÇé¿ö
+								//çš„ç¡®å­˜åœ¨num_linesè¶…è¿‡3/4çš„æƒ…å†µï¼Œæ¯”æ–¹è¯´tiger.abiï¼Œnum_lineså°±æœ‰ä¸º6çš„æƒ…å†µ
 								//throw new Exception();
 							}
 							
@@ -109,8 +109,8 @@ namespace Comm_ABI
 							{
 								Point p = poly.map_points[k] = new Point();
 								p.vertex_id = br.ReadInt16();
-								p.U = br.ReadInt16() / 4096f * textureinfo[poly.texture_id].width*2; //ÑéÖ¤ÁË³ýÒÔ4096Ó³ÉäÖÁ0-1Ö®¼äÊÇ¶ÔµÄ
-								p.V = br.ReadInt16() / 4096f * textureinfo[poly.texture_id].width*2; //ÕâÀïÎÒÃÇÀ©´óÁËÁ½±¶£¬ÒÔ±ãÓÚÏÔÊ¾
+								p.U = br.ReadInt16() / 4096f * textureinfo[poly.texture_id].width*2; //éªŒè¯äº†é™¤ä»¥4096æ˜ å°„è‡³0-1ä¹‹é—´æ˜¯å¯¹çš„
+								p.V = br.ReadInt16() / 4096f * textureinfo[poly.texture_id].width*2; //è¿™é‡Œæˆ‘ä»¬æ‰©å¤§äº†ä¸¤å€ï¼Œä»¥ä¾¿äºŽæ˜¾ç¤º
 
 								p.vertex = d.vertex[p.vertex_id];
 							}
@@ -122,12 +122,12 @@ namespace Comm_ABI
 						{
 							d.vbt.entry[j] = new VidToBoneTableEntry();
 							d.vbt.entry[j].StartVidx = br.ReadInt32();
-							d.vbt.entry[j].EndVidx = br.ReadInt32(); //Òª²»Òª-1?
+							d.vbt.entry[j].EndVidx = br.ReadInt32(); //è¦ä¸è¦-1?
 						}
 					}
 					
 					///////////////////////////////////////////////////////////////////////////////////////////////////////////
-					//¹Ç÷À¼Ì³Ð½á¹¹
+					//éª¨éª¼ç»§æ‰¿ç»“æž„
 					hierarchy = new BoneHierarchy[num_bone];
 
 					for (int i = 0; i < num_bone;i++ )
@@ -148,7 +148,7 @@ namespace Comm_ABI
 					//Debug.WriteLine(fs.Position);
 				}
 
-				GenerateAllBitmaps(); //´´½¨ËùÓÐÎ»Í¼
+				GenerateAllBitmaps(); //åˆ›å»ºæ‰€æœ‰ä½å›¾
 			}
 		}
 
@@ -206,7 +206,7 @@ namespace Comm_ABI
 		public int UNKNOWN;
 		public int width;
 		public int height;
-		public string name; //32×Ö½Ú
+		public string name; //32å­—èŠ‚
 		public Color[] palette;
 		public byte[] data;
 	}
@@ -259,9 +259,9 @@ namespace Comm_ABI
 
 	class BoneHierarchy 
 	{
-		public int		ParentIdx;	//4×Ö½Ú
-		public Vector3	b;			//12×Ö½Ú
-		public String	NodeName;	//32×Ö½Ú
-		public int		UNKNOWN;	//4×Ö½Ú
+		public int		ParentIdx;	//4å­—èŠ‚
+		public Vector3	b;			//12å­—èŠ‚
+		public String	NodeName;	//32å­—èŠ‚
+		public int		UNKNOWN;	//4å­—èŠ‚
 	}
 }

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.DirectX;
@@ -8,11 +8,11 @@ namespace Comm_Abi3D
 {
 	class Camera
 	{
-		//¼·Ñ¹MeshµÄÇòÃæµÄÔ­Ê¼°ë¾¶
+		//æŒ¤å‹Meshçš„çƒé¢çš„åŸå§‹åŠå¾„
 		float radius;
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//ÇòÃæÏµÖĞµÄCamera°ë¾¶ºÍ·½Î»½Ç
+		//çƒé¢ç³»ä¸­çš„CameraåŠå¾„å’Œæ–¹ä½è§’
 		float R;
 		float alpha;
 		float beta;
@@ -23,8 +23,8 @@ namespace Comm_Abi3D
 			this.radius = radius;
 
 			R = radius;
-			alpha = (float)(Math.PI * 3 / 4);	//Î³¶È£ºXZÆ½ÃæÓëY¼Ğ½Ç£¨×óÊÖ£© [-pi/2,+pi/2]Ó³Éäµ½[0:+pi]
-			beta = (float)(Math.PI / 4);		//¾­¶È£ºZÓëOPÍ¶Ó°µÄ¼Ğ½Ç£¨×óÊÖ£© 0:2pi
+			alpha = (float)(Math.PI * 3 / 4);	//çº¬åº¦ï¼šXZå¹³é¢ä¸Yå¤¹è§’ï¼ˆå·¦æ‰‹ï¼‰ [-pi/2,+pi/2]æ˜ å°„åˆ°[0:+pi]
+			beta = (float)(Math.PI / 4);		//ç»åº¦ï¼šZä¸OPæŠ•å½±çš„å¤¹è§’ï¼ˆå·¦æ‰‹ï¼‰ 0:2pi
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
@@ -38,21 +38,21 @@ namespace Comm_Abi3D
 		////////////////////////////////////////////////////////////////////////////////////////
 		public void SetViewTransform(Device device)
 		{
-			//½«ÇòÃæ×ø±ê×ª»»³ÉworldÖ±½Ç×ø±ê
-			//×¢Òâ£¬ÏÂÃæ×ø±êµÄ¼ÆËãÊÇÒÔ+YÎªcameraµÄÕıÉÏ·½£¬×óÊÖÏµ
+			//å°†çƒé¢åæ ‡è½¬æ¢æˆworldç›´è§’åæ ‡
+			//æ³¨æ„ï¼Œä¸‹é¢åæ ‡çš„è®¡ç®—æ˜¯ä»¥+Yä¸ºcameraçš„æ­£ä¸Šæ–¹ï¼Œå·¦æ‰‹ç³»
 			double t = R * Math.Cos(alpha - Math.PI / 2);
 			float y = (float)(R * Math.Sin(alpha - Math.PI / 2));
 			float z = (float)(t * Math.Cos(beta));
 			float x = (float)(t * Math.Sin(beta));
 
-			device.Transform.View = Matrix.LookAtLH(		//view±ä»»
-				new Vector3((float)x, (float)y, (float)z),	//cameraËùÔÚµÄworldÎ»ÖÃ
-				new Vector3(0, 0, 0),						//cameraÕı¶ÔworldÔ­µã
-				new Vector3(0, 1, 0));						//cameraÒÔ+YÎªÕıÉÏ·½
+			device.Transform.View = Matrix.LookAtLH(		//viewå˜æ¢
+				new Vector3((float)x, (float)y, (float)z),	//cameraæ‰€åœ¨çš„worldä½ç½®
+				new Vector3(0, 0, 0),						//cameraæ­£å¯¹worldåŸç‚¹
+				new Vector3(0, 1, 0));						//cameraä»¥+Yä¸ºæ­£ä¸Šæ–¹
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//°ë¾¶ Radius
+		//åŠå¾„ Radius
 		public void IncreaseRadius(float d)
 		{
 			if (R + d <= 8 * radius) R += d; else R = 8 * radius;
@@ -63,7 +63,7 @@ namespace Comm_Abi3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//Î³¶È Latitude
+		//çº¬åº¦ Latitude
 		public void IncreaseLatitude(float d)
 		{
 			if (alpha + d <= Math.PI) alpha += d; else alpha = (float)Math.PI - 0.001F;
@@ -74,7 +74,7 @@ namespace Comm_Abi3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//¾­¶È Longitude
+		//ç»åº¦ Longitude
 		public void IncreaseLongitude(float d)
 		{
 			beta = (float)((beta + d) % (2 * Math.PI));

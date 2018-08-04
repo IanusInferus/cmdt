@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
@@ -10,25 +10,25 @@ namespace Comm_Abi3D
 {
 	class AnimatedModel
 	{
-		ABI abi;				//ABIÎÄ¼ş
+		ABI abi;				//ABIæ–‡ä»¶
 
-		Matrix[] local_transf;	//¹Ç÷À±¾µØ×ø±êÏµÖĞµÄĞı×ª¡¢Æ½ÒÆ
-		Matrix[] global_tranf;	//ÓÃÓÚ½«¹Ç÷À±¾µØ×ø±êÏµÖĞµÄ¶¥µã±ä»»µ½Ä£ĞÍÕûÌåÔË¶¯Ö®ºóµÄÊÀ½ç×ø±êÏµ
-		bool[] boneused;		//¹Ç÷ÀÊÇ·ñÊ¹ÓÃµÄ±ê¼Ç
+		Matrix[] local_transf;	//éª¨éª¼æœ¬åœ°åæ ‡ç³»ä¸­çš„æ—‹è½¬ã€å¹³ç§»
+		Matrix[] global_tranf;	//ç”¨äºå°†éª¨éª¼æœ¬åœ°åæ ‡ç³»ä¸­çš„é¡¶ç‚¹å˜æ¢åˆ°æ¨¡å‹æ•´ä½“è¿åŠ¨ä¹‹åçš„ä¸–ç•Œåæ ‡ç³»
+		bool[] boneused;		//éª¨éª¼æ˜¯å¦ä½¿ç”¨çš„æ ‡è®°
 
-		CustomVertex.PositionColoredTextured[] vexarray;  //¶¥µã¼¯ºÏ
+		CustomVertex.PositionColoredTextured[] vexarray;  //é¡¶ç‚¹é›†åˆ
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		public Texture[] texture;	//ÌùÍ¼Êı×é
-		public VertexBuffer vexbuf; //¶¥µã»º³å
-		public Vertex[] transv;		//´æ´¢ËùÓĞ×îÖÕ±ä»»ºóµÄ½Úµã×ø±ê£¬¶øabiÎÄ¼şÀïÃæ±£´æµÄÔòÊÇ²Î¿¼×ËÊÆ
-		public int[] txtoffset;		//¶¥µã¼¯ºÏÖĞĞèÒªÇĞ»»textureµÄµØ·½£¡		
+		public Texture[] texture;	//è´´å›¾æ•°ç»„
+		public VertexBuffer vexbuf; //é¡¶ç‚¹ç¼“å†²
+		public Vertex[] transv;		//å­˜å‚¨æ‰€æœ‰æœ€ç»ˆå˜æ¢åçš„èŠ‚ç‚¹åæ ‡ï¼Œè€Œabiæ–‡ä»¶é‡Œé¢ä¿å­˜çš„åˆ™æ˜¯å‚è€ƒå§¿åŠ¿
+		public int[] txtoffset;		//é¡¶ç‚¹é›†åˆä¸­éœ€è¦åˆ‡æ¢textureçš„åœ°æ–¹ï¼		
 
-		public float time;			//Ö¡Ê±¼ä
-		public int model_idx;		//Ä£ĞÍË÷Òı
-		public int animation_idx;	//¶¯×÷Ë÷Òı
+		public float time;			//å¸§æ—¶é—´
+		public int model_idx;		//æ¨¡å‹ç´¢å¼•
+		public int animation_idx;	//åŠ¨ä½œç´¢å¼•
 
-		public float radius;		//Mesh°üÂçÇò°ë¾¶
+		public float radius;		//MeshåŒ…ç»œçƒåŠå¾„
 		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public AnimatedModel(ABI abi)
@@ -43,16 +43,16 @@ namespace Comm_Abi3D
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		//¼ÆËã±ä»»Ö®ºóµÄ¶¥µã¼¯ºÏ
+		//è®¡ç®—å˜æ¢ä¹‹åçš„é¡¶ç‚¹é›†åˆ
 		void CalculateAll()
 		{
-			//¸úanimationÓĞ¹Ø£¬¸úmodelÎŞ¹Ø
+			//è·Ÿanimationæœ‰å…³ï¼Œè·Ÿmodelæ— å…³
 			InitLocalTransformation();
 			UpdateBoneHierarchyTransformation();
 
-			//¸úmodelÓĞ¹Ø£¬¸úanimationÎŞ¹Ø
-			UpdateVertexSet();		//×îÖÕÊä³öµÄ¾ÍÊÇtransv
-			GenerateVertexBuf();	//Éú³É¶¥µã¼¯ºÏ
+			//è·Ÿmodelæœ‰å…³ï¼Œè·Ÿanimationæ— å…³
+			UpdateVertexSet();		//æœ€ç»ˆè¾“å‡ºçš„å°±æ˜¯transv
+			GenerateVertexBuf();	//ç”Ÿæˆé¡¶ç‚¹é›†åˆ
 		}
 
 		public void SetModel(Device device, int model)
@@ -63,9 +63,9 @@ namespace Comm_Abi3D
 			{
 				CalculateAll();
 
-				//Ä£ĞÍÒ»µ©¸Ä±ä£¬±ØĞëÖØ½¨¶¥µã»º³å
+				//æ¨¡å‹ä¸€æ—¦æ”¹å˜ï¼Œå¿…é¡»é‡å»ºé¡¶ç‚¹ç¼“å†²
 				vexbuf.Dispose();
-				CreateVertexBuffer(device); //×¢Òâ£¬´Ëºó±ØĞëÏàÓ¦µØ¸üĞÂ×ø±êÖá£¡
+				CreateVertexBuffer(device); //æ³¨æ„ï¼Œæ­¤åå¿…é¡»ç›¸åº”åœ°æ›´æ–°åæ ‡è½´ï¼
 			}
 		}
 
@@ -78,7 +78,7 @@ namespace Comm_Abi3D
 			{
 				CalculateAll();
 
-				//ÎŞĞèÖØ½¨¶¥µã»º³å£¬Ö±½ÓÉèÖÃ¶¥µã¼¯ºÏ
+				//æ— éœ€é‡å»ºé¡¶ç‚¹ç¼“å†²ï¼Œç›´æ¥è®¾ç½®é¡¶ç‚¹é›†åˆ
 				vexbuf.SetData(vexarray, 0, LockFlags.Discard);
 			}
 		}
@@ -91,26 +91,26 @@ namespace Comm_Abi3D
 			{
 				CalculateAll();
 
-				//ÎŞĞèÖØ½¨¶¥µã»º³å£¬Ö±½ÓÉèÖÃ¶¥µã¼¯ºÏ
+				//æ— éœ€é‡å»ºé¡¶ç‚¹ç¼“å†²ï¼Œç›´æ¥è®¾ç½®é¡¶ç‚¹é›†åˆ
 				vexbuf.SetData(vexarray, 0, LockFlags.Discard);
 			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ´´½¨¡¢Ïú»ÙÌùÍ¼
+		#region åˆ›å»ºã€é”€æ¯è´´å›¾
 		public void CreateAllTextures(Device device)
 		{
-			Debug.WriteLine("[Texture] ¿ªÊ¼´´½¨...");
+			Debug.WriteLine("[Texture] å¼€å§‹åˆ›å»º...");
 			texture = new Texture[abi.textureinfos.Length];
 			for (int i = 0; i < texture.Length; i++)
 			{
 				Debug.WriteLine(String.Format("[Texture] {0}/{1}", i + 1, texture.Length));
 				CreateSingleTextureFromPicInfo(device, i);
 			}
-			Debug.WriteLine("[Texture] ´´½¨½áÊø");
+			Debug.WriteLine("[Texture] åˆ›å»ºç»“æŸ");
 		}
 
-		//Õâ¸öÌùÍ¼´´½¨¹ı³ÌÖ»¿¼ÂÇÁËÍ¸Ã÷É«£¬Ã»ÓĞ¿¼ÂÇalphaÌùÍ¼
+		//è¿™ä¸ªè´´å›¾åˆ›å»ºè¿‡ç¨‹åªè€ƒè™‘äº†é€æ˜è‰²ï¼Œæ²¡æœ‰è€ƒè™‘alphaè´´å›¾
 		private unsafe void CreateSingleTextureFromPicInfo(Device device, int idx)
 		{
 			TextureInfo pic = abi.textureinfos[idx];
@@ -127,7 +127,7 @@ namespace Comm_Abi3D
 					int pal = pic.data[pos++];
 					uint color = pic.palette[pal];
 
-					if (color == 0xffff00ff) //transparent key color! ARGBÍ¸Ã÷É«:0xffff00ff
+					if (color == 0xffff00ff) //transparent key color! ARGBé€æ˜è‰²:0xffff00ff
 						*pData++ = (uint)0x0;
 					else
 						*pData++ = (uint)color;
@@ -149,7 +149,7 @@ namespace Comm_Abi3D
 		#endregion
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region Éú³É¶¥µã»º³å
+		#region ç”Ÿæˆé¡¶ç‚¹ç¼“å†²
 		void SortingPolygonByTexture(List<Polygon>[] lpoly)
 		{
 			for (int i = 0; i < abi.textureinfos.Length; i++)
@@ -161,33 +161,33 @@ namespace Comm_Abi3D
 
 		void GenerateVertexBuf()
 		{
-			//É¸Ñ¡³öËùÓĞÊ¹ÓÃÍ¬Ò»²ÄÖÊµÄ¶à±ßĞÎ
+			//ç­›é€‰å‡ºæ‰€æœ‰ä½¿ç”¨åŒä¸€æè´¨çš„å¤šè¾¹å½¢
 			List<Polygon>[] lpoly = new List<Polygon>[abi.textureinfos.Length];
 
-			//¸ù¾İ²ÄÖÊÀ´·Ö¼ğÒ»ÏÂ¶à±ßĞÎ
+			//æ ¹æ®æè´¨æ¥åˆ†æ‹£ä¸€ä¸‹å¤šè¾¹å½¢
 			SortingPolygonByTexture(lpoly);
 
-			int totalf = 0; //Èı½ÇĞÎÊıÄ¿
+			int totalf = 0; //ä¸‰è§’å½¢æ•°ç›®
 			foreach (Polygon po in abi.models[model_idx].polygon)
 				totalf += po.num_lines - 2;
 
-			int totalv = 3 * totalf;  //¶¥µãÊıÄ¿
-			vexarray = new CustomVertex.PositionColoredTextured[totalv];//´´½¨¶¥µã¼¯ºÏ
+			int totalv = 3 * totalf;  //é¡¶ç‚¹æ•°ç›®
+			vexarray = new CustomVertex.PositionColoredTextured[totalv];//åˆ›å»ºé¡¶ç‚¹é›†åˆ
 
 			txtoffset = new int[abi.textureinfos.Length + 1];
 			txtoffset[abi.textureinfos.Length] = totalv;
 
 			int pos = 0;
-			for (int i = 0; i < abi.textureinfos.Length; i++) //µÚi¸öÌùÍ¼
+			for (int i = 0; i < abi.textureinfos.Length; i++) //ç¬¬iä¸ªè´´å›¾
 			{
 				txtoffset[i] = pos;
-				foreach (Polygon po in lpoly[i]) //Ê¹ÓÃµÚi¸öÌùÍ¼µÄËùÓĞ¶à±ßĞÎ
+				foreach (Polygon po in lpoly[i]) //ä½¿ç”¨ç¬¬iä¸ªè´´å›¾çš„æ‰€æœ‰å¤šè¾¹å½¢
 				{
 					Debug.Assert(po.texture_id == i);
-					for (int j = 0; j < po.num_lines - 2; j++) //°Ñ¶à±ßĞÎ×ª»»ÎªÈı½ÇĞÎ£¬·Åµ½¶¥µã¼¯ºÏÖĞ
+					for (int j = 0; j < po.num_lines - 2; j++) //æŠŠå¤šè¾¹å½¢è½¬æ¢ä¸ºä¸‰è§’å½¢ï¼Œæ”¾åˆ°é¡¶ç‚¹é›†åˆä¸­
 					{
-						//×¢Òâ!ÕâÀïÊÇ¸ù¾İ±ä»»ºóµÄÄ£ĞÍÀ´Éú³É¶¥µã¼¯£¬¶ø²»ÊÇ¸ù¾İabiÎÄ¼şÖĞµÄ²Î¿¼Ä£ĞÍ
-						//×¢Òâ!¼ÆËãËùµÃµÄÄ£ĞÍÊı¾İÒÀÈ»ÊÇÓÒÊÖÏµµÄ!ËùÒÔÔÚ»­³öÀ´µÄÊ±ºò£¬±ØĞëÏÈ×ª»»³É×óÊÖÏµµÄ
+						//æ³¨æ„!è¿™é‡Œæ˜¯æ ¹æ®å˜æ¢åçš„æ¨¡å‹æ¥ç”Ÿæˆé¡¶ç‚¹é›†ï¼Œè€Œä¸æ˜¯æ ¹æ®abiæ–‡ä»¶ä¸­çš„å‚è€ƒæ¨¡å‹
+						//æ³¨æ„!è®¡ç®—æ‰€å¾—çš„æ¨¡å‹æ•°æ®ä¾ç„¶æ˜¯å³æ‰‹ç³»çš„!æ‰€ä»¥åœ¨ç”»å‡ºæ¥çš„æ—¶å€™ï¼Œå¿…é¡»å…ˆè½¬æ¢æˆå·¦æ‰‹ç³»çš„
 						int idx = po.map_points[0].vertex_id;
 						vexarray[pos].X = transv[idx].X;
 						vexarray[pos].Y = transv[idx].Y;
@@ -219,19 +219,19 @@ namespace Comm_Abi3D
 			}
 		}
 
-		bool first = true; //µÚÒ»´Î´´½¨±êÖ¾
+		bool first = true; //ç¬¬ä¸€æ¬¡åˆ›å»ºæ ‡å¿—
 		public unsafe void CreateVertexBuffer(Device device)
 		{
 
 			vexbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColoredTextured),	//¶¥µãÀàĞÍ
-			   vexarray.Length,									//¶¥µã¸öÊı
+			   typeof(CustomVertex.PositionColoredTextured),	//é¡¶ç‚¹ç±»å‹
+			   vexarray.Length,									//é¡¶ç‚¹ä¸ªæ•°
 			   device,
 			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColoredTextured.Format,		//¶¥µã¸ñÊ½
+			   CustomVertex.PositionColoredTextured.Format,		//é¡¶ç‚¹æ ¼å¼
 			   Pool.Default);
 
-			#region unsafe°æ±¾
+			#region unsafeç‰ˆæœ¬
 			//int count = vexarray.Length;
 
 			//GraphicsStream vb = vexbuf.Lock(
@@ -255,11 +255,11 @@ namespace Comm_Abi3D
 			//vexbuf.Unlock();
 			#endregion
 
-			#region ÍĞ¹Ü°æ±¾
-			vexbuf.SetData(vexarray, 0, LockFlags.Discard); //ËÙ¶ÈºÃÏñ¸úunsafe°æ±¾²î²»¶à£¬MDXÖĞSetDataÊµÏÖ±¾ÉíËÆºõ¾ÍÊÇunsafeµÄ
+			#region æ‰˜ç®¡ç‰ˆæœ¬
+			vexbuf.SetData(vexarray, 0, LockFlags.Discard); //é€Ÿåº¦å¥½åƒè·Ÿunsafeç‰ˆæœ¬å·®ä¸å¤šï¼ŒMDXä¸­SetDataå®ç°æœ¬èº«ä¼¼ä¹å°±æ˜¯unsafeçš„
 			#endregion
 
-			if (first) //Ö»ÓĞÔÚµÚÒ»´Î´´½¨Ê±£¬²Å¼ÆËãÄ£ĞÍµÄcenterºÍradius£¬¼´center/radiusÊ¼ÖÕÊÇ²Î¿¼Ä£ĞÍµÄÊı¾İ
+			if (first) //åªæœ‰åœ¨ç¬¬ä¸€æ¬¡åˆ›å»ºæ—¶ï¼Œæ‰è®¡ç®—æ¨¡å‹çš„centerå’Œradiusï¼Œå³center/radiuså§‹ç»ˆæ˜¯å‚è€ƒæ¨¡å‹çš„æ•°æ®
 			{
 				CaculateBoundSphere();
 				first = false;
@@ -268,7 +268,7 @@ namespace Comm_Abi3D
 
 		private void CaculateBoundSphere()
 		{
-			Vector3 center; //°üÂçÇòÌåµÄÖĞĞÄÎ»ÖÃ½«±»Å×Æú
+			Vector3 center; //åŒ…ç»œçƒä½“çš„ä¸­å¿ƒä½ç½®å°†è¢«æŠ›å¼ƒ
 
 			GraphicsStream vertexData = vexbuf.Lock(0, 0, LockFlags.NoOverwrite);
 			radius = Geometry.ComputeBoundingSphere(
@@ -281,7 +281,7 @@ namespace Comm_Abi3D
 		#endregion
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		#region ²åÖµ¡¢¸üĞÂ¹Ç÷ÀµÄ±¾µØ±ä»»
+		#region æ’å€¼ã€æ›´æ–°éª¨éª¼çš„æœ¬åœ°å˜æ¢
 		void InterpolationOfLocalTransformation(TransformTimeAxis tta, float time, out Quaternion q, out Vector3 t)
 		{
 			RotateTimeAxis rta = tta.rta;
@@ -294,7 +294,7 @@ namespace Comm_Abi3D
 				rtime = time % (rta.rkf[rta.num_keyframe - 1].timestamp);
 
 			RotateKeyFrame fromrkf = null, torkf = null;
-			if (rta.num_keyframe == 1) //TODO: Ã»ÓĞ¿¼ÂÇnum_keyframe==0µÄÇé¿ö
+			if (rta.num_keyframe == 1) //TODO: æ²¡æœ‰è€ƒè™‘num_keyframe==0çš„æƒ…å†µ
 			{
 				q = Quaternion_RH_To_LH(rta.rkf[0].rotate);
 			}
@@ -305,16 +305,16 @@ namespace Comm_Abi3D
 					fromrkf = rta.rkf[i];
 					torkf = rta.rkf[i + 1];
 
-					if (rtime >= fromrkf.timestamp && rtime <= torkf.timestamp) //ÄÄÁ½¸ö¹Ø¼üÖ¡Ö®¼ä£¿
+					if (rtime >= fromrkf.timestamp && rtime <= torkf.timestamp) //å“ªä¸¤ä¸ªå…³é”®å¸§ä¹‹é—´ï¼Ÿ
 					{
 						scale = (rtime - fromrkf.timestamp) / (torkf.timestamp - fromrkf.timestamp);
 						break;
 					}
 				}
 
-				//ÎŞµĞĞŞ¸Ä£¡½«ÓÒÊÖÏµµÄĞı×ªÊı¾İ×ª»»³É×óÊÖÏµµÄ£¬ÒÔ±ãÓÚÊ¹ÓÃDXµÄ×óÊÖÏµº¯ÊıÀ´½øĞĞ¼ÆËã
-				//×óÊÖÏµÏà¹ØµÄÖ÷Òªº¯Êı£ºRotationQuaternionºÍSlerp£¬¶ø¾ØÕó³Ë·¨¡¢Æ½ÒÆ±ä»»ÊÇÓë×óÓÒÊÖÏµÎŞ¹ØµÄ
-				//×ÜÖ®£¬ÕâÀïµÄÖØµãÊÇ£º±£³ÖÄ£ĞÍÊı¾İ¼°Æä¼ÆËãµÄÓÒÊÖÏµÌØĞÔ£¬ÀûÓÃDXµÄ×óÊÖÏµº¯ÊıÀ´½øĞĞÊµÖÊÉÏµÄÓÒÊÖÏµ¼ÆËã
+				//æ— æ•Œä¿®æ”¹ï¼å°†å³æ‰‹ç³»çš„æ—‹è½¬æ•°æ®è½¬æ¢æˆå·¦æ‰‹ç³»çš„ï¼Œä»¥ä¾¿äºä½¿ç”¨DXçš„å·¦æ‰‹ç³»å‡½æ•°æ¥è¿›è¡Œè®¡ç®—
+				//å·¦æ‰‹ç³»ç›¸å…³çš„ä¸»è¦å‡½æ•°ï¼šRotationQuaternionå’ŒSlerpï¼Œè€ŒçŸ©é˜µä¹˜æ³•ã€å¹³ç§»å˜æ¢æ˜¯ä¸å·¦å³æ‰‹ç³»æ— å…³çš„
+				//æ€»ä¹‹ï¼Œè¿™é‡Œçš„é‡ç‚¹æ˜¯ï¼šä¿æŒæ¨¡å‹æ•°æ®åŠå…¶è®¡ç®—çš„å³æ‰‹ç³»ç‰¹æ€§ï¼Œåˆ©ç”¨DXçš„å·¦æ‰‹ç³»å‡½æ•°æ¥è¿›è¡Œå®è´¨ä¸Šçš„å³æ‰‹ç³»è®¡ç®—
 				Quaternion fromq = Quaternion_RH_To_LH(fromrkf.rotate);
 				Quaternion toq = Quaternion_RH_To_LH(torkf.rotate);
 				q = Quaternion.Slerp(fromq, toq, scale); //!!
@@ -330,18 +330,18 @@ namespace Comm_Abi3D
 				ttime = time % (trta.tkf[trta.num_keyframe - 1].timestamp);
 
 			TranslateKeyFrame fromtkf = null, totkf = null;
-			if (trta.num_keyframe == 1) //TODO: Ã»ÓĞ¿¼ÂÇnum_keyframe==0µÄÇé¿ö
+			if (trta.num_keyframe == 1) //TODO: æ²¡æœ‰è€ƒè™‘num_keyframe==0çš„æƒ…å†µ
 			{
 				t = trta.tkf[0].translate;
 			}
 			else
 			{
-				for (int i = 0; i < trta.num_keyframe - 1; i++) //BUG: Ã»ÓĞ¿¼ÂÇnum_keyframe==1µÄÇé¿ö£»Î´ĞŞÕı
+				for (int i = 0; i < trta.num_keyframe - 1; i++) //BUG: æ²¡æœ‰è€ƒè™‘num_keyframe==1çš„æƒ…å†µï¼›æœªä¿®æ­£
 				{
 					fromtkf = trta.tkf[i];
 					totkf = trta.tkf[i + 1];
 
-					if (ttime >= fromtkf.timestamp && ttime <= totkf.timestamp) //ÄÄÁ½¸ö¹Ø¼üÖ¡Ö®¼ä£¿
+					if (ttime >= fromtkf.timestamp && ttime <= totkf.timestamp) //å“ªä¸¤ä¸ªå…³é”®å¸§ä¹‹é—´ï¼Ÿ
 					{
 						scale = (ttime - fromtkf.timestamp) / (totkf.timestamp - fromtkf.timestamp);
 						break;
@@ -350,67 +350,67 @@ namespace Comm_Abi3D
 
 				Vector3 fromt = fromtkf.translate;
 				Vector3 tot = totkf.translate;
-				t = (1 - scale) * fromt + scale * tot;//?? ÔİÊ±ÒÔjsmµÄÎª×¼
-				//t = scale * fromt + (1-scale) * tot;//?? ¾ÓÈ»Á½¸öĞ§¹û¶¼ÊÇÒ»ÑùµÄ£¿
+				t = (1 - scale) * fromt + scale * tot;//?? æš‚æ—¶ä»¥jsmçš„ä¸ºå‡†
+				//t = scale * fromt + (1-scale) * tot;//?? å±…ç„¶ä¸¤ä¸ªæ•ˆæœéƒ½æ˜¯ä¸€æ ·çš„ï¼Ÿ
 			}
 		}
 
-		public void InitLocalTransformation() //¸üĞÂ¹Ç÷ÀµÄ±¾µØ±ä»»
+		public void InitLocalTransformation() //æ›´æ–°éª¨éª¼çš„æœ¬åœ°å˜æ¢
 		{
 			boneused = new bool[abi.num_bone];
 
-			local_transf = new Matrix[abi.num_bone]; //Ã¿¸ù¹ÇÍ·ÓĞÒ»¸ölocal_transf
-			global_tranf = new Matrix[abi.num_bone]; //Ã¿¸ù¹ÇÍ·ÓĞÒ»¸öglobal_tranf	
+			local_transf = new Matrix[abi.num_bone]; //æ¯æ ¹éª¨å¤´æœ‰ä¸€ä¸ªlocal_transf
+			global_tranf = new Matrix[abi.num_bone]; //æ¯æ ¹éª¨å¤´æœ‰ä¸€ä¸ªglobal_tranf	
 
 			Animation ani = abi.animations[animation_idx];
-			for (int i = 0; i < ani.num_related_bone; i++)	//±éÀúËùÓĞÏà¹ØµÄ¹ÇÍ·
+			for (int i = 0; i < ani.num_related_bone; i++)	//éå†æ‰€æœ‰ç›¸å…³çš„éª¨å¤´
 			{
-				int bidx = ani.bae[i].bone_id;				//µÚ¼¸¸ù¹ÇÍ·
-				TransformTimeAxis tta = ani.bae[i].tta;		//¸Ã¹ÇÍ·¶ÔÓ¦µÄÊ±¼äÖá
+				int bidx = ani.bae[i].bone_id;				//ç¬¬å‡ æ ¹éª¨å¤´
+				TransformTimeAxis tta = ani.bae[i].tta;		//è¯¥éª¨å¤´å¯¹åº”çš„æ—¶é—´è½´
 
 				Quaternion outq;
 				Vector3 outv;
 
 				InterpolationOfLocalTransformation(tta, time, out outq, out outv);
 
-				//×¢Òâ£ºÕâÀïµÄ×óÓÒÊÖÏµÏà¹ØµÄº¯Êı£ºRotationQuaternion
-				//×¢Òâ£ºÕâÀïµÄoutqÒÑ¾­×ª»»ÖÁ×óÊÖÏµÁË£¬¿ÉÒÔÀûÓÃDXµÄ×óÊÖÏµº¯ÊıÀ´½øĞĞÊµÖÊÉÏµÄÓÒÊÖÏµ¼ÆËãÁË
+				//æ³¨æ„ï¼šè¿™é‡Œçš„å·¦å³æ‰‹ç³»ç›¸å…³çš„å‡½æ•°ï¼šRotationQuaternion
+				//æ³¨æ„ï¼šè¿™é‡Œçš„outqå·²ç»è½¬æ¢è‡³å·¦æ‰‹ç³»äº†ï¼Œå¯ä»¥åˆ©ç”¨DXçš„å·¦æ‰‹ç³»å‡½æ•°æ¥è¿›è¡Œå®è´¨ä¸Šçš„å³æ‰‹ç³»è®¡ç®—äº†
 
-				#region ±ãÓÚÀí½â°æ±¾
+				#region ä¾¿äºç†è§£ç‰ˆæœ¬
 				//Matrix x = Matrix.RotationQuaternion(outq); //!!!
 				//Matrix y = Matrix.Translation(outv);
-				//local_transf[bidx] = x * y; //ÏÈĞı×ª£¬ºóÆ½ÒÆ	
+				//local_transf[bidx] = x * y; //å…ˆæ—‹è½¬ï¼Œåå¹³ç§»	
 				#endregion
 
-				#region ÓÅ»¯¼ÆËã°æ±¾
+				#region ä¼˜åŒ–è®¡ç®—ç‰ˆæœ¬
 				Matrix x = Matrix.RotationQuaternion(outq); //!!!
-				x.M41 += outv.X; //µÈ¼ÛÓÚÏÈ×ª×ª¡¢ÔÙÆ½ÒÆ
-				x.M42 += outv.Y; //µÈ¼ÛÓÚÏÈ×ª×ª¡¢ÔÙÆ½ÒÆ
-				x.M43 += outv.Z; //µÈ¼ÛÓÚÏÈ×ª×ª¡¢ÔÙÆ½ÒÆ
-				local_transf[bidx] = x; //ÏÈĞı×ª£¬ºóÆ½ÒÆ	
+				x.M41 += outv.X; //ç­‰ä»·äºå…ˆè½¬è½¬ã€å†å¹³ç§»
+				x.M42 += outv.Y; //ç­‰ä»·äºå…ˆè½¬è½¬ã€å†å¹³ç§»
+				x.M43 += outv.Z; //ç­‰ä»·äºå…ˆè½¬è½¬ã€å†å¹³ç§»
+				local_transf[bidx] = x; //å…ˆæ—‹è½¬ï¼Œåå¹³ç§»	
 				#endregion
 
-				boneused[bidx] = true; //Ê¹ÓÃ±ê¼Ç			
+				boneused[bidx] = true; //ä½¿ç”¨æ ‡è®°			
 			}
 		}
 		#endregion
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		public void UpdateBoneHierarchyTransformation() //±éÀúbone²ã¼¶£¬¼ÆËã¸÷¸öboneµÄÀÛ¼Æmatrix
+		public void UpdateBoneHierarchyTransformation() //éå†boneå±‚çº§ï¼Œè®¡ç®—å„ä¸ªboneçš„ç´¯è®¡matrix
 		{
 			for (int i = 0; i < abi.hierarchy.Length; i++)
 			{
-				if (!boneused[i]) continue; //µ±Ç°¶¯»­Ã»ÓĞÊ¹ÓÃ¸Ã¹ÇÍ·£¬Ìø¹ı
+				if (!boneused[i]) continue; //å½“å‰åŠ¨ç”»æ²¡æœ‰ä½¿ç”¨è¯¥éª¨å¤´ï¼Œè·³è¿‡
 
 				int parent = abi.hierarchy[i].ParentIdx;
 				BoneHierarchy bh = abi.hierarchy[i];
-				if (parent == -1) //root bone,ÎŞĞè¸üĞÂ
+				if (parent == -1) //root bone,æ— éœ€æ›´æ–°
 				{
-					#region ±ãÓÚÀí½â°æ±¾
+					#region ä¾¿äºç†è§£ç‰ˆæœ¬
 					//global_tranf[i] = local_transf[i] * Matrix.Translation(bh.GlobalOffset);
 					#endregion
 
-					#region ÓÅ»¯¼ÆËã°æ±¾
+					#region ä¼˜åŒ–è®¡ç®—ç‰ˆæœ¬
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += bh.GlobalOffset.X;
 					global_tranf[i].M42 += bh.GlobalOffset.Y;
@@ -422,11 +422,11 @@ namespace Comm_Abi3D
 					BoneHierarchy bph = abi.hierarchy[parent];
 					Vector3 dt = bh.GlobalOffset - bph.GlobalOffset;
 
-					#region ±ãÓÚÀí½â°æ±¾
+					#region ä¾¿äºç†è§£ç‰ˆæœ¬
 					//global_tranf[i] = local_transf[i] * Matrix.Translation(dt) * global_tranf[parent];
 					#endregion
 
-					#region ÓÅ»¯¼ÆËã°æ±¾
+					#region ä¼˜åŒ–è®¡ç®—ç‰ˆæœ¬
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += dt.X;
 					global_tranf[i].M42 += dt.Y;
@@ -440,21 +440,21 @@ namespace Comm_Abi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		public void UpdateVertexSet()
 		{
-			//²»ÈßÓà£¬±ØĞë¸ù¾İmodel_idxÖØĞÂÉú³É
+			//ä¸å†—ä½™ï¼Œå¿…é¡»æ ¹æ®model_idxé‡æ–°ç”Ÿæˆ
 			transv = new Vertex[abi.models[model_idx].num_vertice];
 
 			VidToBoneTable vt = abi.models[model_idx].vbt;
 
-			for (int i = 0; i < abi.num_bone; i++) //±éÀú¹ÇÍ·
+			for (int i = 0; i < abi.num_bone; i++) //éå†éª¨å¤´
 			{
 				VidToBoneTableEntry entry = vt.entry[i];
-				Vertex[] v = abi.models[model_idx].vertex; //Ô­Ê¼¶¥µã¼¯ºÏ£¬²»ÒªĞŞ¸Ä£¡
+				Vertex[] v = abi.models[model_idx].vertex; //åŸå§‹é¡¶ç‚¹é›†åˆï¼Œä¸è¦ä¿®æ”¹ï¼
 
-				if (!boneused[i]) //Õâ¸ù¹ÇÍ·Ã»ÓĞÓÃµ½£¬Ìø¹ı
+				if (!boneused[i]) //è¿™æ ¹éª¨å¤´æ²¡æœ‰ç”¨åˆ°ï¼Œè·³è¿‡
 				{
-					for (int j = entry.StartVidx; j < entry.EndVidx; j++) //±éÀú¸Ã¹ÇÍ·ËùÓ°Ïì¶¥µã
+					for (int j = entry.StartVidx; j < entry.EndVidx; j++) //éå†è¯¥éª¨å¤´æ‰€å½±å“é¡¶ç‚¹
 					{
-						//Ö±½Ó²»»­ÕâĞ©ÎŞ¹ØµÄµã
+						//ç›´æ¥ä¸ç”»è¿™äº›æ— å…³çš„ç‚¹
 						transv[j] = new Vertex();
 						transv[j].X = 0;
 						transv[j].Y = 0;
@@ -462,9 +462,9 @@ namespace Comm_Abi3D
 					}
 					continue;
 				}
-				for (int j = entry.StartVidx; j < entry.EndVidx; j++) //±éÀú¸Ã¹ÇÍ·ËùÓ°Ïì¶¥µã
+				for (int j = entry.StartVidx; j < entry.EndVidx; j++) //éå†è¯¥éª¨å¤´æ‰€å½±å“é¡¶ç‚¹
 				{
-					Vector3 r = new Vector3(v[j].X, v[j].Y, v[j].Z); //²Î¿¼Î»ÖÃ
+					Vector3 r = new Vector3(v[j].X, v[j].Y, v[j].Z); //å‚è€ƒä½ç½®
 					r -= abi.hierarchy[i].GlobalOffset;
 					r = Vector3.TransformCoordinate(r, global_tranf[i]);
 
@@ -479,9 +479,9 @@ namespace Comm_Abi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		Quaternion Quaternion_RH_To_LH(Quaternion q)
 		{
-			//ÎŞµĞĞŞ¸Ä£¡½«ÓÒÊÖÏµµÄĞı×ªÊı¾İ×ª»»³É×óÊÖÏµµÄ£¬ÒÔ±ãÓÚÊ¹ÓÃDXµÄ×óÊÖÏµº¯ÊıÀ´½øĞĞ¼ÆËã
-			//×óÊÖÏµÏà¹ØµÄÖ÷Òªº¯Êı£ºRotationQuaternionºÍSlerp£¬¶ø¾ØÕó³Ë·¨¡¢Æ½ÒÆ±ä»»ÊÇÓë×óÓÒÊÖÏµÎŞ¹ØµÄ
-			//×ÜÖ®£¬ÕâÀïµÄÖØµãÊÇ£º±£³ÖÄ£ĞÍÊı¾İ¼°Æä¼ÆËãµÄÓÒÊÖÏµÌØĞÔ£¬ÀûÓÃDXµÄ×óÊÖÏµº¯ÊıÀ´½øĞĞÊµÖÊÉÏµÄÓÒÊÖÏµ¼ÆËã
+			//æ— æ•Œä¿®æ”¹ï¼å°†å³æ‰‹ç³»çš„æ—‹è½¬æ•°æ®è½¬æ¢æˆå·¦æ‰‹ç³»çš„ï¼Œä»¥ä¾¿äºä½¿ç”¨DXçš„å·¦æ‰‹ç³»å‡½æ•°æ¥è¿›è¡Œè®¡ç®—
+			//å·¦æ‰‹ç³»ç›¸å…³çš„ä¸»è¦å‡½æ•°ï¼šRotationQuaternionå’ŒSlerpï¼Œè€ŒçŸ©é˜µä¹˜æ³•ã€å¹³ç§»å˜æ¢æ˜¯ä¸å·¦å³æ‰‹ç³»æ— å…³çš„
+			//æ€»ä¹‹ï¼Œè¿™é‡Œçš„é‡ç‚¹æ˜¯ï¼šä¿æŒæ¨¡å‹æ•°æ®åŠå…¶è®¡ç®—çš„å³æ‰‹ç³»ç‰¹æ€§ï¼Œåˆ©ç”¨DXçš„å·¦æ‰‹ç³»å‡½æ•°æ¥è¿›è¡Œå®è´¨ä¸Šçš„å³æ‰‹ç³»è®¡ç®—
 			Quaternion ret = q;
 			ret.X = -q.X;
 			ret.Y = -q.Y;
@@ -490,7 +490,7 @@ namespace Comm_Abi3D
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		void PrintMatrix(Matrix mx) //µ÷ÊÔÓÃ
+		void PrintMatrix(Matrix mx) //è°ƒè¯•ç”¨
 		{
 			String a = String.Format("{0:F3}\t{1:F3}\t{2:F3}\t{3:F3}", mx.M11, mx.M12, mx.M13, mx.M14);
 			String b = String.Format("{0:F3}\t{1:F3}\t{2:F3}\t{3:F3}", mx.M21, mx.M22, mx.M23, mx.M24);

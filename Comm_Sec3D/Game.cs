@@ -1,4 +1,4 @@
-//#define FULL_SCREEN
+ï»¿//#define FULL_SCREEN
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace Comm_Sec3D
 {
 	public partial class Game : Form
 	{
-		///////////////////////////  ĞèÒªĞ¡ĞÄ³õÊ¼»¯µÄ×´Ì¬±äÁ¿ //////////////////////////////
+		///////////////////////////  éœ€è¦å°å¿ƒåˆå§‹åŒ–çš„çŠ¶æ€å˜é‡ //////////////////////////////
 		Sec sec;
 		WallMesh ws;
 		ExtrusionMesh ms;
@@ -27,73 +27,73 @@ namespace Comm_Sec3D
 		SelectionLines sl;
 
 		//----------------------------------------------------------------------------------
-		//GUIÏÔÊ¾¿ØÖÆ¿ª¹Ø
+		//GUIæ˜¾ç¤ºæ§åˆ¶å¼€å…³
 		bool EnableColoring;
 		bool EnableLights;
 		bool DisplayWireFrame;
-		bool DisplayHorizonalMesh;	//¼·Ñ¹MeshÏÔÊ¾
-		bool DisplayVerticalMesh;	//WallmeshÏÔÊ¾
-		bool DisplayInfoHUD;		//ÏÔÊ¾ÇøÓòĞÅÏ¢·ñ
+		bool DisplayHorizonalMesh;	//æŒ¤å‹Meshæ˜¾ç¤º
+		bool DisplayVerticalMesh;	//Wallmeshæ˜¾ç¤º
+		bool DisplayInfoHUD;		//æ˜¾ç¤ºåŒºåŸŸä¿¡æ¯å¦
 
 		//----------------------------------------------------------------------------------
-		//¼·Ñ¹MeshµÄÇòÃæÖĞĞÄµã
+		//æŒ¤å‹Meshçš„çƒé¢ä¸­å¿ƒç‚¹
 		Vector3 center;
 
-		//µ±Ç°Ñ¡ÖĞµÄ¶à±ßĞÎ±àºÅ¼°ÆäÖÊĞÄ
+		//å½“å‰é€‰ä¸­çš„å¤šè¾¹å½¢ç¼–å·åŠå…¶è´¨å¿ƒ
 		int curr_district;
 		Vector3 curr_centroid;
 
-		//worldÖĞµÄÆ½ÒÆÊ¸Á¿£¬ÆäÖµÒªÃ´µÈÓÚcenter£¬ÒªÃ´µÈÓÚµ±Ç°Ñ¡ÔñµÄÃæÖÊĞÄ×ø±ê
+		//worldä¸­çš„å¹³ç§»çŸ¢é‡ï¼Œå…¶å€¼è¦ä¹ˆç­‰äºcenterï¼Œè¦ä¹ˆç­‰äºå½“å‰é€‰æ‹©çš„é¢è´¨å¿ƒåæ ‡
 		Vector3 world_translation;
 
-		//¾µÍ·
+		//é•œå¤´
 		Camera camera;
 
-		//Æ½ĞĞ¹â¹âÔ´
+		//å¹³è¡Œå…‰å…‰æº
 		DirectionalLight dir_light;
 
-		//WorldµÈ±È·Å´óÏµÊı£¬ÔİÊ±²»ÓÃ
+		//Worldç­‰æ¯”æ”¾å¤§ç³»æ•°ï¼Œæš‚æ—¶ä¸ç”¨
 		float scaling;
 
 		//----------------------------------------------------------------------------------
-		//Direct3D¿ØÖÆÏà¹Ø
+		//Direct3Dæ§åˆ¶ç›¸å…³
 		private Device device;
 		private bool device_lost;
 		PresentParameters present_params;
 
-		int batch; //¸ßĞ§render£¬Ò»´ÎDrawPrimitiveËùÄÜ¹»·¢ËÍµÄ×î´óPrimitive¸öÊı/2
+		int batch; //é«˜æ•ˆrenderï¼Œä¸€æ¬¡DrawPrimitiveæ‰€èƒ½å¤Ÿå‘é€çš„æœ€å¤§Primitiveä¸ªæ•°/2
 
 		//----------------------------------------------------------------------------------
-		//Win32/D3D×ÊÔ´Ïà¹Ø
-		System.Drawing.Font font_selected; //ÓÃÓÚÑ¡ÖĞÇøÓòÏÔÊ¾
-		System.Drawing.Font font_hud; //ÓÃÓÚĞÅÏ¢¿òÖĞµÄÎÄ×ÖÏÔÊ¾
+		//Win32/D3Dèµ„æºç›¸å…³
+		System.Drawing.Font font_selected; //ç”¨äºé€‰ä¸­åŒºåŸŸæ˜¾ç¤º
+		System.Drawing.Font font_hud; //ç”¨äºä¿¡æ¯æ¡†ä¸­çš„æ–‡å­—æ˜¾ç¤º
 		Microsoft.DirectX.Direct3D.Font d3dfont_selected;
 		Microsoft.DirectX.Direct3D.Font d3dfont_hud;
 
-		Bitmap bmp_hud;			//ÓÃÓÚ¶¯Ì¬´´½¨±³¾°ÌùÍ¼µÄBitmap
-		Texture bkground_hud;	//ĞÅÏ¢¿ò±³¾°ÌùÍ¼
-		Sprite sprite;			//ÓÃÓÚÏÔÊ¾ĞÅÏ¢¿òµÄ¾«Áé
+		Bitmap bmp_hud;			//ç”¨äºåŠ¨æ€åˆ›å»ºèƒŒæ™¯è´´å›¾çš„Bitmap
+		Texture bkground_hud;	//ä¿¡æ¯æ¡†èƒŒæ™¯è´´å›¾
+		Sprite sprite;			//ç”¨äºæ˜¾ç¤ºä¿¡æ¯æ¡†çš„ç²¾çµ
 
 		//----------------------------------------------------------------------------------
-		//ÏÔÊ¾ĞÅÏ¢Ïà¹Ø
+		//æ˜¾ç¤ºä¿¡æ¯ç›¸å…³
 		string filename;
 		string message;
 
 		//----------------------------------------------------------------------------------
-		//´°¿Ú×´Ì¬Ïà¹Ø
-		bool onpaint_enabled;			//¿É·ñ´¥·¢On_PaintÊÂ¼ş£¿
+		//çª—å£çŠ¶æ€ç›¸å…³
+		bool onpaint_enabled;			//å¯å¦è§¦å‘On_Paintäº‹ä»¶ï¼Ÿ
 
 		////////////////////////////////////////////////////////////////////////////////////
-		//ÒÔÏÂ±äÁ¿ÓÉÏàÓ¦µÄ´°¿ÚÊÂ¼ş¸ºÔğ¸ú×Ù£¬²¢²»ĞèÒªÃ¿´ÎresetallÊ±³õÊ¼»¯
-		bool middle_button_pressed = false;	//¸ú×ÙÖĞ¼üµÄ°´ÏÂÇé¿ö
-		bool right_button_pressed = false;	//¸ú×ÙÓÒ¼üµÄ°´ÏÂÇé¿ö
+		//ä»¥ä¸‹å˜é‡ç”±ç›¸åº”çš„çª—å£äº‹ä»¶è´Ÿè´£è·Ÿè¸ªï¼Œå¹¶ä¸éœ€è¦æ¯æ¬¡resetallæ—¶åˆå§‹åŒ–
+		bool middle_button_pressed = false;	//è·Ÿè¸ªä¸­é”®çš„æŒ‰ä¸‹æƒ…å†µ
+		bool right_button_pressed = false;	//è·Ÿè¸ªå³é”®çš„æŒ‰ä¸‹æƒ…å†µ
 
-		Size client_size;					//¸ú×Ù´°¿ÚµÄClientSize
-		FormWindowState window_state;		//¸ú×Ù´°¿ÚµÄ×´Ì¬
-		bool window_activated = true;		//¸ú×Ù´°¿ÚµÄ¼¤»îÇé¿ö
+		Size client_size;					//è·Ÿè¸ªçª—å£çš„ClientSize
+		FormWindowState window_state;		//è·Ÿè¸ªçª—å£çš„çŠ¶æ€
+		bool window_activated = true;		//è·Ÿè¸ªçª—å£çš„æ¿€æ´»æƒ…å†µ
 
 		////////////////////////////////////////////////////////////////////////////////////
-		#region ¿ò¼ÜÏà¹Ø
+		#region æ¡†æ¶ç›¸å…³
 		public Game(string fn)
 		{
 			InitializeComponent();
@@ -106,7 +106,7 @@ namespace Comm_Sec3D
 		void ResetAll(string fn)
 		{
 			////////////////////////////////////////////////////////////////////////////////////
-			//ËùÓĞ¹Ø¼ü±äÁ¿µÄÇå¿ÕºÍ³õÊ¼»¯
+			//æ‰€æœ‰å…³é”®å˜é‡çš„æ¸…ç©ºå’Œåˆå§‹åŒ–
 			EnableColoring = true;
 			EnableLights = false;
 			DisplayWireFrame = true;
@@ -114,70 +114,70 @@ namespace Comm_Sec3D
 			DisplayVerticalMesh = true;
 			DisplayInfoHUD = true;
 
-			//¼·Ñ¹MeshµÄÇòÃæÖĞĞÄµã
+			//æŒ¤å‹Meshçš„çƒé¢ä¸­å¿ƒç‚¹
 			center = new Vector3();
 
-			//µ±Ç°Ñ¡ÖĞµÄ¶à±ßĞÎ±àºÅ¼°ÆäÖÊĞÄ
+			//å½“å‰é€‰ä¸­çš„å¤šè¾¹å½¢ç¼–å·åŠå…¶è´¨å¿ƒ
 			curr_district = 0;
 			curr_centroid = new Vector3();
 
-			//worldÖĞµÄÆ½ÒÆÊ¸Á¿
-			world_translation = new Vector3();	//ÆäÖµÒªÃ´µÈÓÚcenter£¬ÒªÃ´µÈÓÚµ±Ç°Ñ¡ÔñµÄÃæÖÊĞÄ×ø±ê
+			//worldä¸­çš„å¹³ç§»çŸ¢é‡
+			world_translation = new Vector3();	//å…¶å€¼è¦ä¹ˆç­‰äºcenterï¼Œè¦ä¹ˆç­‰äºå½“å‰é€‰æ‹©çš„é¢è´¨å¿ƒåæ ‡
 
-			//WorldµÈ±È·Å´óÏµÊı£¬ÔİÊ±²»ÓÃ
+			//Worldç­‰æ¯”æ”¾å¤§ç³»æ•°ï¼Œæš‚æ—¶ä¸ç”¨
 			scaling = 1F;
 
-			//Direct3DÏà¹Ø
+			//Direct3Dç›¸å…³
 			device = null;
 			device_lost = false;
 			present_params = null;
 			batch = 0;
 
-			//Direct3D×ÊÔ´Ïà¹Ø
+			//Direct3Dèµ„æºç›¸å…³
 			font_selected = font_hud = null;
 			d3dfont_selected = d3dfont_hud = null;
 			bmp_hud = null;
 			bkground_hud = null;
 			sprite = null;
 
-			//ÏÔÊ¾ĞÅÏ¢Ïà¹Ø
+			//æ˜¾ç¤ºä¿¡æ¯ç›¸å…³
 			filename = message = null;
 
-			//´°¿Ú×´Ì¬Ïà¹Ø
+			//çª—å£çŠ¶æ€ç›¸å…³
 			onpaint_enabled = true;
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//Éú³ÉÔ­Ê¼Êı¾İºÍËùÓĞµã¡¢ÃæºÍÏß¿ò
+			//ç”ŸæˆåŸå§‹æ•°æ®å’Œæ‰€æœ‰ç‚¹ã€é¢å’Œçº¿æ¡†
 			sec = new Sec(fn);
 			ms = new ExtrusionMesh(sec, Color.White, EnableColoring);
 			ws = new WallMesh(sec, Color.Gainsboro);
 			pl = new PartitionLines(ms.polys, Color.Red);
 			wpl = new WallPartitionLines(sec, Color.Blue);
 
-			//¶Ôsl²ÉÈ¡µÄ¹ÜÀí²ßÂÔÊÇ²»Í¬µÄ£¬ÆäVertexBufferºÍÆä×ÔÉí½«±»Í¬Ê±´´½¨»òÉ¾³ı
-			//ÕâÀïÎŞĞè³õÊ¼»¯£¬InitializeGraphicsÖĞ×ÔÈ»»á³õÊ¼»¯
+			//å¯¹slé‡‡å–çš„ç®¡ç†ç­–ç•¥æ˜¯ä¸åŒçš„ï¼Œå…¶VertexBufferå’Œå…¶è‡ªèº«å°†è¢«åŒæ—¶åˆ›å»ºæˆ–åˆ é™¤
+			//è¿™é‡Œæ— éœ€åˆå§‹åŒ–ï¼ŒInitializeGraphicsä¸­è‡ªç„¶ä¼šåˆå§‹åŒ–
 			sl = null;
 
-			//³õÊ¼»¯µ±Ç°Ñ¡ÖĞµÄ¶à±ßĞÎµÄÖÊĞÄ
+			//åˆå§‹åŒ–å½“å‰é€‰ä¸­çš„å¤šè¾¹å½¢çš„è´¨å¿ƒ
 			curr_centroid = ms.polys[curr_district].GetCentroid();
 
-			//ÉèÖÃ±êÌâÀ¸
+			//è®¾ç½®æ ‡é¢˜æ 
 			FileInfo fi = new FileInfo(fn);
             filename = fn; // fi.Name.ToLower();
 			Text = "3D .Sec Viewer - " + filename;
 
-			//³õÊ¼»¯ĞÅÏ¢×Ö·û´®
+			//åˆå§‹åŒ–ä¿¡æ¯å­—ç¬¦ä¸²
 			GenerateMessageString();
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
 		public void CreatePresentParameters()
 		{
-			//³õÊ¼»¯Éè±¸²ÎÊı
+			//åˆå§‹åŒ–è®¾å¤‡å‚æ•°
 			present_params = new PresentParameters();
 
 #if FULL_SCREEN
-			//È«ÆÁ
+			//å…¨å±
 			present_params.Windowed = false;
 			present_params.BackBufferCount = 2;
 			present_params.BackBufferWidth = 1024;
@@ -187,7 +187,7 @@ namespace Comm_Sec3D
 			present_params.EnableAutoDepthStencil = true;
 			present_params.AutoDepthStencilFormat = DepthFormat.D24X8;
 #else
-			//´°¿Ú
+			//çª—å£
 			present_params.Windowed = true;
 			present_params.BackBufferWidth = ClientSize.Width;
 			present_params.BackBufferHeight = ClientSize.Height;
@@ -201,13 +201,13 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		public void InitializeGraphics()
 		{
-			//³õÊ¼»¯Éè±¸²ÎÊı
+			//åˆå§‹åŒ–è®¾å¤‡å‚æ•°
 			CreatePresentParameters();
 
-			//ÎÈ¶¨ĞÔµÄ¹Ø¼üÉèÖÃ£¡£¡ÈÃMDXµÄ×Ô¶¯ÊÂ¼ş´¥·¢È¥ËÀ£¡£¡
+			//ç¨³å®šæ€§çš„å…³é”®è®¾ç½®ï¼ï¼è®©MDXçš„è‡ªåŠ¨äº‹ä»¶è§¦å‘å»æ­»ï¼ï¼
 			Device.IsUsingEventHandlers = false;
 
-			//³õÊ¼»¯Éè±¸
+			//åˆå§‹åŒ–è®¾å¤‡
 			device = new Device(0, DeviceType.Hardware, this,
 				CreateFlags.HardwareVertexProcessing, present_params);
 
@@ -215,30 +215,30 @@ namespace Comm_Sec3D
 			device.DeviceLost += new EventHandler(this.OnDeviceLost);
 
 			////////////////////////////////////////////////////////////////////////////
-			//Ô¤ÏÈ×¼±¸ºÃWin32×ÖÌå
-			font_selected = new System.Drawing.Font("ĞÂËÎÌå", 12, FontStyle.Bold);
-			font_hud = new System.Drawing.Font("ĞÂËÎÌå", 12);
+			//é¢„å…ˆå‡†å¤‡å¥½Win32å­—ä½“
+			font_selected = new System.Drawing.Font("æ–°å®‹ä½“", 12, FontStyle.Bold);
+			font_hud = new System.Drawing.Font("æ–°å®‹ä½“", 12);
 
 			////////////////////////////////////////////////////////////////////////////
-			//´´½¨±³¾°ÌùÍ¼µÄWin32 BMP
+			//åˆ›å»ºèƒŒæ™¯è´´å›¾çš„Win32 BMP
 			bmp_hud = new Bitmap(200, 150);
 			using (Graphics g = Graphics.FromImage(bmp_hud))
 			using (SolidBrush brush = new SolidBrush(Color.White))
 				g.FillRectangle(brush, 0, 0, 200, 150);
 
 			////////////////////////////////////////////////////////////////////////////
-			//ÉèÖÃdeviceÏà¹ØµÄËùÓĞD3D×ÊÔ´
+			//è®¾ç½®deviceç›¸å…³çš„æ‰€æœ‰D3Dèµ„æº
 			SetupDevice();
 
 			////////////////////////////////////////////////////////////////////////////
-			//¼ÆËãÇòÌå
+			//è®¡ç®—çƒä½“
 			float radius = ms.CaculateBoundSphere(out center);
 
-			//ÒÔÇòÃæ°ë¾¶³õÊ¼»¯Camera
+			//ä»¥çƒé¢åŠå¾„åˆå§‹åŒ–Camera
 			camera = new Camera(radius);
 
 			////////////////////////////////////////////////////////////////////////////
-			//³õÊ¼»¯Æ½ĞĞ¹âÔ´
+			//åˆå§‹åŒ–å¹³è¡Œå…‰æº
 			dir_light = new DirectionalLight();
 
 			////////////////////////////////////////////////////////////////////////////
@@ -246,36 +246,36 @@ namespace Comm_Sec3D
 			batch = (caps.MaxPrimitiveCount + 1) / 2;
 
 			////////////////////////////////////////////////////////////////////////////
-			world_translation = center; //³õÊ¼»¯worldÆ½ÒÆÊ¸Á¿
+			world_translation = center; //åˆå§‹åŒ–worldå¹³ç§»çŸ¢é‡
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
-		//ÖØ½¨³ıdeviceÖ®ÍâµÄÒ»ÇĞD3D×ÊÔ´
+		//é‡å»ºé™¤deviceä¹‹å¤–çš„ä¸€åˆ‡D3Dèµ„æº
 		public void SetupDevice()
 		{
-			//ÖØ½¨ËùÓĞµÄMesh
+			//é‡å»ºæ‰€æœ‰çš„Mesh
 			if (ms.mesh == null) ms.CreateExtrusionMesh(device);
 			if (ws.mesh == null) ws.CreateWallMesh(device);
 
-			//ÖØ½¨ËùÓĞµÄVertexBuffer
+			//é‡å»ºæ‰€æœ‰çš„VertexBuffer
 			if (pl.vertexbuf == null) pl.CreatePartitionLinesVertexBuffer(device);
 			if (wpl.vertexbuf == null) wpl.CreateWallPartitionLinesVertexBuffer(device);
 
-			//Ò»Ìå´´½¨sl¼°ÆäVertexBuffer
+			//ä¸€ä½“åˆ›å»ºslåŠå…¶VertexBuffer
 			if (sl == null)
 			{
 				sl = new SelectionLines(ms.polys[curr_district]);
 				sl.CreateSelectionLines(device);
 			}
 
-			////´´½¨ÏÔÊ¾ËùĞèµÄ×ÖÌå
+			////åˆ›å»ºæ˜¾ç¤ºæ‰€éœ€çš„å­—ä½“
 			if (d3dfont_selected == null) d3dfont_selected = new Microsoft.DirectX.Direct3D.Font(device, font_selected);
 			if (d3dfont_hud == null) d3dfont_hud = new Microsoft.DirectX.Direct3D.Font(device, font_hud);
 
-			//ÉèÖÃĞÅÏ¢¿ò±³¾°ÌùÍ¼
+			//è®¾ç½®ä¿¡æ¯æ¡†èƒŒæ™¯è´´å›¾
 			if (bkground_hud == null) bkground_hud = new Texture(device, bmp_hud, Usage.Dynamic, Pool.Default);
 
-			//´´½¨ÏÔÊ¾ĞÅÏ¢¿òµÄ¾«Áé
+			//åˆ›å»ºæ˜¾ç¤ºä¿¡æ¯æ¡†çš„ç²¾çµ
 			if (sprite == null) sprite = new Sprite(device);
 		}
 
@@ -285,27 +285,27 @@ namespace Comm_Sec3D
 			if (d != null) d.Dispose();
 		}
 
-		//×¼±¸ÍË³ö£¬Ïú»Ù°üÀ¨deviceÔÚÄÚµÄÒ»ÇĞ×ÊÔ´:D3D/Win32/Device
+		//å‡†å¤‡é€€å‡ºï¼Œé”€æ¯åŒ…æ‹¬deviceåœ¨å†…çš„ä¸€åˆ‡èµ„æº:D3D/Win32/Device
 		public void CleanupGraphics()
 		{
-			//D3D×ÊÔ´			
+			//D3Dèµ„æº			
 			ToDispose(ms.mesh); ms.mesh = null;
 			ToDispose(ws.mesh); ws.mesh = null;
 
 			ToDispose(pl.vertexbuf); pl.vertexbuf = null;
 			ToDispose(wpl.vertexbuf); wpl.vertexbuf = null;
 
-			//Ò»ÌåDispose sl¼°ÆäVertexBuffer
+			//ä¸€ä½“Dispose slåŠå…¶VertexBuffer
 			ToDispose(sl); sl = null;
 
-			//Ïú»ÙËùÓĞD3D×ÖÌå
+			//é”€æ¯æ‰€æœ‰D3Då­—ä½“
 			ToDispose(d3dfont_selected); d3dfont_selected = null;
 			ToDispose(d3dfont_hud); d3dfont_hud = null;
 
-			ToDispose(sprite); sprite = null; //Ïú»Ù¾«Áé
-			ToDispose(bkground_hud); bkground_hud = null; //Ïú»ÙĞÅÏ¢¿ò±³¾°Ïà¹ØµÄÒ»ÇĞ×ÊÔ´
+			ToDispose(sprite); sprite = null; //é”€æ¯ç²¾çµ
+			ToDispose(bkground_hud); bkground_hud = null; //é”€æ¯ä¿¡æ¯æ¡†èƒŒæ™¯ç›¸å…³çš„ä¸€åˆ‡èµ„æº
 
-			//Win32×ÊÔ´
+			//Win32èµ„æº
 			ToDispose(font_selected); font_selected = null;
 			ToDispose(font_hud); font_hud = null;
 			ToDispose(bmp_hud); bmp_hud = null;
@@ -317,27 +317,27 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		protected void OnDeviceLost(object sender, EventArgs e)
 		{
-			//ÊÍ·Å³ıdeviceÍâËùÓĞD3D×ÊÔ´
+			//é‡Šæ”¾é™¤deviceå¤–æ‰€æœ‰D3Dèµ„æº
 			ToDispose(ms.mesh); ms.mesh = null;
 			ToDispose(ws.mesh); ws.mesh = null;
 
 			ToDispose(pl.vertexbuf); pl.vertexbuf = null;
 			ToDispose(wpl.vertexbuf); wpl.vertexbuf = null;
 
-			//Ò»ÌåDispose sl¼°ÆäVertexBuffer
+			//ä¸€ä½“Dispose slåŠå…¶VertexBuffer
 			ToDispose(sl); sl = null;
 
-			//Ïú»ÙËùÓĞD3D×ÖÌå
+			//é”€æ¯æ‰€æœ‰D3Då­—ä½“
 			ToDispose(d3dfont_selected); d3dfont_selected = null;
 			ToDispose(d3dfont_hud); d3dfont_hud = null;
 
-			ToDispose(sprite); sprite = null; //Ïú»Ù¾«Áé
-			ToDispose(bkground_hud); bkground_hud = null; //Ïú»ÙĞÅÏ¢¿ò±³¾°Ïà¹ØµÄÒ»ÇĞ×ÊÔ´
+			ToDispose(sprite); sprite = null; //é”€æ¯ç²¾çµ
+			ToDispose(bkground_hud); bkground_hud = null; //é”€æ¯ä¿¡æ¯æ¡†èƒŒæ™¯ç›¸å…³çš„ä¸€åˆ‡èµ„æº
 		}
 
 		protected void OnDeviceReset(object sender, EventArgs e)
 		{
-			//ÖØ½¨³ıdeviceÍâËùÓĞD3D×ÊÔ´
+			//é‡å»ºé™¤deviceå¤–æ‰€æœ‰D3Dèµ„æº
 			SetupDevice();
 		}
 
@@ -368,8 +368,8 @@ namespace Comm_Sec3D
 					}
 					catch (Exception)
 					{
-						//×¢Òâ£ºÒ»°ãÔËĞĞµ½ÕâÀï£¬´ú±í×Å·¢ÉúÁË¼«ÆäÑÏÖØµÄ´íÎó£¬ÈçÔËĞĞÊ±¸Ä±ä×ÀÃæÉ«Éî¡¢·Ö±æÂÊµÈ
-						MessageBox.Show("·¢ÉúÁË²»¿ÉÔ¤ÁÏµÄ¹Ø¼ü´íÎó£¡");
+						//æ³¨æ„ï¼šä¸€èˆ¬è¿è¡Œåˆ°è¿™é‡Œï¼Œä»£è¡¨ç€å‘ç”Ÿäº†æå…¶ä¸¥é‡çš„é”™è¯¯ï¼Œå¦‚è¿è¡Œæ—¶æ”¹å˜æ¡Œé¢è‰²æ·±ã€åˆ†è¾¨ç‡ç­‰
+						MessageBox.Show("å‘ç”Ÿäº†ä¸å¯é¢„æ–™çš„å…³é”®é”™è¯¯ï¼");
 						CleanupGraphics();
 						Close();
 					}
@@ -411,14 +411,14 @@ namespace Comm_Sec3D
 				device.RenderState.FillMode = FillMode.Solid;
 				device.RenderState.ShadeMode = ShadeMode.Gouraud;
 
-				//Îª±ÜÃâ»­Ãæ¹ı°µ£¬Ìí¼ÓÁË4ÕµÓĞÏòµÆ
+				//ä¸ºé¿å…ç”»é¢è¿‡æš—ï¼Œæ·»åŠ äº†4ç›æœ‰å‘ç¯
 				dir_light.SetDirectionalLight(device, 0, 1, 1);
 				dir_light.SetDirectionalLight(device, 1, -1, -1);
 				dir_light.SetDirectionalLight(device, 2, -1, 1);
 				dir_light.SetDirectionalLight(device, 3, 1, -1);
 
 				/*
-				//Ò»¸öµã¹âÔ´µÄ²âÊÔÅäÖÃ
+				//ä¸€ä¸ªç‚¹å…‰æºçš„æµ‹è¯•é…ç½®
 				device.Lights[1].Type = LightType.Point;
 				device.Lights[1].Diffuse = Color.White;
 				device.Lights[1].Ambient = Color.White;
@@ -472,19 +472,19 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupMatrices()
 		{
-			//world±ä»»£¬×¢ÒâÕâÀïµÄÆ½ÒÆÊ¸Á¿Ö÷ÒªÓÃÀ´ÉèÖÃworldÔ­µã
+			//worldå˜æ¢ï¼Œæ³¨æ„è¿™é‡Œçš„å¹³ç§»çŸ¢é‡ä¸»è¦ç”¨æ¥è®¾ç½®worldåŸç‚¹
 			device.Transform.World = Matrix.Translation(-world_translation) * Matrix.Scaling(scaling, scaling, scaling);
 
-			//view±ä»»
+			//viewå˜æ¢
 			camera.SetViewTransform(device);
 
-			//projection±ä»»
+			//projectionå˜æ¢
 			float aspect = (float)client_size.Width / (float)client_size.Height;
 			device.Transform.Projection = Matrix.PerspectiveFovLH(
 				(float)Math.PI / 4.0F,
-				aspect,		//ÕıÈ·µÄºá×İ±È
-				40F,		//IMPORTANT!! ×îÖØÒªµÄ²ÎÊı about Hidden Lines Removal
-				12000.0F);	//IMPORTANT!! ×îÖØÒªµÄ²ÎÊı
+				aspect,		//æ­£ç¡®çš„æ¨ªçºµæ¯”
+				40F,		//IMPORTANT!! æœ€é‡è¦çš„å‚æ•° about Hidden Lines Removal
+				12000.0F);	//IMPORTANT!! æœ€é‡è¦çš„å‚æ•°
 
 			//device.Transform.Projection = Matrix.OrthoLH(2000,2000, 40F, 12000F);
 		}
@@ -499,7 +499,7 @@ namespace Comm_Sec3D
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, 0x353535, 1.0f, 0);
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//ÉèÖÃ±ä»»¾ØÕóºÍµÆ¹â
+			//è®¾ç½®å˜æ¢çŸ©é˜µå’Œç¯å…‰
 			SetupMatrices();
 			SetupLights();
 
@@ -509,10 +509,10 @@ namespace Comm_Sec3D
 			//device.RenderState.FillMode = FillMode.WireFrame;
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//Á½¸ömeshÓÉÃæ¹¹³É£¬Òò´Ë¶¥µãĞèÒªÌá¹©·¨ÏßĞÅÏ¢
+			//ä¸¤ä¸ªmeshç”±é¢æ„æˆï¼Œå› æ­¤é¡¶ç‚¹éœ€è¦æä¾›æ³•çº¿ä¿¡æ¯
 			device.VertexFormat = CustomVertex.PositionNormalColored.Format;
-			device.RenderState.SlopeScaleDepthBias = 1F;	//×îÖØÒªµÄ²ÎÊıÉèÖÃ£¬Ïû³ıÏßÓëÃæµÄZ-Fightingd
-			//device.RenderState.DepthBias = 0F;			//ÖØÒª²ÎÊı about Hidden Lines Removal
+			device.RenderState.SlopeScaleDepthBias = 1F;	//æœ€é‡è¦çš„å‚æ•°è®¾ç½®ï¼Œæ¶ˆé™¤çº¿ä¸é¢çš„Z-Fightingd
+			//device.RenderState.DepthBias = 0F;			//é‡è¦å‚æ•° about Hidden Lines Removal
 
 			int numSubSets;
 			if (DisplayHorizonalMesh)
@@ -529,12 +529,12 @@ namespace Comm_Sec3D
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//Ïß¿òÊÇÄ¿Ç°´æÔÚĞÔÄÜÎÊÌâ×î´óµÄ²¿·ÖÖ®Ò»
+			//çº¿æ¡†æ˜¯ç›®å‰å­˜åœ¨æ€§èƒ½é—®é¢˜æœ€å¤§çš„éƒ¨åˆ†ä¹‹ä¸€
 			if (DisplayWireFrame)
 			{
-				//ÇøÓòÍø¸ñÓÉÖ±Ïß¹¹³É£¬Òò´Ë¶¥µã²»ĞèÒª·¨ÏßĞÅÏ¢
+				//åŒºåŸŸç½‘æ ¼ç”±ç›´çº¿æ„æˆï¼Œå› æ­¤é¡¶ç‚¹ä¸éœ€è¦æ³•çº¿ä¿¡æ¯
 				device.VertexFormat = CustomVertex.PositionColored.Format;
-				device.RenderState.Lighting = false;	//ÇøÓòÍø¸ñÎŞĞèµÆ¹âĞ§¹û
+				device.RenderState.Lighting = false;	//åŒºåŸŸç½‘æ ¼æ— éœ€ç¯å…‰æ•ˆæœ
 
 				DrawBatchLinelist(pl.vertexbuf, pl.NumberOfLines);
 
@@ -543,10 +543,10 @@ namespace Comm_Sec3D
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//ÔÚµ±Ç°Ñ¡ÖĞµÄ¶à±ßĞÎÖÊĞÄ´¦ÏÔÊ¾Æä±àºÅ
+			//åœ¨å½“å‰é€‰ä¸­çš„å¤šè¾¹å½¢è´¨å¿ƒå¤„æ˜¾ç¤ºå…¶ç¼–å·
 			Point p = CaculateScreenXYofWorldPoint(curr_centroid);
 			string s = curr_district.ToString();
-			Rectangle r = d3dfont_selected.MeasureString(null, s, DrawTextFormat.Center, Color.White); //¾ÓÖĞ
+			Rectangle r = d3dfont_selected.MeasureString(null, s, DrawTextFormat.Center, Color.White); //å±…ä¸­
 			p.X -= r.Width / 2;
 			p.Y -= r.Height / 2;
 			if (!EnableLights && !EnableColoring && DisplayHorizonalMesh)
@@ -557,28 +557,28 @@ namespace Comm_Sec3D
 				d3dfont_selected.DrawText(null, curr_district.ToString(), p, Color.White);
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//»æÖÆĞÅÏ¢¿ò¼°ÆäÆäÖĞµÄÎÄ×Ö£¬¹Ø¼üÊÇ:Ğ´ÔÚÕâÀï»á²»»á´ò¶ÏCPUºÍAGPµÄpipeline?
+			//ç»˜åˆ¶ä¿¡æ¯æ¡†åŠå…¶å…¶ä¸­çš„æ–‡å­—ï¼Œå…³é”®æ˜¯:å†™åœ¨è¿™é‡Œä¼šä¸ä¼šæ‰“æ–­CPUå’ŒAGPçš„pipeline?
 			if (DisplayInfoHUD)
 			{
-				Vector3 center = new Vector3(); //ÊÇstruct£¬Ã»ÓĞ¹ØÏµ
+				Vector3 center = new Vector3(); //æ˜¯structï¼Œæ²¡æœ‰å…³ç³»
 				Vector3 pos = new Vector3();
 
-				//»æÖÆ°ëÍ¸Ã÷µÄĞÅÏ¢¿ò
+				//ç»˜åˆ¶åŠé€æ˜çš„ä¿¡æ¯æ¡†
 				sprite.Begin(SpriteFlags.AlphaBlend);
 				sprite.Draw(bkground_hud, Rectangle.Empty, center, pos, Color.FromArgb(80, 0, 0, 0));
 				sprite.End();
 
-				//»æÖÆĞÅÏ¢×Ö·û´®
+				//ç»˜åˆ¶ä¿¡æ¯å­—ç¬¦ä¸²
 				d3dfont_hud.DrawText(null, message, 10, 7, Color.White);
 			}
 
 			////////////////////////////////////////////////////////////////////////////////////
-			//ÏÔÊ¾¶à±ßĞÎÑ¡Ôñ¿ò(¸ßÁÁ¶ÈÇàÉ«)
+			//æ˜¾ç¤ºå¤šè¾¹å½¢é€‰æ‹©æ¡†(é«˜äº®åº¦é’è‰²)
 			device.RenderState.Lighting = false;
 			device.VertexFormat = CustomVertex.PositionColored.Format;
-			device.RenderState.AntiAliasedLineEnable = true; //BUG? »áÓ°ÏìºóÃæµÄRender
+			device.RenderState.AntiAliasedLineEnable = true; //BUG? ä¼šå½±å“åé¢çš„Render
 			DrawBatchLinelist(sl.vertexbuf, sl.NumberOfLines);
-			device.RenderState.AntiAliasedLineEnable = false; //MDX BUG? ÎŞ·¨È¡ÏûÇ°ÃæµÄtrue£¬WHY?
+			device.RenderState.AntiAliasedLineEnable = false; //MDX BUG? æ— æ³•å–æ¶ˆå‰é¢çš„trueï¼ŒWHY?
 
 			////////////////////////////////////////////////////////////////////////////////////
 			device.EndScene();
@@ -595,7 +595,7 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
-		//Á÷Ë®ÏßRender£¬¾¡×î´ó¿ÉÄÜ½µµÍCPU¸ºµ£
+		//æµæ°´çº¿Renderï¼Œå°½æœ€å¤§å¯èƒ½é™ä½CPUè´Ÿæ‹…
 		void DrawBatchLinelist(VertexBuffer vbuf, int count_lines)
 		{
 			device.SetStreamSource(0, vbuf, 0);
@@ -609,17 +609,17 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
-		//Éú³ÉĞÅÏ¢¿òÖĞµÄÏÔÊ¾×Ö·û´®
+		//ç”Ÿæˆä¿¡æ¯æ¡†ä¸­çš„æ˜¾ç¤ºå­—ç¬¦ä¸²
 		void GenerateMessageString()
 		{
 			District d = sec.districts[curr_district];
-            message = string.Format("District Index(Çø¿é±àºÅ)           :{0}\n" +
-                                    "Borders Number(±ßÏßÊıÁ¿)           :{1}\n" +
-                                    "Terrain Category(µØĞÎÊôĞÔ)         :0x{2:X}\n" +
-                                    "Terrain Sub-category(µØĞÎÊôĞÔ×ÓÀà) :0x{3:X}\n" +
-                                    "Is Enterable?(ÄÜ·ñÍ¨ĞĞ)            :0x{4:X}\n" +
-                                    "Illumination(Ã÷°µ³Ì¶È)             :0x{5:X}\n" +
-                                    "Is the Border?(ÊÇ·ñ±ßÔµ)           :0x{6:X}",
+            message = string.Format("District Index(åŒºå—ç¼–å·)           :{0}\n" +
+                                    "Borders Number(è¾¹çº¿æ•°é‡)           :{1}\n" +
+                                    "Terrain Category(åœ°å½¢å±æ€§)         :0x{2:X}\n" +
+                                    "Terrain Sub-category(åœ°å½¢å±æ€§å­ç±») :0x{3:X}\n" +
+                                    "Is Enterable?(èƒ½å¦é€šè¡Œ)            :0x{4:X}\n" +
+                                    "Illumination(æ˜æš—ç¨‹åº¦)             :0x{5:X}\n" +
+                                    "Is the Border?(æ˜¯å¦è¾¹ç¼˜)           :0x{6:X}",
                 this.curr_district,
 				d.borders.Length,
 				d.attributes[0],
@@ -634,10 +634,10 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
-		//½«ÖÊĞÄµÄWorld×ø±ê×ª»»³ÉÆÁÄ»×ø±ê
+		//å°†è´¨å¿ƒçš„Worldåæ ‡è½¬æ¢æˆå±å¹•åæ ‡
 		Point CaculateScreenXYofWorldPoint(Vector3 v)
 		{
-			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //³£ÊıÌáÈ¡
+			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //å¸¸æ•°æå–
 			Vector3 t = Vector3.TransformCoordinate(v, trans);
 
 			t.X = (t.X + 1) * client_size.Width / 2;
@@ -662,55 +662,55 @@ namespace Comm_Sec3D
 				case Keys.Escape:
 				case Keys.Q:
 					Close(); break;
-				case Keys.K: //¾àÀë
-					//µØÍ¼Ô½´ó£¬½«¾àÀëµ÷×îÔ¶Ê±£¬Ô½ÈİÒ×³öÏÖ±»cullingµÄÏÖÏó£¬¹À¼Æ¸úprojectionÓĞ¹Ø
+				case Keys.K: //è·ç¦»
+					//åœ°å›¾è¶Šå¤§ï¼Œå°†è·ç¦»è°ƒæœ€è¿œæ—¶ï¼Œè¶Šå®¹æ˜“å‡ºç°è¢«cullingçš„ç°è±¡ï¼Œä¼°è®¡è·Ÿprojectionæœ‰å…³
 					camera.IncreaseRadius(100F);
 					//if (scaling + 0.1F <= 5) scaling += 0.1f;
 					break;
-				case Keys.J: //¾àÀë
+				case Keys.J: //è·ç¦»
 					camera.DecreaseRadius(100F);
 					//if (scaling - 0.1F >= 0.1) scaling -= 0.1f;
 					break;
-				case Keys.Left: //ÊÓ½Ç
+				case Keys.Left: //è§†è§’
 					camera.DecreaseLongitude((float)(0.02 * Math.PI));
 					break;
-				case Keys.Right: //ÊÓ½Ç
+				case Keys.Right: //è§†è§’
 					camera.IncreaseLongitude((float)(0.02 * Math.PI));
 					break;
-				case Keys.Up: //ÊÓ½Ç
+				case Keys.Up: //è§†è§’
 					camera.IncreaseLatitude((float)(0.02F * Math.PI));
 					break;
-				case Keys.Down: //ÊÓ½Ç
+				case Keys.Down: //è§†è§’
 					camera.DecreaseLatitude((float)(0.02F * Math.PI));
 					break;
-				case Keys.Z: //¹âÏß·½Ïò
+				case Keys.Z: //å…‰çº¿æ–¹å‘
 					dir_light.AdjustLongitude((float)(-0.02 * Math.PI));
 					break;
-				case Keys.X: //¹âÏß·½Ïò
+				case Keys.X: //å…‰çº¿æ–¹å‘
 					dir_light.AdjustLongitude((float)(0.02 * Math.PI));
 					break;
-				case Keys.A: //¹âÏß·½Ïò				
+				case Keys.A: //å…‰çº¿æ–¹å‘				
 					dir_light.AdjustLatitude((float)(0.02 * Math.PI));
 					break;
-				case Keys.S: //¹âÏß·½Ïò
+				case Keys.S: //å…‰çº¿æ–¹å‘
 					dir_light.AdjustLatitude((float)(-0.02 * Math.PI));
 					break;
-				case Keys.F: //ÇøÓòÏß¿ò
+				case Keys.F: //åŒºåŸŸçº¿æ¡†
 					DisplayWireFrame = !DisplayWireFrame;
 					break;
-				case Keys.L: //¹âÕÕ¿ª¹Ø
+				case Keys.L: //å…‰ç…§å¼€å…³
 					EnableLights = !EnableLights;
 					break;
-				case Keys.H: //Ë®Æ½Ãæ¿ª¹Ø
+				case Keys.H: //æ°´å¹³é¢å¼€å…³
 					DisplayHorizonalMesh = !DisplayHorizonalMesh;
 					break;
-				case Keys.V: //´¹Ö±Ãæ¿ª¹Ø
+				case Keys.V: //å‚ç›´é¢å¼€å…³
 					DisplayVerticalMesh = !DisplayVerticalMesh;
 					break;
 				case Keys.I:
 					DisplayInfoHUD = !DisplayInfoHUD;
 					break;
-				case Keys.R: //¸´Î»worldÆ½ÒÆÊ¸Á¿ºÍcamera°ë¾¶
+				case Keys.R: //å¤ä½worldå¹³ç§»çŸ¢é‡å’ŒcameraåŠå¾„
 					world_translation = center;
 					camera.ResetRadius();
 					break;
@@ -719,7 +719,7 @@ namespace Comm_Sec3D
 					string fn = Program.SelectSecFile();
 					if (fn != null)
 					{
-						//´ÓÍ·´´½¨ËùÓĞµÄÒ»ÇĞ£¡
+						//ä»å¤´åˆ›å»ºæ‰€æœ‰çš„ä¸€åˆ‡ï¼
 						CleanupGraphics();
 						GC.Collect();
 						ResetAll(fn);
@@ -752,7 +752,7 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////
-		#region ´¦ÀíÊó±ê¿ØÖÆÊÂ¼ş
+		#region å¤„ç†é¼ æ ‡æ§åˆ¶äº‹ä»¶
 		private void Game_MouseWheel(Object sender, MouseEventArgs e)
 		{
 			float d;
@@ -788,14 +788,14 @@ namespace Comm_Sec3D
 
 			if (Picking(e.X, e.Y))
 			{
-				//Èç¹ûpickÊÇÓĞĞ§µÄ£¬Ôò¼ÆËãworldÖĞ±»Ñ¡È¡¶à±ßĞÎµÄÖÊĞÄ
+				//å¦‚æœpickæ˜¯æœ‰æ•ˆçš„ï¼Œåˆ™è®¡ç®—worldä¸­è¢«é€‰å–å¤šè¾¹å½¢çš„è´¨å¿ƒ
 				curr_centroid = ms.polys[curr_district].GetCentroid();
 
-				//Éú²úĞÅÏ¢×Ö·û´®
+				//ç”Ÿäº§ä¿¡æ¯å­—ç¬¦ä¸²
 				GenerateMessageString();
 			}
-			//µ÷ÊÔ£º²âÊÔ¶à±ßĞÎÃæ»ıºÍÖÊĞÄ¼ÆËã½á¹ûµÄ·ûºÅÊÇ·ñÕıÈ·
-			//Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //³£ÊıÌáÈ¡
+			//è°ƒè¯•ï¼šæµ‹è¯•å¤šè¾¹å½¢é¢ç§¯å’Œè´¨å¿ƒè®¡ç®—ç»“æœçš„ç¬¦å·æ˜¯å¦æ­£ç¡®
+			//Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //å¸¸æ•°æå–
 			//Vector3 t = Vector3.TransformCoordinate(cp, trans);
 			//Debug.WriteLine(t);			
 		}
@@ -805,7 +805,7 @@ namespace Comm_Sec3D
 			MouseEventArgs me = (MouseEventArgs)e;
 			if (me.Button != MouseButtons.Left) return;
 
-			//Ë«»÷×ó¼üÊ±£¬ÉèÖÃworldÆ½ÒÆÊ¸Á¿Îªµ±Ç°Ñ¡ÔñÃæµÄÖÊĞÄÎ»ÖÃ
+			//åŒå‡»å·¦é”®æ—¶ï¼Œè®¾ç½®worldå¹³ç§»çŸ¢é‡ä¸ºå½“å‰é€‰æ‹©é¢çš„è´¨å¿ƒä½ç½®
 			world_translation = curr_centroid;
 		}
 
@@ -823,13 +823,13 @@ namespace Comm_Sec3D
 		#endregion
 
 		////////////////////////////////////////////////////////////////////////////////////
-		#region Picking SystemÏà¹Ø
+		#region Picking Systemç›¸å…³
 		bool Picking(int sx, int sy)
 		{
 			float P11 = device.Transform.Projection.M11;
 			float P22 = device.Transform.Projection.M22;
 
-			//screenµ½projectionÆ½Ãæ£¬Ïàµ±ÓÚÊ×ÏÈµÖÏûprojection±ä»»
+			//screenåˆ°projectionå¹³é¢ï¼Œç›¸å½“äºé¦–å…ˆæŠµæ¶ˆprojectionå˜æ¢
 			float px = ((2F * sx) / client_size.Width - 1F) / P11;
 			float py = ((-2F * sy) / client_size.Height + 1F) / P22;
 			float pz = 1F;
@@ -837,15 +837,15 @@ namespace Comm_Sec3D
 			Vector3 ray_pos = new Vector3(0F, 0F, 0F);
 			Vector3 ray_dir = new Vector3(px, py, pz);
 
-			//µÖÏûworldºÍview±ä»»
+			//æŠµæ¶ˆworldå’Œviewå˜æ¢
 			Matrix invert = Matrix.Invert(device.Transform.World * device.Transform.View);
 
-			//×îºó¼ÆËãÔÚworldÖĞµÄÉäÏß
+			//æœ€åè®¡ç®—åœ¨worldä¸­çš„å°„çº¿
 			ray_pos.TransformCoordinate(invert);
 			ray_dir.TransformNormal(invert);
 			ray_dir.Normalize();
 
-			//¼ÆËãrayÓëmsµÄÏà½»¶à±ßĞÎ
+			//è®¡ç®—rayä¸msçš„ç›¸äº¤å¤šè¾¹å½¢
 			int polyid = ms.MatchPicking(device, ray_pos, ray_dir);
 
 			if (polyid == -1)
@@ -862,7 +862,7 @@ namespace Comm_Sec3D
 		#endregion
 
 		////////////////////////////////////////////////////////////////////////////////////
-		#region ¼ÇÂ¼´°¿Úµ±Ç°ÊÇ·ñ±»¼¤»î
+		#region è®°å½•çª—å£å½“å‰æ˜¯å¦è¢«æ¿€æ´»
 		private void Game_Activated(object sender, EventArgs e)
 		{
 			window_activated = true;
@@ -874,12 +874,12 @@ namespace Comm_Sec3D
 		#endregion
 
 		////////////////////////////////////////////////////////////////////////////////////	
-		#region ´¦ÀíµÚÒ»´ÎÏÔÊ¾¡¢Resize¡¢×îĞ¡»¯¡¢×î´ó»¯ÊÂ¼ş
-		//´°¿ÚµÚÒ»´ÎÏÔÊ¾µÄÊ±ºò´¥·¢
+		#region å¤„ç†ç¬¬ä¸€æ¬¡æ˜¾ç¤ºã€Resizeã€æœ€å°åŒ–ã€æœ€å¤§åŒ–äº‹ä»¶
+		//çª—å£ç¬¬ä¸€æ¬¡æ˜¾ç¤ºçš„æ—¶å€™è§¦å‘
 		private void Game_Shown(object sender, EventArgs e)
 		{
 #if FULL_SCREEN			
-			client_size = new Size(1024, 768); //È«ÆÁÄ£Ê½ÏÂ£¬sizeÓÀÔ¶µÈÓÚ1024*768
+			client_size = new Size(1024, 768); //å…¨å±æ¨¡å¼ä¸‹ï¼Œsizeæ°¸è¿œç­‰äº1024*768
 			window_state = FormWindowState.Maximized;
 			WindowState = FormWindowState.Maximized;
 			FormBorderStyle = FormBorderStyle.None;
@@ -892,14 +892,14 @@ namespace Comm_Sec3D
 			onpaint_enabled = true;
 		}
 
-		//À­¶¯´°¿Ú£¬¸Ä±äÆä´óĞ¡Ê±´¥·¢£¬Ö»ĞŞ¸Äsize
-		//È«ÆÁµÄÊ±ºò¸ÃÊÂ¼ş½«ÓÀÔ¶²»»á±»´¥·¢£¬µ«»¹ÊÇÎªÁË±£ÏÕÆğ¼û...
+		//æ‹‰åŠ¨çª—å£ï¼Œæ”¹å˜å…¶å¤§å°æ—¶è§¦å‘ï¼Œåªä¿®æ”¹size
+		//å…¨å±çš„æ—¶å€™è¯¥äº‹ä»¶å°†æ°¸è¿œä¸ä¼šè¢«è§¦å‘ï¼Œä½†è¿˜æ˜¯ä¸ºäº†ä¿é™©èµ·è§...
 		private void Game_ResizeEnd(object sender, EventArgs e)
 		{
 #if FULL_SCREEN
-			client_size = new Size(1024, 768); //È«ÆÁÄ£Ê½ÏÂ£¬sizeÓÀÔ¶µÈÓÚ1024*768
+			client_size = new Size(1024, 768); //å…¨å±æ¨¡å¼ä¸‹ï¼Œsizeæ°¸è¿œç­‰äº1024*768
 #else
-			if (ClientSize != client_size) //Ò»µ©size·¢ÉúÁË±ä»¯
+			if (ClientSize != client_size) //ä¸€æ—¦sizeå‘ç”Ÿäº†å˜åŒ–
 			{
 				CreatePresentParameters();
 				try
@@ -913,25 +913,25 @@ namespace Comm_Sec3D
 				}
 				client_size = ClientSize;
 			}
-			onpaint_enabled = true; //À­Éì´°¿ÚÍê±Ï£¬¿ÉÒÔ´¥·¢OnPaintÊÂ¼şÁË
+			onpaint_enabled = true; //æ‹‰ä¼¸çª—å£å®Œæ¯•ï¼Œå¯ä»¥è§¦å‘OnPaintäº‹ä»¶äº†
 #endif
 		}
 
-		//´°¿Ú´ÓÕı³£µ½×î´ó¡¢´Ó×î´óµ½Õı³£Ê±´¥·¢£¬ĞŞ¸ÄsizeºÍstate
-		//È«ÆÁÊ±£¬¸ÃÊÂ¼şµÄÓĞĞ§Ö÷ÌåReset½«ÓÀÔ¶²»»áÖ´ĞĞ
+		//çª—å£ä»æ­£å¸¸åˆ°æœ€å¤§ã€ä»æœ€å¤§åˆ°æ­£å¸¸æ—¶è§¦å‘ï¼Œä¿®æ”¹sizeå’Œstate
+		//å…¨å±æ—¶ï¼Œè¯¥äº‹ä»¶çš„æœ‰æ•ˆä¸»ä½“Resetå°†æ°¸è¿œä¸ä¼šæ‰§è¡Œ
 		private void Game_Resize(object sender, EventArgs e)
 		{
 #if FULL_SCREEN
-			client_size = new Size(1024, 768); //È«ÆÁÄ£Ê½ÏÂ£¬sizeÓÀÔ¶µÈÓÚ1024*768
-			if (WindowState == FormWindowState.Minimized) //ÒªÃ´×î´ó¡¢ÒªÃ´×îĞ¡
+			client_size = new Size(1024, 768); //å…¨å±æ¨¡å¼ä¸‹ï¼Œsizeæ°¸è¿œç­‰äº1024*768
+			if (WindowState == FormWindowState.Minimized) //è¦ä¹ˆæœ€å¤§ã€è¦ä¹ˆæœ€å°
 				window_state = FormWindowState.Minimized;
 			else
 				window_state = FormWindowState.Maximized;
 #else
-			//×î´ó»¯¡¢×îĞ¡»¯¡¢»òÕß»Ö¸´µÄÇé¿ö
+			//æœ€å¤§åŒ–ã€æœ€å°åŒ–ã€æˆ–è€…æ¢å¤çš„æƒ…å†µ
 			if (ClientSize != client_size && WindowState != window_state)
 			{
-				//·Ç<×îĞ¡»¯»òÕßÊÇ´Ó×îĞ¡»¯»Ö¸´>£¬¼´<×î´ó»¯»òÕßÊÇ´Ó×î´ó»¯»Ö¸´>
+				//é<æœ€å°åŒ–æˆ–è€…æ˜¯ä»æœ€å°åŒ–æ¢å¤>ï¼Œå³<æœ€å¤§åŒ–æˆ–è€…æ˜¯ä»æœ€å¤§åŒ–æ¢å¤>
 				if (WindowState != FormWindowState.Minimized && window_state != FormWindowState.Minimized)
 				{
 					CreatePresentParameters();
@@ -950,22 +950,22 @@ namespace Comm_Sec3D
 			}
 			else
 			{
-				//À­¶¯´°¿Ú±ß¿òµÄÇé¿ö
-				onpaint_enabled = false; //²»Ï£ÍûÔÚ´ËÊ±´¥·¢OnPaintÊÂ¼ş
+				//æ‹‰åŠ¨çª—å£è¾¹æ¡†çš„æƒ…å†µ
+				onpaint_enabled = false; //ä¸å¸Œæœ›åœ¨æ­¤æ—¶è§¦å‘OnPaintäº‹ä»¶
 			}
 #endif
 		}
 		#endregion
 
 		////////////////////////////////////////////////////////////////////////////////////	
-		//Ö»ËùÒÔĞèÒªOn_PaintÊÂ¼ş£¬ÊÇÎªÁËÓ¦¸¶Ä£Ì¬¶Ô»°¿òµ¯³öÊ±£¬»­Ãæ²»Ë¢ĞÂµÄÇé¿ö
+		//åªæ‰€ä»¥éœ€è¦On_Paintäº‹ä»¶ï¼Œæ˜¯ä¸ºäº†åº”ä»˜æ¨¡æ€å¯¹è¯æ¡†å¼¹å‡ºæ—¶ï¼Œç”»é¢ä¸åˆ·æ–°çš„æƒ…å†µ
 		void Game_Paint(object sender, PaintEventArgs e)
 		{
 			if (onpaint_enabled)
 			{
 				Debug.Write(".");
 				RenderScene();
-				if (device_lost) Invalidate(); //On_PaintÖ±µ½Éè±¸²»ÔÙÊÇLostÎªÖ¹
+				if (device_lost) Invalidate(); //On_Paintç›´åˆ°è®¾å¤‡ä¸å†æ˜¯Lostä¸ºæ­¢
 			}
 		}
 	}
@@ -973,17 +973,17 @@ namespace Comm_Sec3D
 	/*
 	class PickingSystem
 	{
-		//¼·Ñ¹MeshµÄÇòÃæÖĞĞÄµã
+		//æŒ¤å‹Meshçš„çƒé¢ä¸­å¿ƒç‚¹
 		Vector3 center;
 
-		//µ±Ç°Ñ¡ÖĞµÄ¶à±ßĞÎ±àºÅ¼°ÆäÖÊĞÄ
+		//å½“å‰é€‰ä¸­çš„å¤šè¾¹å½¢ç¼–å·åŠå…¶è´¨å¿ƒ
 		int curr_district;
 		Vector3 curr_centroid;
 
-		//worldÖĞµÄÆ½ÒÆÊ¸Á¿£¬ÆäÖµÒªÃ´µÈÓÚcenter£¬ÒªÃ´µÈÓÚµ±Ç°Ñ¡ÔñµÄÃæÖÊĞÄ×ø±ê
+		//worldä¸­çš„å¹³ç§»çŸ¢é‡ï¼Œå…¶å€¼è¦ä¹ˆç­‰äºcenterï¼Œè¦ä¹ˆç­‰äºå½“å‰é€‰æ‹©çš„é¢è´¨å¿ƒåæ ‡
 		Vector3 world_translation;
 
-		//¶à±ßĞÎÊı×é
+		//å¤šè¾¹å½¢æ•°ç»„
 		Polygon[] polys;
 
 		////////////////////////////////////////////////////////////////////////////////////	
@@ -1004,7 +1004,7 @@ namespace Comm_Sec3D
 			float P11 = device.Transform.Projection.M11;
 			float P22 = device.Transform.Projection.M22;
 
-			//screenµ½projectionÆ½Ãæ£¬Ïàµ±ÓÚÊ×ÏÈµÖÏûprojection±ä»»
+			//screenåˆ°projectionå¹³é¢ï¼Œç›¸å½“äºé¦–å…ˆæŠµæ¶ˆprojectionå˜æ¢
 			float px = ((2F * sx) / client_size.Width - 1F) / P11;
 			float py = ((-2F * sy) / client_size.Height + 1F) / P22;
 			float pz = 1F;
@@ -1012,15 +1012,15 @@ namespace Comm_Sec3D
 			Vector3 ray_pos = new Vector3(0F, 0F, 0F);
 			Vector3 ray_dir = new Vector3(px, py, pz);
 
-			//µÖÏûworldºÍview±ä»»
+			//æŠµæ¶ˆworldå’Œviewå˜æ¢
 			Matrix invert = Matrix.Invert(device.Transform.World * device.Transform.View);
 
-			//×îºó¼ÆËãÔÚworldÖĞµÄÉäÏß
+			//æœ€åè®¡ç®—åœ¨worldä¸­çš„å°„çº¿
 			ray_pos.TransformCoordinate(invert);
 			ray_dir.TransformNormal(invert);
 			ray_dir.Normalize();
 
-			//¼ÆËãrayÓëmsµÄÏà½»¶à±ßĞÎ
+			//è®¡ç®—rayä¸msçš„ç›¸äº¤å¤šè¾¹å½¢
 			int polyid = ms.MatchPicking(device, ray_pos, ray_dir);
 
 			if (polyid == -1)
@@ -1040,7 +1040,7 @@ namespace Comm_Sec3D
 	////////////////////////////////////////////////////////////////////////////////////	
 	class DirectionalLight
 	{
-		//Æ½ĞĞ¹â¹âÔ´ÔÚÇòÃæÏµÖĞµÄ·½Î»½Ç
+		//å¹³è¡Œå…‰å…‰æºåœ¨çƒé¢ç³»ä¸­çš„æ–¹ä½è§’
 		float angle_beta;
 		float angle_alpha;
 
@@ -1048,14 +1048,14 @@ namespace Comm_Sec3D
 		{
 			angle_beta = 0;
 
-			//Óëdiffuse=grayÆ¥ÅäµÄÉè¶¨Öµ
+			//ä¸diffuse=grayåŒ¹é…çš„è®¾å®šå€¼
 			//angle_alpha = (float)(Math.PI * (1f / 4f - 7f / 50f));
 
-			//Óëdiffuse=lightgrayÆ¥ÅäµÄÉè¶¨Öµ
+			//ä¸diffuse=lightgrayåŒ¹é…çš„è®¾å®šå€¼
 			angle_alpha = 0.32f;
 		}
 
-		public void AdjustLatitude(float d) //µ÷ÕûÎ³¶È 0-pi/2
+		public void AdjustLatitude(float d) //è°ƒæ•´çº¬åº¦ 0-pi/2
 		{
 			if (d > 0)
 				if (angle_alpha + d <= Math.PI / 2)
@@ -1071,7 +1071,7 @@ namespace Comm_Sec3D
 			Debug.WriteLine(angle_alpha);
 		}
 
-		public void AdjustLongitude(float d) //µ÷Õû¾­¶È 0-2*pi
+		public void AdjustLongitude(float d) //è°ƒæ•´ç»åº¦ 0-2*pi
 		{
 			angle_beta = (float)((angle_beta + d) % (2 * Math.PI));
 		}
@@ -1079,12 +1079,12 @@ namespace Comm_Sec3D
 		public void SetDirectionalLight(Device device, int lightidx, int signx, int signy)
 		{
 			device.Lights[lightidx].Type = LightType.Directional;
-			device.Lights[lightidx].Ambient = Color.Gray; //»·¾³¹â
-			device.Lights[lightidx].Diffuse = Color.LightGray; //ÂşÉ¢Éä
+			device.Lights[lightidx].Ambient = Color.Gray; //ç¯å¢ƒå…‰
+			device.Lights[lightidx].Diffuse = Color.LightGray; //æ¼«æ•£å°„
 			device.Lights[lightidx].Update();
 			device.Lights[lightidx].Enabled = true;
 
-			//¹âÏß·½ÏòÒ²ÊÇÇòÃæ×ø±êÏµ
+			//å…‰çº¿æ–¹å‘ä¹Ÿæ˜¯çƒé¢åæ ‡ç³»
 			double t = Math.Cos(angle_alpha);
 			float x = signx * (float)(100 * t * Math.Cos(angle_beta));
 			float y = signy * (float)(100 * t * Math.Sin(angle_beta));
@@ -1096,11 +1096,11 @@ namespace Comm_Sec3D
 	////////////////////////////////////////////////////////////////////////////////////	
 	class Camera
 	{
-		//¼·Ñ¹MeshµÄÇòÃæµÄÔ­Ê¼°ë¾¶
+		//æŒ¤å‹Meshçš„çƒé¢çš„åŸå§‹åŠå¾„
 		float radius;
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//ÇòÃæÏµÖĞµÄCamera°ë¾¶ºÍ·½Î»½Ç
+		//çƒé¢ç³»ä¸­çš„CameraåŠå¾„å’Œæ–¹ä½è§’
 		float R;
 		float alpha;
 		float beta;
@@ -1111,8 +1111,8 @@ namespace Comm_Sec3D
 			this.radius = radius;
 
 			R = radius;
-			alpha = (float)(Math.PI * 3 / 4);	//Î³¶È£ºXYÆ½ÃæÓëZ¼Ğ½Ç£¨ÓÒÊÖ£© [-pi/2,+pi/2]Ó³Éäµ½[0:+pi]
-			beta = (float)(-Math.PI / 2);		//¾­¶È£ºXÓëOPÍ¶Ó°µÄ¼Ğ½Ç£¨ÓÒÊÖ£© 0:2pi
+			alpha = (float)(Math.PI * 3 / 4);	//çº¬åº¦ï¼šXYå¹³é¢ä¸Zå¤¹è§’ï¼ˆå³æ‰‹ï¼‰ [-pi/2,+pi/2]æ˜ å°„åˆ°[0:+pi]
+			beta = (float)(-Math.PI / 2);		//ç»åº¦ï¼šXä¸OPæŠ•å½±çš„å¤¹è§’ï¼ˆå³æ‰‹ï¼‰ 0:2pi
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
@@ -1124,20 +1124,20 @@ namespace Comm_Sec3D
 		////////////////////////////////////////////////////////////////////////////////////////
 		public void SetViewTransform(Device device)
 		{
-			//½«ÇòÃæ×ø±ê×ª»»³ÉworldÖ±½Ç×ø±ê
+			//å°†çƒé¢åæ ‡è½¬æ¢æˆworldç›´è§’åæ ‡
 			double t = R * Math.Cos(alpha - Math.PI / 2);
-			float z = (float)(-R * Math.Sin(alpha - Math.PI / 2)); //×ª»¯³É×óÊÖ
+			float z = (float)(-R * Math.Sin(alpha - Math.PI / 2)); //è½¬åŒ–æˆå·¦æ‰‹
 			float x = (float)(t * Math.Cos(beta));
 			float y = (float)(t * Math.Sin(beta));
 
-			device.Transform.View = Matrix.LookAtLH(		//view±ä»»
-				new Vector3((float)x, (float)y, (float)z),	//cameraËùÔÚµÄworldÎ»ÖÃ
-				new Vector3(0, 0, 0),						//cameraÕı¶ÔworldÔ­µã
-				new Vector3(0, 0, -1));						//cameraÒÔ-ZÎªÕıÉÏ·½
+			device.Transform.View = Matrix.LookAtLH(		//viewå˜æ¢
+				new Vector3((float)x, (float)y, (float)z),	//cameraæ‰€åœ¨çš„worldä½ç½®
+				new Vector3(0, 0, 0),						//cameraæ­£å¯¹worldåŸç‚¹
+				new Vector3(0, 0, -1));						//cameraä»¥-Zä¸ºæ­£ä¸Šæ–¹
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//°ë¾¶ Radius
+		//åŠå¾„ Radius
 		public void IncreaseRadius(float d)
 		{
 			if (R + d <= 3 * radius) R += d; else R = 3 * radius;
@@ -1148,7 +1148,7 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//Î³¶È Latitude
+		//çº¬åº¦ Latitude
 		public void IncreaseLatitude(float d)
 		{
 			if (alpha + d <= Math.PI) alpha += d; else alpha = (float)Math.PI - 0.001F;
@@ -1159,7 +1159,7 @@ namespace Comm_Sec3D
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////
-		//¾­¶È Longitude
+		//ç»åº¦ Longitude
 		public void IncreaseLongitude(float d)
 		{
 			beta = (float)((beta + d) % (2 * Math.PI));

@@ -1,4 +1,4 @@
-namespace Comm_Sec
+﻿namespace Comm_Sec
 {
 	partial class frmSec
 	{

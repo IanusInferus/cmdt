@@ -1,4 +1,4 @@
-namespace Comm_Y64
+﻿namespace Comm_Y64
 {
 	partial class Form1
 	{

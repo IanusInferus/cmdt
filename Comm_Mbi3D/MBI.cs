@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -16,29 +16,29 @@ namespace Comm_Mbi3D
 		public Object[] objects;
 		public Polygon[] polygons;
 		public TextureInfo[] txtinfos;
-		public byte[] texturetype; //ÌùÍ¼ÀàĞÍ±ê¼Ç£¬Ë÷ÒıÊÇÌùÍ¼±àºÅ£¬ÆäÖµÎªµ±Ç°ÌùÍ¼ÀàĞÍ
+		public byte[] texturetype; //è´´å›¾ç±»å‹æ ‡è®°ï¼Œç´¢å¼•æ˜¯è´´å›¾ç¼–å·ï¼Œå…¶å€¼ä¸ºå½“å‰è´´å›¾ç±»å‹
 
 		public Version version = Version.Commandos2;
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
-		string filename; //ÎÄ¼şÈ«Ãû£¬°üÀ¨À©Õ¹ÃûºÍÂ·¾¶
-		string nameonly; //µ¥¶ÀµÄÎÄ¼şÃû£¬ÎŞÀ©Õ¹ÃûºÍÂ·¾¶
+		string filename; //æ–‡ä»¶å…¨åï¼ŒåŒ…æ‹¬æ‰©å±•åå’Œè·¯å¾„
+		string nameonly; //å•ç‹¬çš„æ–‡ä»¶åï¼Œæ— æ‰©å±•åå’Œè·¯å¾„
 
 		public MBI(string fn)
 		{
-			filename = fn; //»ñµÃÎÄ¼şÈ«Ãû
+			filename = fn; //è·å¾—æ–‡ä»¶å…¨å
 
 			string dir, ext;
-			SplitFileName(filename, out dir, out nameonly, out ext); //»ñµÃÎÄ¼şÃû£¬ÎŞextºÍÂ·¾¶
+			SplitFileName(filename, out dir, out nameonly, out ext); //è·å¾—æ–‡ä»¶åï¼Œæ— extå’Œè·¯å¾„
 
-			ReadAll();			//¶ÁÈ¡ËùÓĞmbiÊı¾İÄÚÈİ
-			MarkTextureType();	//±ê¼ÇËùÓĞÌùÍ¼µÄÀàĞÍ
+			ReadAll();			//è¯»å–æ‰€æœ‰mbiæ•°æ®å†…å®¹
+			MarkTextureType();	//æ ‡è®°æ‰€æœ‰è´´å›¾çš„ç±»å‹
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
 		void ReadAll()
 		{
-			//ÓÃDragon_UNPAcker¶Á³öÀ´µÄÊı¾İÊÇ´íÎóµÄ£¬²»ÒªÓÃÕâ¸öÈí¼şÀ´½âÑ¹.mbiÎÄ¼ş
+			//ç”¨Dragon_UNPAckerè¯»å‡ºæ¥çš„æ•°æ®æ˜¯é”™è¯¯çš„ï¼Œä¸è¦ç”¨è¿™ä¸ªè½¯ä»¶æ¥è§£å‹.mbiæ–‡ä»¶
 			using (FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read))
 			{
 				using (BinaryReader br = new BinaryReader(fs))
@@ -49,7 +49,7 @@ namespace Comm_Mbi3D
 					else if (v == 0x4d424932)
 						version = Version.Commandos3;
 					else
-						Debug.Assert(false); //ÎÄ¼şÀàĞÍ³ö´í£¡
+						Debug.Assert(false); //æ–‡ä»¶ç±»å‹å‡ºé”™ï¼
 
 					int num_vertice = br.ReadInt32();
 					int num_polygons = br.ReadInt32();
@@ -69,7 +69,7 @@ namespace Comm_Mbi3D
 						polygons[i] = new Polygon();
 						if (version == Version.Commandos2)
 						{
-							polygons[i].attribute = 0; //ÎŞÓÃ£¡
+							polygons[i].attribute = 0; //æ— ç”¨ï¼
 							polygons[i].num_lines = br.ReadByte();
 						}
 						else if (version == Version.Commandos3)
@@ -78,7 +78,7 @@ namespace Comm_Mbi3D
 							polygons[i].attribute = (byte)(n >> 4);					
 							
 							byte test = (byte)(n >> 4);
-							Debug.Assert(test == 0 || test == 1 || test == 2 || test == 4); //·¢ÏÖÎ´ÖªµÄÌùÍ¼ÀàĞÍ
+							Debug.Assert(test == 0 || test == 1 || test == 2 || test == 4); //å‘ç°æœªçŸ¥çš„è´´å›¾ç±»å‹
 
 							polygons[i].num_lines = (byte)(n & 0xf);
 						}
@@ -90,8 +90,8 @@ namespace Comm_Mbi3D
 						{
 							polygons[i].map_points[j] = new Point2D();
 							polygons[i].map_points[j].vertex_id = br.ReadInt16();
-							polygons[i].map_points[j].U = br.ReadInt16() / 4096f; //³ıÒÔ4096!
-							polygons[i].map_points[j].V = br.ReadInt16() / 4096f; //³ıÒÔ4096!
+							polygons[i].map_points[j].U = br.ReadInt16() / 4096f; //é™¤ä»¥4096!
+							polygons[i].map_points[j].V = br.ReadInt16() / 4096f; //é™¤ä»¥4096!
 
 							polygons[i].map_points[j].vertex = vertice[polygons[i].map_points[j].vertex_id];
 						}
@@ -104,7 +104,7 @@ namespace Comm_Mbi3D
 						objects[i] = new Object();
 
 						objects[i].obj_name = ConvertBytesToString(br.ReadBytes(44));
-						Debug.WriteLine(String.Format("[¶ÔÏóÃû³Æ] {0}", objects[i].obj_name));
+						Debug.WriteLine(String.Format("[å¯¹è±¡åç§°] {0}", objects[i].obj_name));
 
 						objects[i].start_polygon_id = br.ReadInt32();
 						objects[i].end_polygon_id = br.ReadInt32() - 1;
@@ -121,8 +121,8 @@ namespace Comm_Mbi3D
 
 						if (version == Version.Commandos3)
 						{
-							txtinfos[i].texture_name = ConvertBytesToString(br.ReadBytes(32)); //Ö»ÓĞcomm3²ÅĞèÒª£¡
-							Debug.WriteLine(String.Format("[ÌùÍ¼Ãû³Æ] {0}", txtinfos[i].texture_name));
+							txtinfos[i].texture_name = ConvertBytesToString(br.ReadBytes(32)); //åªæœ‰comm3æ‰éœ€è¦ï¼
+							Debug.WriteLine(String.Format("[è´´å›¾åç§°] {0}", txtinfos[i].texture_name));
 						}
 						txtinfos[i].color = new uint[256];
 						for (int j = 0; j < 256; j++)
@@ -137,13 +137,13 @@ namespace Comm_Mbi3D
 						txtinfos[i].data = br.ReadBytes(txtinfos[i].width * txtinfos[i].height);
 					}
 
-					Debug.WriteLine(String.Format("[ÎÄ¼şÖ¸Õë] {0}", fs.Position));
+					Debug.WriteLine(String.Format("[æ–‡ä»¶æŒ‡é’ˆ] {0}", fs.Position));
 				}
 			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
-		void MarkTextureType() //±ê¼ÇËùÓĞÌùÍ¼µÄÀàĞÍ
+		void MarkTextureType() //æ ‡è®°æ‰€æœ‰è´´å›¾çš„ç±»å‹
 		{
 			texturetype = new byte[txtinfos.Length];
 			for (int i = 0; i < polygons.Length; i++)
@@ -157,18 +157,18 @@ namespace Comm_Mbi3D
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
 		public void ExportToObjFile(string objfn,string mtlfn,string txtdir)
 		{
-			GenerateAllBitmaps();	//¸ù¾İÌùÍ¼ÀàĞÍ£¬Éú³ÉÌùÍ¼µÄBitmaps
-			ExportTexture(txtdir);	//½«ËùÓĞBitmapsµ¼³öÎªPNG
-			ExportObj(objfn);		//µ¼³öWavefront OBJÎÄ¼ş					
-			ExportMtl(mtlfn);		//µ¼³öWavefront MTLÎÄ¼ş
+			GenerateAllBitmaps();	//æ ¹æ®è´´å›¾ç±»å‹ï¼Œç”Ÿæˆè´´å›¾çš„Bitmaps
+			ExportTexture(txtdir);	//å°†æ‰€æœ‰Bitmapså¯¼å‡ºä¸ºPNG
+			ExportObj(objfn);		//å¯¼å‡ºWavefront OBJæ–‡ä»¶					
+			ExportMtl(mtlfn);		//å¯¼å‡ºWavefront MTLæ–‡ä»¶
 
-			DisposAllBitmaps();		//ÊÕÎ²¹¤×÷£¬ÊÍ·ÅËùÓĞÎ»Í¼×ÊÔ´
+			DisposAllBitmaps();		//æ”¶å°¾å·¥ä½œï¼Œé‡Šæ”¾æ‰€æœ‰ä½å›¾èµ„æº
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
 		List<Polygon>[] lpoly;
 
-		//½«ËùÓĞ¶à±ßĞÎ°´ÕÕÌùÍ¼Ë÷ÒıÅÅĞò
+		//å°†æ‰€æœ‰å¤šè¾¹å½¢æŒ‰ç…§è´´å›¾ç´¢å¼•æ’åº
 		void SortingPolygonsByTextureID()
 		{
 			lpoly = new List<Polygon>[txtinfos.Length];
@@ -188,9 +188,9 @@ namespace Comm_Mbi3D
 		{
 			SortingPolygonsByTextureID();
 
-			List<string> v = new List<string>();  //¶¥µã¼¯ºÏ
-			List<string> vt = new List<string>(); //Ó³Éäµã¼¯ºÏ
-			List<string> f = new List<string>();  //Ãæ¼¯ºÏ
+			List<string> v = new List<string>();  //é¡¶ç‚¹é›†åˆ
+			List<string> vt = new List<string>(); //æ˜ å°„ç‚¹é›†åˆ
+			List<string> f = new List<string>();  //é¢é›†åˆ
 
 			for (int i = 0; i < vertice.Length; i++)
 				v.Add(string.Format("v  {0} {1} {2}", vertice[i].X, vertice[i].Y, vertice[i].Z));
@@ -204,7 +204,7 @@ namespace Comm_Mbi3D
 				foreach (Polygon poly in lpoly[i])
 				{
 					for (int j = poly.num_lines - 1; j >= 0; j--)
-						vt.Add(string.Format("vt  {0} {1}", poly.map_points[j].U, 1 - poly.map_points[j].V)); //ÎÒÈÕ£¡Õâ¸ö"1-"¼òÖ±º¦ËÀÈË£¡£¡
+						vt.Add(string.Format("vt  {0} {1}", poly.map_points[j].U, 1 - poly.map_points[j].V)); //æˆ‘æ—¥ï¼è¿™ä¸ª"1-"ç®€ç›´å®³æ­»äººï¼ï¼
 					
 					StringBuilder s=new StringBuilder();
 					s.Append("f  ");
@@ -215,40 +215,40 @@ namespace Comm_Mbi3D
 				}
 			}
 
-			//Èç¹ûÃ»ÓĞÖ¸¶¨ObjÎÄ¼şÃû£¬ÔòÊ¹ÓÃÄ¬ÈÏÎÄ¼şÃû
+			//å¦‚æœæ²¡æœ‰æŒ‡å®šObjæ–‡ä»¶åï¼Œåˆ™ä½¿ç”¨é»˜è®¤æ–‡ä»¶å
 			if (objfn == null) objfn = GetObjFileName();
 
 			using (TextWriter tw = new StreamWriter(objfn))
 			{
 				tw.WriteLine(string.Format("mtllib {0}.mtl\n", this.nameonly));
 
-				tw.WriteLine(string.Format("# ¶¥µãÊıÁ¿: {0}\n", v.Count));
-				foreach (string s in v) tw.WriteLine(s);	//Êä³öËùÓĞ¶¥µã¼¯ºÏ
+				tw.WriteLine(string.Format("# é¡¶ç‚¹æ•°é‡: {0}\n", v.Count));
+				foreach (string s in v) tw.WriteLine(s);	//è¾“å‡ºæ‰€æœ‰é¡¶ç‚¹é›†åˆ
 
-				tw.WriteLine(string.Format("# ÌùÍ¼Ó³ÉäµãÊıÁ¿: {0}\n", vt.Count));
-				foreach (string s in vt) tw.WriteLine(s);	//Êä³öËùÓĞÌùÍ¼Ó³Éäµã¼¯ºÏ
+				tw.WriteLine(string.Format("# è´´å›¾æ˜ å°„ç‚¹æ•°é‡: {0}\n", vt.Count));
+				foreach (string s in vt) tw.WriteLine(s);	//è¾“å‡ºæ‰€æœ‰è´´å›¾æ˜ å°„ç‚¹é›†åˆ
 
-				tw.WriteLine(string.Format("# ¶à±ßĞÎÊıÁ¿: {0}\n", f.Count));
-				foreach (string s in f) tw.WriteLine(s);	//Êä³öËùÓĞ¶à±ßĞÎ¼¯ºÏ
+				tw.WriteLine(string.Format("# å¤šè¾¹å½¢æ•°é‡: {0}\n", f.Count));
+				foreach (string s in f) tw.WriteLine(s);	//è¾“å‡ºæ‰€æœ‰å¤šè¾¹å½¢é›†åˆ
 			}
 		}
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
 		void ExportMtl(string mtlfn)
 		{
-			//Èç¹ûÃ»ÓĞÖ¸¶¨MtlÎÄ¼şÃû£¬ÔòÊ¹ÓÃÄ¬ÈÏÎÄ¼şÃû
+			//å¦‚æœæ²¡æœ‰æŒ‡å®šMtlæ–‡ä»¶åï¼Œåˆ™ä½¿ç”¨é»˜è®¤æ–‡ä»¶å
 			if (mtlfn == null) mtlfn = GetMtlFileName();
 
 			using (TextWriter tw = new StreamWriter(mtlfn))
 			{
-				for (int i = 0; i < txtinfos.Length; i++)	//Êä³öÃ¿Ò»¸ö²ÄÖÊËù¶ÔÓ¦µÄÌùÍ¼
+				for (int i = 0; i < txtinfos.Length; i++)	//è¾“å‡ºæ¯ä¸€ä¸ªæè´¨æ‰€å¯¹åº”çš„è´´å›¾
 				{
 					tw.WriteLine("newmtl {0}", i);
 					tw.WriteLine("illum 0");				
 					tw.WriteLine("map_Kd {0}.png", nameonly + "_" + i);
-					//tw.WriteLine("Ka 0.2 0.2 0.2"); //ambient, »·¾³¹â£¬¼´¼ä½Ó¹âÕÕ
-					//tw.WriteLine("Kd 0.8 0.8 0.8"); //diffuse, Âş·´Éä£¬¼´Ö±½Ó¹âÕÕ
-					tw.WriteLine("Kd 1 1 1"); //diffuse, Âş·´Éä£¬¼´Ö±½Ó¹âÕÕ
+					//tw.WriteLine("Ka 0.2 0.2 0.2"); //ambient, ç¯å¢ƒå…‰ï¼Œå³é—´æ¥å…‰ç…§
+					//tw.WriteLine("Kd 0.8 0.8 0.8"); //diffuse, æ¼«åå°„ï¼Œå³ç›´æ¥å…‰ç…§
+					tw.WriteLine("Kd 1 1 1"); //diffuse, æ¼«åå°„ï¼Œå³ç›´æ¥å…‰ç…§
 					tw.WriteLine();
 				}
 			}
@@ -257,10 +257,10 @@ namespace Comm_Mbi3D
 		///////////////////////////////////////////////////////////////////////////////////////////////////////	
 		void ExportTexture(string txtdir)
 		{
-			//Èç¹ûÃ»ÓĞÖ¸¶¨ÌùÍ¼Ä¿Â¼£¬ÔòÊ¹ÓÃÄ¬ÈÏÄ¿Â¼
+			//å¦‚æœæ²¡æœ‰æŒ‡å®šè´´å›¾ç›®å½•ï¼Œåˆ™ä½¿ç”¨é»˜è®¤ç›®å½•
 			if (txtdir == null) txtdir = GetTextureDirName();
 
-			//±£Ö¤ÌùÍ¼Ä¿Â¼Ò»¶¨´æÔÚ
+			//ä¿è¯è´´å›¾ç›®å½•ä¸€å®šå­˜åœ¨
 			DirectoryInfo di = new DirectoryInfo(txtdir);
 			if (!di.Exists) Directory.CreateDirectory(txtdir);
 
@@ -291,7 +291,7 @@ namespace Comm_Mbi3D
 			{			
 				TextureInfo p = txtinfos[i];
 
-				bmps[i] = new Bitmap(p.width, p.height,PixelFormat.Format32bppArgb); //×¢Òâ£¬±ØĞëĞ¯´øAlphaÍ¨µÀ
+				bmps[i] = new Bitmap(p.width, p.height,PixelFormat.Format32bppArgb); //æ³¨æ„ï¼Œå¿…é¡»æºå¸¦Alphaé€šé“
 
 				BitmapData bmpdata = bmps[i].LockBits(new Rectangle(0, 0, bmps[i].Width, bmps[i].Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
 				IntPtr ptr = bmpdata.Scan0;
@@ -308,22 +308,22 @@ namespace Comm_Mbi3D
 							int idx = p.data[t++];
 							switch (texturetype[i])
 							{
-								case 0:  //ÆÕÍ¨ÌùÍ¼
-								case 1:  //Í¸Ã÷É«ÌùÍ¼
+								case 0:  //æ™®é€šè´´å›¾
+								case 1:  //é€æ˜è‰²è´´å›¾
 									if (p.color[idx] == 0xffff00ff)
-										*(start + x) = 0x0; //alphaÎª0£¬ÇÒÎªºÚÉ«£¨±ØĞëÎªºÚÉ«£¬·ñÔò3DS maxÀïÓ¦ÓÃÍ¸Ã÷¶ÈÌùÍ¼Ê±»áÓĞ±ßÔµ£©
+										*(start + x) = 0x0; //alphaä¸º0ï¼Œä¸”ä¸ºé»‘è‰²ï¼ˆå¿…é¡»ä¸ºé»‘è‰²ï¼Œå¦åˆ™3DS maxé‡Œåº”ç”¨é€æ˜åº¦è´´å›¾æ—¶ä¼šæœ‰è¾¹ç¼˜ï¼‰
 									else
-										*(start + x) = p.color[idx];//²»Í¸Ã÷
+										*(start + x) = p.color[idx];//ä¸é€æ˜
 									break;
-								case 2:  //Alpha¹âÔÎÌùÍ¼
+								case 2:  //Alphaå…‰æ™•è´´å›¾
 									uint a = p.color[idx] & 0xff;
 									//*(start + x) = ((a >> 2) << 24) | (a << 16) | (a << 8) | a;
-									*(start + x) = ((a >> 2) << 24) | 0xffffff; //´Ë´¦¸ÄÎªÓëÏÔÊ¾Ò»ÖÂ
+									*(start + x) = ((a >> 2) << 24) | 0xffffff; //æ­¤å¤„æ”¹ä¸ºä¸æ˜¾ç¤ºä¸€è‡´
 									break;
-								case 4:  //´óÀíÊ¯·´ÉäÌùÍ¼
+								case 4:  //å¤§ç†çŸ³åå°„è´´å›¾
 									*(start + x) = (uint)((0xE0 << 24) | (p.color[idx] & 0xffffff));
 									break;
-								default: //ÊÓ¾õ¾¯¸æ£¬Î´ÖªµÄÌùÍ¼ÀàĞÍ!
+								default: //è§†è§‰è­¦å‘Šï¼ŒæœªçŸ¥çš„è´´å›¾ç±»å‹!
 									*(start + x) = 0xffff00ff;
 									break;
 							}
@@ -357,27 +357,27 @@ namespace Comm_Mbi3D
 			name = fi.Name.Substring(0, fi.Name.Length - 4);
 		}
 
-		string GetObjFileName()	//Ä¬ÈÏObjÎÄ¼şÃû
+		string GetObjFileName()	//é»˜è®¤Objæ–‡ä»¶å
 		{
 			string dir, name, ext;
 			SplitFileName(filename, out dir, out name, out ext);
 			return dir + @"\" + name + ".obj";
 		}
 
-		string GetMtlFileName()	//Ä¬ÈÏMtlÎÄ¼şÃû
+		string GetMtlFileName()	//é»˜è®¤Mtlæ–‡ä»¶å
 		{
 			string dir, name, ext;
 			SplitFileName(filename, out dir, out name, out ext);
 			return dir + @"\" + name + ".mtl";
 		}
 
-		string GetTextureDirName() //Ä¬ÈÏÌùÍ¼Ä¿Â¼
+		string GetTextureDirName() //é»˜è®¤è´´å›¾ç›®å½•
 		{
 			string dir, name, ext;
 			SplitFileName(filename, out dir, out name, out ext);
 
-			//return dir + @"\" + name; //"F:\MBI2\RY02"ĞÎÊ½µÄÄ¿Â¼
-			return dir + @"\maps"; //µ±Ç°Â·¾¶ÏÂµÄmaps×ÓÄ¿Â¼ÏÂ
+			//return dir + @"\" + name; //"F:\MBI2\RY02"å½¢å¼çš„ç›®å½•
+			return dir + @"\maps"; //å½“å‰è·¯å¾„ä¸‹çš„mapså­ç›®å½•ä¸‹
 		}
 	}
 
@@ -391,9 +391,9 @@ namespace Comm_Mbi3D
 
 	class Point2D
 	{
-		public short vertex_id;	//×¼È·
-		public float U;			//×¼È·£º/4096fµÃµ½Tu (16*256=32*128=4096)
-		public float V;			//×¼È·£º/4996fµÃµ½Tv (16*256=32*128=4096)
+		public short vertex_id;	//å‡†ç¡®
+		public float U;			//å‡†ç¡®ï¼š/4096få¾—åˆ°Tu (16*256=32*128=4096)
+		public float V;			//å‡†ç¡®ï¼š/4996få¾—åˆ°Tv (16*256=32*128=4096)
 
 		public Vertex vertex;
 	}
@@ -401,14 +401,14 @@ namespace Comm_Mbi3D
 	class Polygon
 	{
 		public byte num_lines;
-		public byte attribute;	//only for comm3£º0¡¢1¡¢2£¬·Ö±ğ±íÊ¾ÆÕÍ¨¡¢Í¸Ã÷¡¢Ñô¹âĞ§¹û
+		public byte attribute;	//only for comm3ï¼š0ã€1ã€2ï¼Œåˆ†åˆ«è¡¨ç¤ºæ™®é€šã€é€æ˜ã€é˜³å…‰æ•ˆæœ
 		public byte texture_id;
 		public Point2D[] map_points;
 	}
 
 	class Object
 	{
-		public string obj_name;	//44×Ö½Ú
+		public string obj_name;	//44å­—èŠ‚
 		public int start_polygon_id;
 		public int end_polygon_id;
 	}
@@ -418,7 +418,7 @@ namespace Comm_Mbi3D
 		public int UNKNOWN;
 		public int width;
 		public int height;
-		public string texture_name;	//32×Ö½Ú,only for comm3
+		public string texture_name;	//32å­—èŠ‚,only for comm3
 		public uint[] color;	//A8R8G8B8
 		public byte[] data;
 	}

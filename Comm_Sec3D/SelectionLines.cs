@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -8,7 +8,7 @@ using Microsoft.DirectX.Direct3D;
 
 namespace Comm_Sec3D
 {
-	//¸ßÁÁÏÔÊ¾µÄÃæÑ¡ÔñÏß¿ò
+	//é«˜äº®æ˜¾ç¤ºçš„é¢é€‰æ‹©çº¿æ¡†
 	public class SelectionLines : IDisposable
 	{
 		CustomVertex.PositionColored[] pvexs;
@@ -80,15 +80,15 @@ namespace Comm_Sec3D
 
 		protected virtual void Dispose(bool isDisposing)
 		{
-			// ²»Òª¶à´Î´¦Àí
+			// ä¸è¦å¤šæ¬¡å¤„ç†
 			if (_alreadyDisposed)
 				return;
 			if (isDisposing)
 			{
-				//´Ë´¦ÊÍ·ÅÊÜ¿Ø×ÊÔ´
+				//æ­¤å¤„é‡Šæ”¾å—æ§èµ„æº
 				vertexbuf.Dispose(); 
 			}
-			//´Ë´¦ÊÍ·Å·ÇÊÜ¿Ø×ÊÔ´¡£ÉèÖÃ±»´¦Àí¹ı±ê¼Ç
+			//æ­¤å¤„é‡Šæ”¾éå—æ§èµ„æºã€‚è®¾ç½®è¢«å¤„ç†è¿‡æ ‡è®°
 			_alreadyDisposed = true;
 		}
 

@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
@@ -18,8 +18,8 @@ namespace Comm_Sec3D
 		public int idx;
 		public FPoint from;
 		public FPoint to;
-		public int belong_district;		//×ÔÉíËùÔÚÇøÓò
-		public int neighbor_district;	//ÁÚ½ÓÇøÓò
+		public int belong_district;		//è‡ªèº«æ‰€åœ¨åŒºåŸŸ
+		public int neighbor_district;	//é‚»æ¥åŒºåŸŸ
 	}
 
 	public class District
@@ -42,7 +42,7 @@ namespace Comm_Sec3D
 		public float maxy;
 		public float maxz;
 		
-		public Border[] borders; //num_borders¸ö
+		public Border[] borders; //num_bordersä¸ª
 	}
 
 	public class Sec
@@ -98,7 +98,7 @@ namespace Comm_Sec3D
 						points[i] = fp;
 					}
 
-					CalculateMinMax(); //¼ÆËã×î´ó×îĞ¡Öµ
+					CalculateMinMax(); //è®¡ç®—æœ€å¤§æœ€å°å€¼
 
 					/////////////////////////////////////////////////////////////////
 
@@ -158,7 +158,7 @@ namespace Comm_Sec3D
 					}
 				}
 			}
-			ValidateSecData(); //Õâ¸öĞŞÕı·Ç³£Ç¿£¡Ğ§¹û¼«ºÃ£¡
+			ValidateSecData(); //è¿™ä¸ªä¿®æ­£éå¸¸å¼ºï¼æ•ˆæœæå¥½ï¼
 		}
 
 		void ValidateSecData()
@@ -178,14 +178,14 @@ namespace Comm_Sec3D
 			}
 			if (total != 0)
 			{
-				string msg = string.Format("µ÷ÊÔĞÅÏ¢£º¹²·¢ÏÖ{0}´¦²»Ò»ÖÂµÄÊı¾İ.", total);
+				string msg = string.Format("è°ƒè¯•ä¿¡æ¯ï¼šå…±å‘ç°{0}å¤„ä¸ä¸€è‡´çš„æ•°æ®.", total);
 				Debug.WriteLine(msg);
 			}
 		}
 
 		/////////////////////////////////////////////////////////////////
 		/*
-		//¼ÆËã¶à±ßĞÎÃæ»ı
+		//è®¡ç®—å¤šè¾¹å½¢é¢ç§¯
 		float GetPolygonAreaOfDistrict(int idx)
 		{
 			District d = ld[idx];
@@ -200,7 +200,7 @@ namespace Comm_Sec3D
 			return Math.Abs(result);
 		}
 
-		//¼ÆËã¶à±ßĞÎÖÊĞÄÎ»ÖÃ
+		//è®¡ç®—å¤šè¾¹å½¢è´¨å¿ƒä½ç½®
 		FPoint GetPolyonCentroidOfDistrict(int idx)
 		{
 			float area = GetPolygonAreaOfDistrict(idx);
