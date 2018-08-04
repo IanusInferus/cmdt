@@ -83,7 +83,7 @@ namespace Comm_Abi3D
 			device.DeviceReset += new EventHandler(this.OnDeviceReset);
 			device.DeviceLost += new EventHandler(this.OnDeviceLost);
 
-			gdifont = new System.Drawing.Font("新宋体", 9);//GDI字体准备
+			gdifont = new System.Drawing.Font("新宋体", 12);//GDI字体准备
 
 			axises=new CoordAxies(); //初始化坐标轴
 
@@ -616,7 +616,7 @@ namespace Comm_Abi3D
 
 			//设置标题栏
 			FileInfo fi = new FileInfo(filename);
-			filename = fi.Name.ToLower();
+			//filename = fi.Name.ToLower();
 			Text = "3D .Abi Viewer - " + filename;
 
 			//背景色相关
@@ -667,13 +667,13 @@ namespace Comm_Abi3D
 			switch (e.Button)
 			{
 				case MouseButtons.Left:
-					Game_KeyDown(null, new KeyEventArgs(Keys.A));
+					Game_KeyDown(null, new KeyEventArgs(Keys.OemPeriod));
 					break;
 				case MouseButtons.Middle:
-					middle_button_pressed = true;
+					Game_KeyDown(null, new KeyEventArgs(Keys.O));
 					break;
 				case MouseButtons.Right:
-					right_button_pressed = true;
+					Game_KeyDown(null, new KeyEventArgs(Keys.Oemcomma));
 					break;
 			}
 		}
