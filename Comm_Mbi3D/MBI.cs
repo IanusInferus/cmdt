@@ -67,7 +67,8 @@ namespace Comm_Mbi3D
 					for (int i = 0; i < num_polygons; i++)
 					{
 						polygons[i] = new Polygon();
-						if (version == Version.Commandos2)
+
+                        if (version == Version.Commandos2)
 						{
 							polygons[i].attribute = 0; //无用！
 							polygons[i].num_lines = br.ReadByte();
@@ -85,11 +86,15 @@ namespace Comm_Mbi3D
 
 						polygons[i].texture_id = br.ReadByte();
 
-						polygons[i].map_points = new Point2D[polygons[i].num_lines];
+                        //MBI-Ext
+                        polygons[i].texture_id = polygons[i].texture_id + ( (polygons[i].num_lines >> 4) << 8 );
+                        polygons[i].num_lines = polygons[i].num_lines & 0x0f ; 
+
+                        polygons[i].map_points = new Point2D[polygons[i].num_lines];
 						for (int j = 0; j < polygons[i].num_lines; j++)
 						{
 							polygons[i].map_points[j] = new Point2D();
-							polygons[i].map_points[j].vertex_id = br.ReadInt16();
+                            polygons[i].map_points[j].vertex_id = br.ReadUInt16();//MBI-Ext // br.ReadInt16();
 							polygons[i].map_points[j].U = br.ReadInt16() / 4096f; //除以4096!
 							polygons[i].map_points[j].V = br.ReadInt16() / 4096f; //除以4096!
 
@@ -391,7 +396,7 @@ namespace Comm_Mbi3D
 
 	class Point2D
 	{
-		public short vertex_id;	//准确
+		public int vertex_id;	//MBI-Ext //准确
 		public float U;			//准确：/4096f得到Tu (16*256=32*128=4096)
 		public float V;			//准确：/4996f得到Tv (16*256=32*128=4096)
 
@@ -400,9 +405,9 @@ namespace Comm_Mbi3D
 
 	class Polygon
 	{
-		public byte num_lines;
+		public int num_lines;   //MBI-Ext
 		public byte attribute;	//only for comm3：0、1、2，分别表示普通、透明、阳光效果
-		public byte texture_id;
+		public int texture_id;  //MBI-Ext
 		public Point2D[] map_points;
 	}
 
