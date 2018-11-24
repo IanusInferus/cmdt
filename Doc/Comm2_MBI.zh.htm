@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+    "http://www.w3.org/TR/xhtml-basic/xhtml-basic11.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>盟军敢死队2及3 MBI文件格式表</title>
+    <style>
+pre
+{
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+table, th, td
+{
+    border-color: black;
+    border-style: solid;
+}
+
+table
+{
+    border-width: 0 0 1pt 1pt;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, td
+{
+    border-width: 1pt 1pt 0 0;
+    margin: 0;
+    padding: 3pt 3pt 3pt 3pt;
+    text-align: center;
+    vertical-align: middle;
+}
+
+tr td:nth-last-child(2)
+{
+    width: 160px;
+    max-width: 160px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+    </style>
+</head>
+<!--
+    为了与HTML兼容，以下Tag必须使用自闭合语法（如<meta />）
+        area, base, br, col, embed, hr, img, input, keygen, link, menuitem, meta, param, source, track, wbr
+    其他Tag不得使用自闭合语法（使用如<script></script>）
+-->
+<body>
+    <h1>盟军敢死队2及3 MBI文件格式表</h1>
+    <p>地狱门神（F.R.C.），NeoRAGEx2002制作整理</p>
+
+    <table>
+        <tr>
+            <th>数据区</td>
+            <th>数据块</td>
+            <th>数据节</td>
+            <th>数据</td>
+            <th>数据类型</td>
+            <th>长度</td>
+            <th>描述</td>
+            <th>样例数据</td>
+        </tr>
+        <tr>
+            <td rowspan=24>Header DA</td>
+            <td rowspan=4>Basic Info DB</td>
+            <td rowspan=4></td>
+            <td>Version Sign</td>
+            <td>String</td>
+            <td>1</td>
+            <td>固定为<br />N(<span style='color:red'>Comm2Demo</span>)<br />1(Comm2/<span style='color:red'>2P</span>)<br />2(<span style='color:red'>Comm3</span>)</td>
+            <td>31/32</td>
+        </tr>
+        <tr>
+            <td>Identifying
+            Sign</td>
+            <td>String</td>
+            <td>3</td>
+            <td>固定</td>
+            <td>49424D(IBM)</td>
+        </tr>
+        <tr>
+            <td>Num Point</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>点数</td>
+            <td>C7010000</td>
+        </tr>
+        <tr>
+            <td>Num District</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>区域数</td>
+            <td>34020000</td>
+        </tr>
+        <tr>
+            <td rowspan=4>Point Info DB</td>
+            <td rowspan=3>Point Info DS</td>
+            <td>x</td>
+            <td>Single</td>
+            <td>4</td>
+            <td>点的横坐标</td>
+            <td>7984CA41</td>
+        </tr>
+        <tr>
+            <td>y</td>
+            <td>Single</td>
+            <td>4</td>
+            <td>点的纵坐标</td>
+            <td>7421A942</td>
+        </tr>
+        <tr>
+            <td>z</td>
+            <td>Single</td>
+            <td>4</td>
+            <td>点的竖坐标</td>
+            <td>97418142</td>
+        </tr>
+        <tr>
+            <td colspan=6>一共Num Point个，长度为 Num Point*12</td>
+        </tr>
+        <tr>
+            <td rowspan=16>District Info DB</td>
+            <td rowspan=15>District Info DS</td>
+            <td>n<br />(<span style='color:red'>Comm2Demo</span>)</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>边数(注5)</td>
+            <td>04000000</td>
+        </tr>
+        <tr>
+            <td>n<br />(Comm2)</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>边数(注5)</td>
+            <td>04</td>
+        </tr>
+        <tr>
+            <td>n<br />(<span style='color:red'>Comm3</span>/<span style='color:red'>2P</span>)</td>
+            <td>Halfbyte<br />(低4位)</td>
+            <td>4bits</td>
+            <td>边数(注5)</td>
+            <td>4</td>
+        </tr>
+        <tr>
+            <td>Attribute<br />(<span style='color:red'>Comm3</span>)</td>
+            <td>Halfbyte<br />(高4位)</td>
+            <td>4bits</td>
+            <td>标记，主要有四种0、1、2、4，分别表示普通、透明、阳光贴图效果、大理石反射贴图(注1)</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Ext Texture ID<br />(<span style='color:red'>Comm2P</span>)</td>
+            <td>Halfbyte<br />(高4位)</td>
+            <td>4bits</td>
+            <td>扩展贴图编号(8-11位)</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <td>Texture ID<br />(<span style='color:red'>Comm2Demo</span>)</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>当前区域使用的贴图的编号</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td>Texture ID<br />(Comm2/<span style='color:red'>3</span>/<span style='color:red'>2P</span>)</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>当前区域使用的贴图的编号</td>
+            <td>00</td>
+        </tr>
+        <tr>
+            <td>Point 0<br />(<span style='color:red'>Comm2Demo</span>)</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>点的索引号</td>
+            <td>02000000</td>
+        </tr>
+        <tr>
+            <td>Point 0<br />(Comm2/<span style='color:red'>3</span>)</td>
+            <td>Int16</td>
+            <td>2</td>
+            <td>点的索引号(已确认不是UInt16)</td>
+            <td>0400</td>
+        </tr>
+        <tr>
+            <td>Point 0<br />(<span style='color:red'>Comm2P</span>)</td>
+            <td>UInt16</td>
+            <td>2</td>
+            <td>点的索引号</td>
+            <td>0400</td>
+        </tr>
+        <tr>
+            <td>U 0<br />(<span style='color:red'>Comm2Demo</span>)</td>
+            <td>Float32</td>
+            <td>4</td>
+            <td>映射坐标Tu</td>
+            <td>33EA2A3F</td>
+        </tr>
+        <tr>
+            <td>U 0<br />(Comm2/<span style='color:red'>3</span>/<span style='color:red'>2P</span>)</td>
+            <td>Int16</td>
+            <td>2</td>
+            <td>该值除以4096，得到该点在贴图中的映射坐标Tu(注2)</td>
+            <td>0A05</td>
+        </tr>
+        <tr>
+            <td>V 0<br />(<span style='color:red'>Comm2Demo</span>)</td>
+            <td>Float32</td>
+            <td>4</td>
+            <td>映射坐标Tv</td>
+            <td>A0C374BE</td>
+        </tr>
+        <tr>
+            <td>V 0<br />(Comm2/<span style='color:red'>3</span>/<span style='color:red'>2P</span>)</td>
+            <td>Int16</td>
+            <td>2</td>
+            <td>该值除以4096，得到该点在贴图中的映射坐标Tv(注2)</td>
+            <td>4307</td>
+        </tr>
+        <tr>
+            <td colspan=5>Point和U、V的数据组，共n组</td>
+        </tr>
+        <tr>
+            <td colspan=6>一共Num District个</td>
+        </tr>
+        <tr>
+            <td rowspan=17>Main DA</td>
+            <td rowspan=5>Object Info DB<br />(Comm2/<span style='color:red'>3</span>/<span style='color:red'>2P</span>)</td>
+            <td></td>
+            <td>Num Object</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>物体的个数</td>
+            <td>04000000</td>
+        </tr>
+        <tr>
+            <td rowspan=3>Object Info DS</td>
+            <td>Object Name</td>
+            <td>String</td>
+            <td>44</td>
+            <td>物体名称，C风格字符串</td>
+            <td>&quot;altura est&quot;</td>
+        </tr>
+        <tr>
+            <td>Start District Index</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>初始区域索引</td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td>Next Start District Index</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>终止区域索引+1</td>
+            <td>DF010000</td>
+        </tr>
+        <tr>
+            <td colspan=6>一共Num Object个Object Info DS</td>
+        </tr>
+        <tr>
+            <td rowspan=12>Texture DB</td>
+            <td></td>
+            <td>Num Texture</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td></td>
+            <td>03000000</td>
+        </tr>
+        <tr>
+            <td rowspan=4>Texture Info DS</td>
+            <td>Unknown</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td></td>
+            <td>00000000</td>
+        </tr>
+        <tr>
+            <td>Width</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>贴图宽度</td>
+            <td>00010000</td>
+        </tr>
+        <tr>
+            <td>Height</td>
+            <td>Int32</td>
+            <td>4</td>
+            <td>贴图高度</td>
+            <td>00010000</td>
+        </tr>
+        <tr>
+            <td>Name Texture<br />(<span style='color:red'>Comm3</span>)</td>
+            <td>String</td>
+            <td>32</td>
+            <td>贴图名称，C风格字符串(注3)</td>
+            <td>&quot;8.bmp&quot;</td>
+        </tr>
+        <tr>
+            <td rowspan=4>Palette DS</td>
+            <td>Red</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>红色分量</td>
+            <td>37</td>
+        </tr>
+        <tr>
+            <td>Green</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>绿色分量</td>
+            <td>29</td>
+        </tr>
+        <tr>
+            <td>Blue</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>蓝色分量</td>
+            <td>2A</td>
+        </tr>
+        <tr>
+            <td colspan=5>三元组数量为256</td>
+        </tr>
+        <tr>
+            <td rowspan=2>Bitmap DS</td>
+            <td>Color Index</td>
+            <td>Byte</td>
+            <td>1</td>
+            <td>颜色索引，从左到右，从上到下，有些情况下0xFE用作透明索引(注6)</td>
+            <td>95</td>
+        </tr>
+        <tr>
+            <td colspan=5>数量为Width*Height</td>
+        </tr>
+            <tr style='mso-yfti-irow:34;mso-yfti-lastrow:yes'>
+            <td colspan=6>Texture Info DS、Palette DS和Bitmap DS数据组，一共Num Texture组</td>
+        </tr>
+    </table>
+
+    <pre>
+特殊注释（除第4项均由NeoRAGEx2002确认）：
+1、Attribute字段存在于盟军3的MBI格式中。Attribute=0，代表着该多边形采用的是普通贴图，这是最常见的情况；Attribute=1，代表该多边形所使用的贴图中存在着透明色(Transparent Key Color)，该透明色在色板中的颜色值为(R,G,B)=(0xff,0x0,0xff)，贴图中所有为此颜色的像素均代表着透明；Attribute=2，代表着该多边形所使用的贴图是一个渐变的Alpha掩膜贴图， 假设其中某像素的颜色为(R,G,B)，那么则有R=G=B，并且其所代表的Alpha值为R值的1/4。Attribute=4，一般用来实现大理石地面的反射效果，其实，这种虚像反射效果(非光照反射)是通过地板贴图的透明化和模型的垂直镜像复制来实现的，也就是说，所有Attribute=4的贴图的Alpha值为0xE0，在盟3中只有BER2_21和BER2_22等两个室内场景有此效果。在盟军2的MBI文件中，由于不存在Attribute字段，因此所有贴图均为普通贴图。
+2、在盟2、盟3的MBI文件中，贴图尺寸要么是256*256、要么是128*128。无论是何种贴图尺寸，这里的U/V都是直接除以4096。所得到的Tu/Tv介于0-1.0之间，即为顶点在贴图中的映射坐标。
+3、盟军2的MBI文件中不存在该字段。
+4. 盟军2测试版有一个文件"RYEX.MBI"，文件标记为"N"，与盟军2其他MBI文件的区别有两点：(1)District Info DS的n、Texture ID、Point采用32位整数，U、V采用单精度浮点数；(2)没有Object Info DB块。东风修改版(CommII Plus, Comm2P)中，文件标记仍然为"2"，与盟军2 MBI文件的区别有两点：(1)n的高4位用作扩展贴图编号，可将贴图扩展到4096张；(2)点的索引号Point改为UInt16，可将顶点数扩展到65536；(3)贴图尺寸扩展到最大4096*4096。
+5、在盟2和盟3中，多边形的边数n一般是3或者是4， 也存在着更多边数的情况，但不常见。这大致是因为Pyro的美工在3DS Max中采用的是最为常见的多边形建模方式。
+6、在盟军2的MBI文件中，贴图没有透明色的定义，所有"透明"效果均以模型的分割、镂空来完成，这使得盟2很难在室内场景中表现铁丝网等复杂物体；而在盟3中，则通过纹理技术来实现必要的透明效果，从而减少了多边形的数量。
+
+普通说明:
+1、所有的整数数据类型都是little-endian的。
+2、有"/"的项，盟军2的在左边，盟军3的在右边。
+3、名称中的"Point"、"District"亦分别等价于"Vertex"、"Polygon"。
+4、整个模型使用的坐标系为右手坐标系、世界坐标系：亦即x、y表示两个水平方向，z表示高度，z值正方向向上。
+
+5、从俯视坐标系看时，顶点顺时针顺序的区域显示正面。
+
+6、MBI格式限制了顶点数和贴图数：
+    顶点数限制为32768；
+    贴图数限制为256。(盟军2测试版MBI贴图数可以超过该限制。)
+
+7、从最近（2008.06）的我们所做的测试，得出了MBI在盟军2引擎运行的时候，有如下情况：
+    贴图大小只能为128*128和256*256两种，如果不是，则不能显示。
+    MBI的文件大小没有限制，即使放入7000张左右的256*256的贴图（约50M，只能引用前256张），盟军仍然不会崩溃，内存上升很快，但对游戏速度没有影响。
+
+8、当物体较多后，在游戏中可能出现黑屏（MBI装载失败）的情况，这时可尝试合并所有物体。
+
+9、东风修改版(CommII Plus, Comm2P)中对顶点数、贴图数和贴图大小进行了修改
+    顶点数限制为65536；
+    贴图数限制为4096;
+    贴图大小可以为256*256, 512*512, 1024*1024, 2048*2048, 4096*4096。
+
+参考：
+[1]invox4C2_2auxfiles.doc，盗版钦差，2006
+    </pre>
+</body>
+</html>
