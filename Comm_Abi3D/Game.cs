@@ -499,30 +499,33 @@ namespace Comm_Abi3D
 		{
 			switch (e.KeyCode)
 			{
-				case Keys.W:
-					DrawShadow = !DrawShadow;
+				case Keys.Q:	//降低速度
+					delta_time -= 0.2f;
+					if (delta_time <= 0) delta_time = 0f;
+                    break;
+				case Keys.W:	//提高速度
+					delta_time += 0.2f;
+					if (delta_time >= 25) delta_time = 25f;
 					break;
-				case Keys.S:
-					//开启或者关闭FSAA
+				case Keys.A:    //开启、关闭反锯齿
 					FSAA = !FSAA;
 					CreatePresentParameters();
 					device.Reset(present_params);
 					break;
-				case Keys.I:
-					DrawInformationText = (DrawInformationText + 1) % 3;
+				case Keys.S:    //是否显示阴影
+					DrawShadow = !DrawShadow;
 					break;
-				case Keys.X:
+                case Keys.Z:
+                case Keys.B:
+                    DrawBackground = !DrawBackground;
+                    if (DrawBackground)
+                        BackColor = Color.Black;
+                    else
+                        BackColor = Color.DarkGray;
+                    break;
+                case Keys.X:
 					DrawCoordinateAxies = !DrawCoordinateAxies;
 					break;
-				case Keys.Oemplus:	//提高速度
-					delta_time += 0.1f;
-					if (delta_time >= 25) delta_time = 25f;
-					break;
-				case Keys.OemMinus:	//降低速度
-					delta_time -= 0.1f;
-					if (delta_time <= 0) delta_time = 0f;
-					break;
-				case Keys.A:
 				case Keys.OemPeriod://下一个动作
 					animation = (animation + 1) % abi.animations.Length;
 					am.SetAnimation(device, animation);
@@ -531,7 +534,9 @@ namespace Comm_Abi3D
 					animation = (animation - 1 + abi.animations.Length) % abi.animations.Length;
 					am.SetAnimation(device, animation);
 					break;
-				case Keys.D:
+                case Keys.C:    //复制动作名称到剪切板
+                    Clipboard.SetDataObject(abi.animations[animation].name);
+                    break;
 				case Keys.PageUp:	//下一个模型
 					model = (model + 1) % abi.models.Length;
 					am.SetModel(device, model);
@@ -543,8 +548,14 @@ namespace Comm_Abi3D
 					sm.SetModel(device, model);
 					break;
 				case Keys.Escape:	//退出程序
-				case Keys.Q:
 					Close(); break;
+				case Keys.F: //区域线框
+					DisplayWireFrame++;
+					DisplayWireFrame %= 3;
+					break;
+				case Keys.I:
+					DrawInformationText = (DrawInformationText + 1) % 3;
+					break;
 				case Keys.K: //距离
 					//地图越大，将距离调最远时，越容易出现被culling的现象，估计跟projection有关
 					camera.IncreaseRadius(10F);
@@ -566,10 +577,6 @@ namespace Comm_Abi3D
 				case Keys.Down: //视角
 					camera.DecreaseLatitude((float)(0.02F * Math.PI));
 					break;
-				case Keys.F: //区域线框
-					DisplayWireFrame++;
-					DisplayWireFrame %= 3;
-					break;
 				case Keys.R: //复位world平移矢量和camera半径
 					camera.ResetRadius();
 					break;
@@ -583,13 +590,6 @@ namespace Comm_Abi3D
 						ResetAll(fn);
 						InitializeGraphics();
 					}
-					break;
-				case Keys.B:
-					DrawBackground = !DrawBackground;
-					if (DrawBackground)
-						BackColor = Color.Black;
-					else
-						BackColor = Color.DarkGray;
 					break;
 				default:
 					Debug.WriteLine(e.KeyCode);
