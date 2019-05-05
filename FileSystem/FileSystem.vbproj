@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Comm1\DIR.vb" />
+    <Compile Include="Comm1\RLC.vb" />
     <Compile Include="Comm1\RLE.vb">
       <SubType>Code</SubType>
     </Compile>
