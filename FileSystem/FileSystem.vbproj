@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -12,11 +12,12 @@
     <RootNamespace>FileSystem</RootNamespace>
     <AssemblyName>FileSystem</AssemblyName>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <OptionInfer>On</OptionInfer>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>$(FLTKey)</AssemblyOriginatorKeyFile>
     <OptionStrict>On</OptionStrict>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" Exists('$(FLTKey)') ">
     <SignAssembly>true</SignAssembly>
@@ -32,6 +33,7 @@
     <NoWarn>
     </NoWarn>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +48,7 @@
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisRules>-Microsoft.Interoperability#CA1403;-Microsoft.Interoperability#CA1406;-Microsoft.Interoperability#CA1413;-Microsoft.Interoperability#CA1402;-Microsoft.Interoperability#CA1407;-Microsoft.Interoperability#CA1404;-Microsoft.Interoperability#CA1410;-Microsoft.Interoperability#CA1411;-Microsoft.Interoperability#CA1405;-Microsoft.Interoperability#CA1409;-Microsoft.Interoperability#CA1415;-Microsoft.Interoperability#CA1408;-Microsoft.Interoperability#CA1414;-Microsoft.Interoperability#CA1412;-Microsoft.Interoperability#CA1400;-Microsoft.Interoperability#CA1401;-Microsoft.Maintainability#CA1500;-Microsoft.Naming#CA1718;-Microsoft.Naming#CA1720;-Microsoft.Naming#CA1700;-Microsoft.Naming#CA1712;-Microsoft.Naming#CA1713;-Microsoft.Naming#CA1709;-Microsoft.Naming#CA1708;-Microsoft.Naming#CA1715;-Microsoft.Naming#CA1710;-Microsoft.Naming#CA1707;-Microsoft.Naming#CA1722;-Microsoft.Naming#CA1711;-Microsoft.Naming#CA1716;-Microsoft.Naming#CA1705;-Microsoft.Naming#CA1725;-Microsoft.Naming#CA1719;-Microsoft.Naming#CA1721;-Microsoft.Naming#CA1706;-Microsoft.Naming#CA1724;-Microsoft.Naming#CA1726;-Microsoft.Globalization#CA1305;-Microsoft.Design#CA1011;-Microsoft.Design#CA1026;-Microsoft.Design#CA1031;-Microsoft.Design#CA1051;-Microsoft.Design#CA1002;-Microsoft.Design#CA1008;-Microsoft.Design#CA1028;-Microsoft.Design#CA1032;-Microsoft.Design#CA1017;-Microsoft.Performance#CA1814;-Microsoft.Performance#CA1819;-Microsoft.Usage#CA2214</CodeAnalysisRules>
     <WarningsAsErrors>41999,42016,42017,42018,42019,42020,42021,42022,42032,42036</WarningsAsErrors>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Firefly.Core">
@@ -55,6 +58,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors" />
     <Reference Include="System.Xaml" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
@@ -82,6 +87,7 @@
     <Compile Include="Comm2\SEC_Simple.vb" />
     <Compile Include="Comm2\Y64.vb" />
     <Compile Include="CSF\PAK.vb" />
+    <Compile Include="Quantizer.vb" />
     <Compile Include="StreamAdapters.vb" />
     <Compile Include="StreamEx.vb" />
     <Compile Include="StreamExComplex.vb" />
