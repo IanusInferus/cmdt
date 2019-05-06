@@ -11,7 +11,7 @@
     <RootNamespace>Y64Manager</RootNamespace>
     <AssemblyName>Y64Manager</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <SignAssembly>false</SignAssembly>
     <AssemblyOriginatorKeyFile>$(FLTKey)</AssemblyOriginatorKeyFile>
     <ApplicationIcon>CommDevToolkit.ico</ApplicationIcon>
