@@ -74,6 +74,7 @@
     <Compile Include="Comm1\RLE.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Comm2HD\PCK_HD.vb" />
     <Compile Include="Comm2\ABI.vb" />
     <Compile Include="Comm2\BSMB.vb" />
     <Compile Include="Comm2\DES.vb" />

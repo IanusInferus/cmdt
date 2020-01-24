@@ -34,6 +34,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "XmlConverter", "XmlConverte
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GraphD3D", "GraphD3D\GraphD3D.vbproj", "{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PCKManagerHD", "PCKManagerHD\PCKManagerHD.vbproj", "{61B35E09-F6C4-41CD-B6DD-513A7368DC8E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,8 +94,15 @@ Global
 		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC2E7763-5428-4EE1-98B5-8DE12B9972EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61B35E09-F6C4-41CD-B6DD-513A7368DC8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61B35E09-F6C4-41CD-B6DD-513A7368DC8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61B35E09-F6C4-41CD-B6DD-513A7368DC8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61B35E09-F6C4-41CD-B6DD-513A7368DC8E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6B963695-2E7B-4FBC-82CF-F30FC1388D32}
 	EndGlobalSection
 EndGlobal
