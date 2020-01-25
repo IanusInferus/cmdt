@@ -30,7 +30,7 @@ Public Module Program
             AddHandler Application.ThreadException, AddressOf Application_ThreadException
             Return MainWindow()
         Catch ex As Exception
-            ExceptionHandler.PopupException(ex, "发生以下异常:", "Examples.PackageManager")
+            ExceptionHandler.PopupException(ex, If(Threading.Thread.CurrentThread.CurrentCulture.Name = "zh-CN", "发生以下异常:", "ExceptionOccurred:"), "PackageManager")
             Return -1
         Finally
             RemoveHandler Application.ThreadException, AddressOf Application_ThreadException
