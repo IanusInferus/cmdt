@@ -3,7 +3,7 @@
 '  File:        Quantizer.vb
 '  Location:    FileSystem <Visual Basic .Net>
 '  Description: 量化器
-'  Version:     2019.05.07.
+'  Version:     2020.02.24.
 '  Copyright(C) F.R.C.
 '
 '==========================================================================
@@ -16,7 +16,7 @@ Imports System.Numerics
 Imports Firefly
 
 Public Class Quantizer(Of T)
-    Public Shared Function Execute(ByVal Colors As T(), ByVal NumPaletteColor As Integer, ByVal MeanFactory As Func(Of Tuple(Of Action(Of T), Func(Of T))), ByVal Distance As Func(Of T, T, Double), Optional ByVal NumSample As Integer? = Nothing, Optional ByVal Quality As Double = 0.99) As KeyValuePair(Of T(), Integer())
+    Public Shared Function Execute(ByVal Colors As T(), ByVal NumPaletteColor As Integer, ByVal MeanFactory As Func(Of Tuple(Of Action(Of T), Func(Of T, T))), ByVal Distance As Func(Of T, T, Double), Optional ByVal NumSample As Integer? = Nothing, Optional ByVal Quality As Double = 0.99) As KeyValuePair(Of T(), Integer())
         Dim QuantizeOnPalette =
             Function(ByVal Color As T, ByVal Palette As T()) As Integer
                 If Palette.Length = 0 Then Throw New ArgumentException()
@@ -61,7 +61,7 @@ Public Class Quantizer(Of T)
             Next
         End With
         Dim NewColorClusterIndex = New Integer(Samples.Length - 1) {}
-        Dim MeanFunctors = New Tuple(Of Action(Of T), Func(Of T))(k - 1) {}
+        Dim MeanFunctors = New Tuple(Of Action(Of T), Func(Of T, T))(k - 1) {}
         Dim Means = New T(k - 1) {}
         Dim n = Environment.ProcessorCount
         While True
@@ -72,7 +72,7 @@ Public Class Quantizer(Of T)
                 MeanFunctors(ColorClusterIndex(i)).Item1()(Samples(i))
             Next
             For i = 0 To k - 1
-                Means(i) = MeanFunctors(i).Item2()()
+                Means(i) = MeanFunctors(i).Item2()(Means(i))
             Next
             Dim PartitionLength = (Samples.Length + n - 1) \ n
             ParallelEnumerable.Range(0, n).ForAll(
@@ -139,9 +139,9 @@ Public Class QuantizerARGB
                         x += v
                         k += 1
                     End Sub
-                Dim Mean As Func(Of Vector4) =
-                    Function() As Vector4
-                        If k = 0 Then Return New Vector4(0, 0, 0, 0)
+                Dim Mean As Func(Of Vector4, Vector4) =
+                    Function(InitialValue As Vector4) As Vector4
+                        If k = 0 Then Return InitialValue
                         Return x / k
                     End Function
                 Return Tuple.Create(Sum, Mean)
@@ -158,5 +158,37 @@ Public Class QuantizerARGB
         Dim Indices = New Integer(Colors.GetLength(0) - 1, Colors.GetLength(1) - 1) {}
         Buffer.BlockCopy(Result.Value, 0, Indices, 0, Colors.GetLength(0) * Colors.GetLength(1) * 4)
         Return New KeyValuePair(Of Integer(), Integer(,))(Result.Key, Indices)
+    End Function
+End Class
+
+Public Class QuantizerGray
+    Public Shared Function Execute(ByVal Colors As Byte(), ByVal NumPaletteColor As Integer, Optional ByVal Quality As Double = 0.99) As KeyValuePair(Of Byte(), Integer())
+        Dim MapToDouble = Function(c As Byte) CDbl(c)
+        Dim MapFromDouble =
+            Function(v As Double)
+                If v <= 0 Then Return CByte(0)
+                If v >= 255 Then Return CByte(255)
+                Return CByte(v)
+            End Function
+        Dim MeanFactory =
+            Function()
+                Dim x As Double = 0
+                Dim k = 0
+                Dim Sum As Action(Of Double) =
+                    Sub(v)
+                        x += v
+                        k += 1
+                    End Sub
+                Dim Mean As Func(Of Double, Double) =
+                    Function(InitialValue As Double) As Double
+                        If k = 0 Then Return InitialValue
+                        Return CDbl(CByte(x / k))
+                    End Function
+                Return Tuple.Create(Sum, Mean)
+            End Function
+        Dim Sqr = Function(v As Double) v * v
+        Dim Distance = Function(a As Double, b As Double) Math.Abs(a - b)
+        Dim Result = Quantizer(Of Double).Execute(Colors.Select(MapToDouble).ToArray(), NumPaletteColor, MeanFactory, Distance, Math.Min(Colors.Length, 256 * 256), Quality)
+        Return New KeyValuePair(Of Byte(), Integer())(Result.Key.Select(MapFromDouble).ToArray(), Result.Value)
     End Function
 End Class
