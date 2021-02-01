@@ -371,15 +371,15 @@ namespace Comm_Abi3D
 
 			StringBuilder sb = new StringBuilder();
 			sb.AppendFormat("< {0} >\n\n", abi.filename);
-			sb.AppendFormat("文件版本: {0}\n", abi.version);
-			sb.AppendFormat("材质数量: {0}\n", abi.num_texture);
-			sb.AppendFormat("骨骼数量: {0}\n", abi.num_bone);
-			sb.AppendFormat("模型编号: {0}/{1}\n", model + 1, abi.num_model);
-			sb.AppendFormat("-顶点数量 {0}\n", abi.models[model].num_vertice);
-			sb.AppendFormat("-多边形量 {0}\n", abi.models[model].num_polygon);
-			sb.AppendFormat("动作编号: {0}/{1}\n", animation + 1, abi.num_animation);
-			sb.AppendFormat("动作速率: {0:F1}\n", delta_time);
-			sb.AppendFormat("动作名称: {0}\n", abi.animations[animation].name);
+			sb.AppendFormat("文件版本(file version)      : {0}\n", abi.version);
+			sb.AppendFormat("材质数量(number of textures): {0}\n", abi.num_texture);
+			sb.AppendFormat("骨骼数量(number of bones)   : {0}\n", abi.num_bone);
+			sb.AppendFormat("模型编号(model index)       : {0}/{1}\n", model + 1, abi.num_model);
+			sb.AppendFormat("-顶点数量(number of vertices) {0}\n", abi.models[model].num_vertice);
+			sb.AppendFormat("-多边形量(number of polygons) {0}\n", abi.models[model].num_polygon);
+			sb.AppendFormat("动作编号(animation index)   : {0}/{1}\n", animation + 1, abi.num_animation);
+			sb.AppendFormat("动作速率(animation speed)   : {0:F1}\n", delta_time);
+			sb.AppendFormat("动作名称(animation name)    : {0}\n", abi.animations[animation].name);
 			
 			d3dfont.DrawText(null, sb.ToString(), x, y, Color.White);
 		}

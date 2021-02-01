@@ -1,0 +1,34 @@
+
+Comm_Abi3D shortcut keys (revised at 2021-02-01)
+
+
+Shortcut key    Function description
+------------------------------------------------------------
+Q               decrease animation speed
+W               increase animation speed
+
+A               turn on/off anti-aliasing
+S               show/hide shadow
+
+Z/B             switch background color (gray/black)
+X               show/hide axis
+
+.               previous animation (equivalent to left mouse button)
+,               next animation (equivalent to right mouse button)
+
+C               copy the current animation name to the clipboard
+R               reset view distance and rotation
+
+F               switch wireframe mode
+I               switch info display (animation info | bone hierarchy | off)
+
+K               increase view distance
+J               decrease view distance
+
+¡û¡ü¡ý¡ú        freely rotate view
+
+PgUp            next model
+PgDn            previous model
+
+O (letter)      open another ABI file (equivalent to right mouse button double-click)
+ESC             exit the program
