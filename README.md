@@ -28,6 +28,14 @@ Comm_开头的目录下的代码由NeoRAGEx2002授权发布，按照三条款BSD
 
 本软件附带的文档obj_format.en.txt和mtl.en.txt的版权属于Wavefront, Inc。
 
+## 相关网站和项目
+
+[herbert3000](https://sites.google.com/site/commandosmod/)
+
+[AbiBmpReplacer](https://github.com/subabrain/AbiBmpReplacer)
+
+[Revora subforum](https://forums.revora.net/forum/2302-commandos-hq/)
+
 
 # CommDevToolkit - Commandos Developing Toolkit
 
@@ -54,3 +62,11 @@ The copyright of the library zlib.net shipped with the software is held by Compo
 The copyright of the library Math.Net Numerics shipped with the software is held by Math.Net.
 
 The copyright of the documents obj_format.en.txt and mtl.en.txt are held by Wavefront, Inc.
+
+## Related Sites and Projects
+
+[herbert3000](https://sites.google.com/site/commandosmod/)
+
+[AbiBmpReplacer](https://github.com/subabrain/AbiBmpReplacer)
+
+[Revora subforum](https://forums.revora.net/forum/2302-commandos-hq/)
