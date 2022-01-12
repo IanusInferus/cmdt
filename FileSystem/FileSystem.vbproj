@@ -12,15 +12,10 @@
     <RootNamespace>FileSystem</RootNamespace>
     <AssemblyName>FileSystem</AssemblyName>
     <MyType>Windows</MyType>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionInfer>On</OptionInfer>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(FLTKey)</AssemblyOriginatorKeyFile>
     <OptionStrict>On</OptionStrict>
     <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" Exists('$(FLTKey)') ">
-    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

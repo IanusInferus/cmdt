@@ -11,15 +11,10 @@
     <RootNamespace>ImageConverter</RootNamespace>
     <AssemblyName>ImageConverter</AssemblyName>
     <MyType>WindowsFormsWithCustomSubMain</MyType>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <ApplicationIcon>4.ico</ApplicationIcon>
-    <SignAssembly>false</SignAssembly>
-    <AssemblyOriginatorKeyFile>$(FLTKey)</AssemblyOriginatorKeyFile>
     <OptionInfer>On</OptionInfer>
     <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" Exists('$(FLTKey)') ">
-    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
