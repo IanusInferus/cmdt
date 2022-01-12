@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30907.101
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REPLACE_ABI_APRIL", "ABI_BMP_REPLACER\REPLACE_ABI_APRIL.csproj", "{B8CD776D-0965-4ADC-8DB5-DE819BB7F842}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8CD776D-0965-4ADC-8DB5-DE819BB7F842}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8CD776D-0965-4ADC-8DB5-DE819BB7F842}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8CD776D-0965-4ADC-8DB5-DE819BB7F842}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8CD776D-0965-4ADC-8DB5-DE819BB7F842}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3C6FE693-4DC5-4F58-B84F-5B0D9DC9CA1F}
+	EndGlobalSection
+EndGlobal
