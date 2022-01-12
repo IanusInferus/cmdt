@@ -5,14 +5,11 @@ using System.Drawing;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 
 namespace Comm_ABI
 {
 	class ABI
 	{
-
 		public int num_mesh;
 		public int num_animation;
 		public int version;
@@ -136,10 +133,12 @@ namespace Comm_ABI
 					{
 						hierarchy[i] = new BoneHierarchy();
 						hierarchy[i].ParentIdx = br.ReadInt32();
-						hierarchy[i].b = new Vector3(
-							br.ReadSingle(),
-							br.ReadSingle(),
-							br.ReadSingle());
+						hierarchy[i].b = new Vector3
+						{
+							x = br.ReadSingle(),
+							y = br.ReadSingle(),
+							z = br.ReadSingle()
+						};
 						hierarchy[i].NodeName = ConvertBytesToString(br.ReadBytes(32));
 						hierarchy[i].UNKNOWN = br.ReadInt32();
 
@@ -280,6 +279,13 @@ namespace Comm_ABI
 	{
 		public int StartVidx;
 		public int EndVidx;
+	}
+
+	class Vector3
+	{
+		public float x;
+		public float y;
+		public float z;
 	}
 
 	class BoneHierarchy 
