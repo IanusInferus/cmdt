@@ -246,7 +246,7 @@
             this.MaximumSize = new System.Drawing.Size(550, 731);
             this.MinimumSize = new System.Drawing.Size(550, 731);
             this.Name = "Form1";
-            this.Text = "Commandos 2 - ABI Texture Replacer - v 0.7 Beta - by Robert Beran";
+            this.Text = "Commandos 2 - ABI Texture Replacer - v 0.8 Beta - by Robert Beran";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);

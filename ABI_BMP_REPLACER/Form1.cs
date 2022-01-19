@@ -23,6 +23,10 @@ namespace Comm_ABI
 		long position_old;
 		byte[] ende;
 		Graphics g;
+		int[] act_width;
+		int[] act_height;
+		List<int> actives = new List<int>();
+		int pos;
 
 
 		public Form1()
@@ -63,10 +67,6 @@ namespace Comm_ABI
 
 		public void button1_Click(object sender, EventArgs e)
 		{
-
-			back.Clear();
-
-			abi = new ABI(aufgabe);
 
 			listBox1.Items.Clear();
 
@@ -133,7 +133,7 @@ namespace Comm_ABI
 
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
-					//Get the path of specified file
+
 					filePath = openFileDialog.FileName;
 
 					aufgabe = filePath;
@@ -142,9 +142,10 @@ namespace Comm_ABI
 
 					button1.Enabled = true;
 
+					actives.Clear();
 					back.Clear();
 
-					//Read the contents of the file into a stream
+					abi = new ABI(aufgabe);
 
 				}
 
@@ -164,21 +165,20 @@ namespace Comm_ABI
 
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
-					//Get the path of specified file
 					filePath = openFileDialog.FileName;
 
 					aufgabe_to = filePath;
 
 					pictureBox2.Image = new Bitmap(aufgabe_to);
 
-					if (pictureBox2.Image.Width > 256 || pictureBox2.Image.Height > 256)
+					if (pictureBox2.Image.Width > 512 || pictureBox2.Image.Height > 512)
 					{
 
 						pictureBox2.Image = null;
 
 						textBox2.Text = "";
 
-						MessageBox.Show("Please choose a .bmp File wih maximal 256 x 256 pixel.");
+						MessageBox.Show("Please choose a .bmp File wih maximal 512 x 512 pixel.");
 
 						return;
 
@@ -195,7 +195,6 @@ namespace Comm_ABI
 
 					}
 
-					//Read the contents of the file into a stream
 
 				}
 
@@ -216,10 +215,8 @@ namespace Comm_ABI
 
 				if (openFileDialog.ShowDialog() == DialogResult.OK)
 				{
-					//Get the path of specified file
 					filePath = openFileDialog.FileName;
 
-					//Read the contents of the file into a stream
 					speichern = filePath;
 
 					textBox3.Text = speichern;
@@ -282,7 +279,6 @@ namespace Comm_ABI
 
 					ende = br.ReadBytes(von);
 
-					//Einlesen
 
 				}
 
@@ -299,7 +295,6 @@ namespace Comm_ABI
 
 					br.Write(ende);
 
-					//Einlesen
 					br.Close();
 
 				}
@@ -315,14 +310,17 @@ namespace Comm_ABI
 		public void ersetzen(string ims, int position)
         {
 
-			//Bitmap Result = abi.bmps[ddd].Clone(new Rectangle(0, 0, pictureBox2.Image.Width, pictureBox2.Image.Height), PixelFormat.Format8bppIndexed);
+			int ddd = pos;
+			idx = pos;
+
+			actives.Add(ddd);
 
 			pictureBox1.Image = (Bitmap)Bitmap.FromFile(ims);
 
 			abi.bmps[idx] = (Bitmap)Bitmap.FromFile(ims);
 
-			abi.textureinfo[idx].width = abi.bmps[idx].Width;
-			abi.textureinfo[idx].height = abi.bmps[idx].Height;
+			abi.textureinfo[idx].width = abi.bmps[ddd].Width;
+			abi.textureinfo[idx].height = abi.bmps[ddd].Height;
 
 			label1.Text = pictureBox2.Image.Width.ToString();
 			label2.Text = pictureBox2.Image.Height.ToString();
@@ -346,7 +344,7 @@ namespace Comm_ABI
 
 						TextureInfo p = abi.textureinfo[i];
 
-						if (i == position)
+						if (i == position || actives.Contains(i))
 						{
 
 							br.Write(p.UNKNOWN);
@@ -418,16 +416,20 @@ namespace Comm_ABI
 
 						}
 
-
 					}
 
+					position_old = br.BaseStream.Position;
 
+					br.Close();
 
 				}
 
 				fs.Close();
 
+				fs.Dispose();
+
 			}
+
 
 		}
 
@@ -435,10 +437,12 @@ namespace Comm_ABI
 		public void button4_Click(object sender, EventArgs e)
 		{
 
-			int pos = listBox1.SelectedIndex;
+			pos = listBox1.SelectedIndex;
+			int posi = listBox1.SelectedIndex;
 
-			ersetzen(aufgabe_to, pos);
+			ersetzen(aufgabe_to, posi);
 
+			anhaengen();
 
 		}
 
