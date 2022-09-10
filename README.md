@@ -24,6 +24,8 @@ Comm_开头的目录下的代码由NeoRAGEx2002授权发布，按照三条款BSD
 
 本软件附带的zlib.net版权属于ComponentAce。
 
+本软件附带的lzo.net版权属于Bianco Veigel。
+
 本软件附带的Math.Net Numerics版权属于Math.Net。
 
 本软件附带的文档obj_format.en.txt和mtl.en.txt的版权属于Wavefront, Inc。
@@ -58,6 +60,8 @@ All the documents are not under the same license. You can copy and distribute th
 Code under all directories beginning with Comm_ is published under 3-clause BSD license with the authorization of NeoRAGEx2002, see [Doc\License-NeoRAGEx2002.txt](Doc/License-NeoRAGEx2002.txt).
 
 The copyright of the library zlib.net shipped with the software is held by ComponentAce.
+
+The copyright of the library lzo.net shipped with the software is held by Bianco Veigel.
 
 The copyright of the library Math.Net Numerics shipped with the software is held by Math.Net.
 

@@ -40,6 +40,7 @@ Public Module Program
     Public Function MainWindow() As Integer
         '在这里添加所有需要的文件包类型
         PackageRegister.Register(PCK_HD.Filter, AddressOf PCK_HD.Open)
+        PackageRegister.Register(PAK_HD.Filter, AddressOf PAK_HD.Open)
 
         Application.EnableVisualStyles()
         Application.Run(New GUI.PackageManager())
