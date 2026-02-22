@@ -18,8 +18,10 @@ jobs:
       shell: cmd
       run: |
         set SUB_NO_PAUSE_SYMBOL=1
+        pushd Src
         call Build.cmd || exit /b 1
         call Clear.cmd
+        popd
       env:
         NO_PAUSE_SYMBOL: 1
 
