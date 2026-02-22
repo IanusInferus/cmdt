@@ -19,7 +19,7 @@ jobs:
       run: |
         set SUB_NO_PAUSE_SYMBOL=1
         call Build.cmd || exit /b 1
-        call Clear.cmd || exit /b 1
+        call Clear.cmd
       env:
         NO_PAUSE_SYMBOL: 1
 
@@ -27,4 +27,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: Compiled-Tools
-        path: ../Bin/
+        path: Bin/
