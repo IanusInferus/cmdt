@@ -28,5 +28,5 @@ jobs:
     - name: Upload Binaries
       uses: actions/upload-artifact@v4
       with:
-        name: Compiled-Tools
+        name: CommDevToolkit-dev
         path: Bin/
