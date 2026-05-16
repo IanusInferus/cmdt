@@ -5,8 +5,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 using System.Runtime.InteropServices;
 
 namespace Comm_Mbi3D

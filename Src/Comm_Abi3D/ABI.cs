@@ -5,8 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Diagnostics;
 using System.Drawing.Imaging;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
 
 namespace Comm_Abi3D
 {

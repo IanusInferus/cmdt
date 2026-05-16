@@ -3,8 +3,8 @@ using System.Text;
 using System.Drawing;
 using System.Collections.Generic;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 using System.Diagnostics;
 
 namespace Comm_Mbi3D

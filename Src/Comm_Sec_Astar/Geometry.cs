@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using Microsoft.DirectX;
+using SlimDX;
 
 namespace Comm_Sec_Astar
 {
@@ -103,18 +103,18 @@ namespace Comm_Sec_Astar
 				Vector2 between = new Vector2(e.to.x - e.from.x, e.to.y - e.from.y);
 				Vector2 from = new Vector2(pos.X - e.from.x, pos.Y - e.from.y);
 
-				float test = Vector2.Ccw(between, from);
+				float test = MathHelpers.Ccw(between, from);
 
 				if (FloatEqual(test, 0))						//在边上或在顶点上
 				{
 					Vector2 to = new Vector2(pos.X - e.to.x, pos.Y - e.to.y);
 
-					if (FloatEqual(from.LengthSq(), 0))			//在顶点e.from上
+					if (FloatEqual(from.LengthSquared(), 0))			//在顶点e.from上
 					{
 						retobj = e.from;
 						result = Belong_Status.Vertex;
 					} 
-					else if (FloatEqual(to.LengthSq(), 0))		//在顶点e.to上
+					else if (FloatEqual(to.LengthSquared(), 0))		//在顶点e.to上
 					{
 						retobj = e.to;
 						result = Belong_Status.Vertex;
@@ -211,7 +211,7 @@ namespace Comm_Sec_Astar
 			////////////////////////////////////////////////////////////////////////////////////////
 			LOS_RESULT los=LOS_RESULT.FAILED;
 
-			if (!FloatEqual(n0.LengthSq(),0))  //from/to两点不容许重合
+			if (!FloatEqual(n0.LengthSquared(),0))  //from/to两点不容许重合
 			{
 				Debug.Assert(ret == Belong_Status.Polygon);			
 				los = StartLOS_P(n0, from, srcpoly, dstidx); //此刻from在srcpoly内部
@@ -254,8 +254,8 @@ namespace Comm_Sec_Astar
 					from.Normalize();
 					to.Normalize();
 
-					float ra = Vector2.Ccw(from, n0);
-					float rb = Vector2.Ccw(to, n0);
+					float ra = MathHelpers.Ccw(from, n0);
+					float rb = MathHelpers.Ccw(to, n0);
 
 					bool ta = FloatEqual(ra, 0); //V cross V = 零矢量 
 					bool tb = FloatEqual(rb, 0);

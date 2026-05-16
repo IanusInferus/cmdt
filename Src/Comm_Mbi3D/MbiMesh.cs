@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 using System.Drawing;
 
 namespace Comm_Mbi3D
@@ -123,14 +123,15 @@ namespace Comm_Mbi3D
 		public void CreateVertexBuffer(Device device)
 		{
 			vexbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColoredTextured),	//顶点类型
-			   vexarray.Length,									//顶点个数
-			   device,
-			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColoredTextured.Format,		//顶点格式
-			   Pool.Default);
+				device,
+				vexarray.Length * CustomVertex.PositionColoredTextured.SizeBytes,
+				Usage.WriteOnly | Usage.Dynamic,
+				CustomVertex.PositionColoredTextured.Format,
+				Pool.Default);
 
-			vexbuf.SetData(vexarray, 0, LockFlags.Discard);
+			using (DataStream ds = vexbuf.Lock(0, 0, LockFlags.Discard))
+				ds.WriteRange(vexarray);
+			vexbuf.Unlock();
 
 			CaculateBoundSphere();
 		}
@@ -152,11 +153,12 @@ namespace Comm_Mbi3D
 		private unsafe void CreateSingleTexture(Device device, int idx, byte type)
 		{
 			TextureInfo txt = mbi.txtinfos[idx];
-			texture[idx] = new Texture(device, txt.width, txt.height, 0, 0, Format.A8R8G8B8, Pool.Managed);
+			texture[idx] = new Texture(device, txt.width, txt.height, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
 			Texture t = texture[idx];
 
 			SurfaceDescription s = t.GetLevelDescription(0);
-			uint* pData = (uint*)t.LockRectangle(0, LockFlags.None).InternalData.ToPointer();
+			DataRectangle dr = t.LockRectangle(0, LockFlags.None);
+			uint* pData = (uint*)dr.Data.DataPointer.ToPointer();
 
 			int pos = 0;
 			for (int i = 0; i < s.Width; i++)
@@ -203,13 +205,13 @@ namespace Comm_Mbi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		private void CaculateBoundSphere()
 		{
-			GraphicsStream vertexData = vexbuf.Lock(0, 0, LockFlags.NoOverwrite);
-			radius = Geometry.ComputeBoundingSphere(
-				vertexData,
-				vexarray.Length,
-				CustomVertex.PositionColoredTextured.Format,
-				out center);
-			vexbuf.Unlock();
+			Vector3[] positions = new Vector3[vexarray.Length];
+			for (int i = 0; i < vexarray.Length; i++)
+				positions[i] = new Vector3(vexarray[i].X, vexarray[i].Y, vexarray[i].Z);
+
+			BoundingSphere bs = BoundingSphere.FromPoints(positions);
+			center = bs.Center;
+			radius = bs.Radius;
 		}
 	}
 }

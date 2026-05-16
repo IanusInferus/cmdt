@@ -1,38 +1,42 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Mbi3D
 {
 	class D3DConfiguration
 	{
+		static Direct3D d3d;
 		static DisplayMode mode;
-		static Caps caps;
+		static Capabilities caps;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		static D3DConfiguration()
 		{
-			mode = Manager.Adapters[0].CurrentDisplayMode;
-			caps = Manager.GetDeviceCaps(0, DeviceType.Hardware);
+			d3d = new Direct3D();
+			mode = d3d.Adapters[0].CurrentDisplayMode;
+			caps = d3d.GetDeviceCaps(0, DeviceType.Hardware);
 		}
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		static public DepthFormat GetAppropriateDepthFormat()
-		{
-			DepthFormat df;
+		public static Direct3D D3D { get { return d3d; } }
 
-			if (Manager.CheckDepthStencilMatch(0, DeviceType.Hardware, mode.Format, Format.A8R8G8B8, DepthFormat.D24X8))
-				df = DepthFormat.D24X8;
-			else if (Manager.CheckDepthStencilMatch(0, DeviceType.Hardware, mode.Format, Format.A8R8G8B8, DepthFormat.D16))
-				df = DepthFormat.D16;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
+		static public Format GetAppropriateDepthFormat()
+		{
+			Format df;
+
+			if (d3d.CheckDepthStencilMatch(0, DeviceType.Hardware, mode.Format, Format.A8R8G8B8, Format.D24X8))
+				df = Format.D24X8;
+			else if (d3d.CheckDepthStencilMatch(0, DeviceType.Hardware, mode.Format, Format.A8R8G8B8, Format.D16))
+				df = Format.D16;
 			else
 			{
 				MessageBox.Show("缺乏最基本的16位色深支持，程序无法继续", "显卡配置警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("显卡配置警告：缺乏最基本的16位色深支持，强制退出");
+				throw new Direct3D9Exception("显卡配置警告：缺乏最基本的16位色深支持，强制退出");
 			}
 			return df;
 		}
@@ -40,47 +44,46 @@ namespace Comm_Mbi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		static public bool SupportsHardwareVertexProcessing()
 		{
-			return caps.DeviceCaps.SupportsHardwareTransformAndLight;
+			return (caps.DeviceCaps & DeviceCaps.HWTransformAndLight) != 0;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		static public void GetAppropriateMultiSampleType(out MultiSampleType type, out int quality)
+		static public void GetAppropriateMultiSampleType(out MultisampleType type, out int quality)
 		{
-			type = MultiSampleType.None;
+			type = MultisampleType.None;
 			quality = 0;
 
-			int result;
-			if (Manager.CheckDeviceMultiSampleType(0, DeviceType.Hardware, Format.A8R8G8B8, true, MultiSampleType.NonMaskable, out result, out quality))
-				type = MultiSampleType.NonMaskable;
+			if (d3d.CheckDeviceMultisampleType(0, DeviceType.Hardware, Format.A8R8G8B8, true, MultisampleType.NonMaskable, out quality))
+				type = MultisampleType.NonMaskable;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		static public TextureFilter GetAppropriateTextureMagFilter()
 		{
-			if (caps.TextureFilterCaps.SupportsMagnifyLinear)
+			if ((caps.TextureFilterCaps & FilterCaps.MagLinear) != 0)
 				return TextureFilter.Linear;
-			else if (caps.TextureFilterCaps.SupportsMagnifyPoint)
+			else if ((caps.TextureFilterCaps & FilterCaps.MagPoint) != 0)
 				return TextureFilter.Point;
 			else
 			{
 				MessageBox.Show("缺乏最基本的贴图过滤支持，程序无法继续", "显卡配置警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("显卡配置警告：缺乏最基本的贴图过滤支持，强制退出");
+				throw new Direct3D9Exception("显卡配置警告：缺乏最基本的贴图过滤支持，强制退出");
 			}
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		static public TextureFilter GetAppropriateTextureMinFilter()
 		{
-			if (caps.TextureFilterCaps.SupportsMinifyAnisotropic)
+			if ((caps.TextureFilterCaps & FilterCaps.MinAnisotropic) != 0)
 				return TextureFilter.Anisotropic;
-			else if (caps.TextureFilterCaps.SupportsMinifyLinear)
+			else if ((caps.TextureFilterCaps & FilterCaps.MinLinear) != 0)
 				return TextureFilter.Linear;
-			else if (caps.TextureFilterCaps.SupportsMinifyPoint)
+			else if ((caps.TextureFilterCaps & FilterCaps.MinPoint) != 0)
 				return TextureFilter.Point;
 			else
 			{
 				MessageBox.Show("缺乏最基本的贴图过滤支持，程序无法继续", "显卡配置警告", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				throw new Direct3DXException("显卡配置警告：缺乏最基本的贴图过滤支持，强制退出");
+				throw new Direct3D9Exception("显卡配置警告：缺乏最基本的贴图过滤支持，强制退出");
 			}
 		}
 	}

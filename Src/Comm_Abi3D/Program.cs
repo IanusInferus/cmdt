@@ -5,8 +5,6 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Threading;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 using System.Runtime.InteropServices;
 
 

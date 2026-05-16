@@ -3,14 +3,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{B594654C-2C41-4CE5-9D3B-21D9CD94CD7E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Comm_Abi3D</RootNamespace>
     <AssemblyName>Comm_Abi3D</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <ApplicationIcon>Comm_Abi3D.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -37,16 +36,9 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.DirectX">
-      <HintPath>..\Lib\ManagedDirectX\Microsoft.DirectX.dll</HintPath>
+    <Reference Include="SlimDX">
+      <HintPath>..\Lib\SlimDX\net40\x86\SlimDX.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.DirectX.Direct3D">
-      <HintPath>..\Lib\ManagedDirectX\Microsoft.DirectX.Direct3D.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.DirectX.Direct3DX">
-      <HintPath>..\Lib\ManagedDirectX\Microsoft.DirectX.Direct3DX.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.VisualC" />
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -55,7 +47,9 @@
   <ItemGroup>
     <Compile Include="ABI.cs" />
     <Compile Include="CoordAxises.cs" />
+    <Compile Include="CustomVertex.cs" />
     <Compile Include="D3D_Conf.cs" />
+    <Compile Include="MathHelpers.cs" />
     <Compile Include="ShadowModel.cs" />
     <Compile Include="VertexBuffer.cs" />
     <Compile Include="Camera.cs" />

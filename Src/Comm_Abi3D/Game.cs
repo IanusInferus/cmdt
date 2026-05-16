@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,8 +8,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Abi3D
 {
@@ -30,7 +30,7 @@ namespace Comm_Abi3D
 		bool deviceLost;    //设备丢失标志
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		Microsoft.DirectX.Direct3D.Font d3dfont;//D3D字体
+		SlimDX.Direct3D9.Font d3dfont;//D3D字体
 		System.Drawing.Font gdifont;			//GDI字体
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +56,7 @@ namespace Comm_Abi3D
 
 			abi = new ABI(filename);
 			am = new AnimatedModel(abi);
-			
+
 			Vector3 n0=new Vector3(-1, 0, -1);
 			sm = new ShadowModel(abi, am, n0, 0x505050);
 
@@ -75,13 +75,8 @@ namespace Comm_Abi3D
 			//初始化设备参数
 			CreatePresentParameters();
 
-			Device.IsUsingEventHandlers = false; //关闭MDX的自动事件布线机制!
-
 			CreateFlags cf = D3DConfiguration.GetAppropriateCreateFlags();
-			device = new Device(0, DeviceType.Hardware, this, cf, present_params);
-
-			device.DeviceReset += new EventHandler(this.OnDeviceReset);
-			device.DeviceLost += new EventHandler(this.OnDeviceLost);
+			device = new Device(D3DConfiguration.D3D, 0, DeviceType.Hardware, this.Handle, cf, present_params);
 
 			gdifont = new System.Drawing.Font("新宋体", 12);//GDI字体准备
 
@@ -108,7 +103,7 @@ namespace Comm_Abi3D
 			present_params.BackBufferFormat = Format.X8R8G8B8;
 			present_params.SwapEffect = SwapEffect.Flip;
 			present_params.EnableAutoDepthStencil = true;
-			present_params.AutoDepthStencilFormat = DepthFormat.D24X8;
+			present_params.AutoDepthStencilFormat = Format.D24X8;
 #else
 			//窗口
 			present_params.Windowed = true;
@@ -124,14 +119,14 @@ namespace Comm_Abi3D
 			if (FSAA)
 			{
 				int quality;
-				MultiSampleType type;
+				MultisampleType type;
 
 				D3DConfiguration.GetAppropriateMultiSampleType(out type, out quality);
-				if (type == MultiSampleType.NonMaskable)
+				if (type == MultisampleType.NonMaskable)
 				{
 					present_params.SwapEffect = SwapEffect.Discard;	//必须!
-					present_params.MultiSample = type;				//开启全屏反锯齿FSAA
-					present_params.MultiSampleQuality = quality - 1;//容许的最高级别
+					present_params.Multisample = type;				//开启全屏反锯齿FSAA
+					present_params.MultisampleQuality = quality - 1;//容许的最高级别
 				}
 			}
 #endif
@@ -179,12 +174,12 @@ namespace Comm_Abi3D
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		protected void OnDeviceReset(object sender, EventArgs e)
+		protected void OnDeviceReset()
 		{
 			SetupDevice(); //重建所有资源
 		}
 
-		protected void OnDeviceLost(object sender, EventArgs e)
+		protected void OnDeviceLost()
 		{
 			if (am.vexbuf != null)
 			{
@@ -205,16 +200,8 @@ namespace Comm_Abi3D
 			}
 
 			axises.DisposeAllBuffer();
-
-			/*
-			if (mm.texture != null) //因为texture的usage是managed，所以设备丢失时无需重建
-			{
-				mm.DisposeAllTextures();
-				mm.texture = null;
-			}
-			*/
 		}
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupDevice()
 		{
@@ -224,28 +211,25 @@ namespace Comm_Abi3D
 			if (sm.shadowbuf == null) { sm.CreateVertexBuffer(device); }
 			axises.CreateAllBuffer(device, new Vector3(), am.radius);
 
-			if (d3dfont == null) d3dfont = new Microsoft.DirectX.Direct3D.Font(device, gdifont);
+			if (d3dfont == null) d3dfont = new SlimDX.Direct3D9.Font(device, gdifont);
 		}
-	
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupMatrices()
 		{
-			//float angle = Environment.TickCount / 2000.0F; //自动旋转
-			//device.Transform.World = Matrix.Translation(-am.center) *Matrix.RotationZ(angle);//先平移到包络球心、然后在沿着Z轴旋转
-
 			//交换y轴和z轴，将右手系数据转换到左手系里面来画
 			Matrix RHtoLH = Matrix.Identity;
 			RHtoLH.M22 = 0; RHtoLH.M23 = 1;
 			RHtoLH.M32 = 1; RHtoLH.M33 = 0;
 
-			device.Transform.World = RHtoLH; //使用模型原点而不是Mesh包围球体中心作为世界原点
+			device.SetTransform(TransformState.World, RHtoLH); //使用模型原点而不是Mesh包围球体中心作为世界原点
 			camera.SetViewTransform(device);
 
-			device.Transform.Projection = Matrix.PerspectiveFovLH(
+			device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(
 				(float)Math.PI / 4.0F,
 				(float)ClientSize.Width / (float)ClientSize.Height, //保持正确的横纵比
 				20F,		//IMPORTANT!! 最重要的参数 about Hidden Lines Removal
-				12000.0F);	//IMPORTANT!! 最重要的参数
+				12000.0F));	//IMPORTANT!! 最重要的参数
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,37 +241,31 @@ namespace Comm_Abi3D
 			if (deviceLost) AttemptRecovery();
 			if (deviceLost) return;
 
-			device.RenderState.Lighting = false;
-			device.RenderState.CullMode = Cull.CounterClockwise;//右手系拣选
-			device.RenderState.SlopeScaleDepthBias = 2F;
+			device.SetRenderState(RenderState.Lighting, false);
+			device.SetRenderState(RenderState.CullMode, Cull.Counterclockwise);//右手系拣选
+			device.SetRenderState(RenderState.SlopeScaleDepthBias, 2F);
 
-			device.SamplerState[0].MinFilter = D3DConfiguration.GetAppropriateTextureMinFilter(); //缩小滤波
-			device.SamplerState[0].MagFilter = D3DConfiguration.GetAppropriateTextureMagFilter(); //放大滤波
+			device.SetSamplerState(0, SamplerState.MinFilter, D3DConfiguration.GetAppropriateTextureMinFilter()); //缩小滤波
+			device.SetSamplerState(0, SamplerState.MagFilter, D3DConfiguration.GetAppropriateTextureMagFilter()); //放大滤波
 
 			if (DisplayWireFrame == 1 || DisplayWireFrame == 2) //显示贴图线框或纯线框
-				device.RenderState.FillMode = FillMode.WireFrame;
+				device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
 			else //显示贴图
-				device.RenderState.FillMode = FillMode.Solid;
+				device.SetRenderState(RenderState.FillMode, FillMode.Solid);
 
 			if (DrawBackground)
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0F, 0);
 			else
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DarkGray, 1.0F, 0);
 
-			//关键：只要alpha值大于等于1的点才显示并更新zbuf！即，alpha=0的点直接不画，也不会影响zbuf!
-			//注意：盟2的abi里面没有透明色的概念，不知道盟3有没有
-			//device.RenderState.AlphaTestEnable = true;
-			//device.RenderState.AlphaFunction = Compare.GreaterEqual;
-			//device.RenderState.ReferenceAlpha = 1;
-
 			device.BeginScene();
 			{
 				SetupMatrices();
 
 				//---------------------------------------------------------------------------------------
-				device.VertexFormat = CustomVertex.PositionColoredTextured .Format;
+				device.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
-				device.SetStreamSource(0, am.vexbuf, 0);
+				device.SetStreamSource(0, am.vexbuf, 0, CustomVertex.PositionColoredTextured.SizeBytes);
 				for (int i = 0; i < am.texture.Length; i++)
 				{
 					if (DisplayWireFrame == 2)//纯线框
@@ -295,14 +273,9 @@ namespace Comm_Abi3D
 					else //贴图线框或者是贴图
 						device.SetTexture(0, am.texture[i]);
 
-					//注意：无需Alpha贴图功能，盟2的abi里面没有Alpha贴图的概念，不知道盟3有没有
-					//device.RenderState.SourceBlend = Blend.One;
-					//device.RenderState.DestinationBlend = Blend.Zero;
-					//device.RenderState.AlphaBlendEnable = false;
-
 					int count = (am.txtoffset[i + 1] - am.txtoffset[i]) / 3;
 					if (count != 0)
-						device.DrawPrimitives(PrimitiveType.TriangleList, am.txtoffset[i], count);		
+						device.DrawPrimitives(PrimitiveType.TriangleList, am.txtoffset[i], count);
 				}
 
 				//---------------------------------------------------------------------------------------
@@ -311,7 +284,7 @@ namespace Comm_Abi3D
 					sm.Animation(); //计算下一帧的阴影
 
 					device.VertexFormat = CustomVertex.PositionColored.Format;
-					device.SetStreamSource(0, sm.shadowbuf, 0);
+					device.SetStreamSource(0, sm.shadowbuf, 0, CustomVertex.PositionColored.SizeBytes);
 					device.SetTexture(0, null);
 					device.DrawPrimitives(PrimitiveType.TriangleList, 0, sm.totalf);
 				}
@@ -322,7 +295,7 @@ namespace Comm_Abi3D
 					axises.Render(device);
 					PrintAxiesComment();
 				}
-				
+
 				//---------------------------------------------------------------------------------------
 				switch (DrawInformationText)
 				{
@@ -333,14 +306,11 @@ namespace Comm_Abi3D
 						PrintBoneHierarchyOnScene();
 						break;
 				}
-			}	
+			}
 			device.EndScene();
 
-			try
-			{
-				device.Present();
-			}
-			catch (DeviceLostException)
+			Result presentResult = device.Present();
+			if (presentResult.Code == ResultCode.DeviceLost.Code)
 			{
 				deviceLost = true;
 			}
@@ -351,22 +321,21 @@ namespace Comm_Abi3D
 			Vector3 v = new Vector3();
 			v.X += 2.15f * am.radius;	v.Z += 2;
 			System.Drawing.Point p = ScreenPosistionFromWorld(v);
-			d3dfont.DrawText(null, "X", p.X, p.Y, Color.Red);
+			d3dfont.DrawString(null, "X", p.X, p.Y, Color.Red);
 
 			v = new Vector3();
 			v.Y += 2.15f * am.radius; v.Z += 2;
 			p = ScreenPosistionFromWorld(v);
-			d3dfont.DrawText(null, "Y", p.X, p.Y, Color.Green);
+			d3dfont.DrawString(null, "Y", p.X, p.Y, Color.Green);
 
 			v = new Vector3();
 			v.Z += 2.15f * am.radius; v.Z += 2;
 			p = ScreenPosistionFromWorld(v);
-			d3dfont.DrawText(null, "Z", p.X, p.Y, Color.Blue);
+			d3dfont.DrawString(null, "Z", p.X, p.Y, Color.Blue);
 		}
 
 		void PrintMessageOnScene()
 		{
-			int height = d3dfont.MeasureString(null, "0", DrawTextFormat.Left, Color.White).Height + 2;
 			int x = 10, y = 7;
 
 			StringBuilder sb = new StringBuilder();
@@ -380,13 +349,12 @@ namespace Comm_Abi3D
 			sb.AppendFormat("动作编号(animation index)   : {0}/{1}\n", animation + 1, abi.num_animation);
 			sb.AppendFormat("动作速率(animation speed)   : {0:F1}\n", delta_time);
 			sb.AppendFormat("动作名称(animation name)    : {0}\n", abi.animations[animation].name);
-			
-			d3dfont.DrawText(null, sb.ToString(), x, y, Color.White);
+
+			d3dfont.DrawString(null, sb.ToString(), x, y, Color.White);
 		}
 
 		void PrintBoneHierarchyOnScene()
 		{
-			int height = d3dfont.MeasureString(null, "0", DrawTextFormat.Left, Color.White).Height + 2;
 			int x = 10, y = 7;
 
 			StringBuilder sb = new StringBuilder();
@@ -394,29 +362,30 @@ namespace Comm_Abi3D
 			for (int i = 0; i < abi.num_bone; i++)
 				sb.AppendFormat("{0,2} - [{1,2}]:{2}\n", i, abi.hierarchy[i].ParentIdx, abi.hierarchy[i].NodeName);
 
-			d3dfont.DrawText(null, sb.ToString(), x, y, Color.White);
+			d3dfont.DrawString(null, sb.ToString(), x, y, Color.White);
 		}
 
 		protected void AttemptRecovery()
 		{
-			int ret;
-			device.CheckCooperativeLevel(out ret);
+			Result r = device.TestCooperativeLevel();
 
-			switch (ret)
+			if (r.Code == ResultCode.DeviceLost.Code)
 			{
-				case (int)ResultCode.DeviceLost:
-					break;
-				case (int)ResultCode.DeviceNotReset:
-					try
-					{
-						device.Reset(present_params);
-						deviceLost = false;
-					}
-					catch (DeviceLostException)
-					{
-						Thread.Sleep(50);
-					}
-					break;
+				return;
+			}
+			if (r.Code == ResultCode.DeviceNotReset.Code)
+			{
+				try
+				{
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
+					deviceLost = false;
+				}
+				catch (Direct3D9Exception)
+				{
+					Thread.Sleep(50);
+				}
 			}
 		}
 
@@ -445,16 +414,18 @@ namespace Comm_Abi3D
 
                 try
                 {
-					device.Reset(present_params);
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
                 }
-                catch (DeviceLostException)
+				catch (Direct3D9Exception)
                 {
                     deviceLost = true;
                 }
 
                 size = ClientSize;
             }
-			
+
 			onpaint_enabled = true; //拉伸窗口完毕，可以触发OnPaint事件了
         }
 
@@ -471,9 +442,11 @@ namespace Comm_Abi3D
 
 					try
 					{
-						device.Reset(present_params);
+						OnDeviceLost();
+						device.Reset(new[] { present_params });
+						OnDeviceReset();
 					}
-					catch (DeviceLostException)
+					catch (Direct3D9Exception)
 					{
 						deviceLost = true;
 						Debug.WriteLine("Device was lost during Resize");
@@ -489,12 +462,12 @@ namespace Comm_Abi3D
 			}
         }
 #endregion
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		int model = 0;
 		int animation = 0;
 		float delta_time = 1f;
-		
+
 		private void Game_KeyDown(object sender, KeyEventArgs e)
 		{
 			switch (e.KeyCode)
@@ -510,7 +483,9 @@ namespace Comm_Abi3D
 				case Keys.A:    //开启、关闭反锯齿
 					FSAA = !FSAA;
 					CreatePresentParameters();
-					device.Reset(present_params);
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
 					break;
 				case Keys.S:    //是否显示阴影
 					DrawShadow = !DrawShadow;
@@ -557,13 +532,10 @@ namespace Comm_Abi3D
 					DrawInformationText = (DrawInformationText + 1) % 3;
 					break;
 				case Keys.K: //距离
-					//地图越大，将距离调最远时，越容易出现被culling的现象，估计跟projection有关
 					camera.IncreaseRadius(10F);
-					//if (scaling + 0.1F <= 5) scaling += 0.1f;
 					break;
 				case Keys.J: //距离
 					camera.DecreaseRadius(10F);
-					//if (scaling - 0.1F >= 0.1) scaling -= 0.1f;
 					break;
 				case Keys.Left: //视角
 					camera.DecreaseLongitude((float)(0.02 * Math.PI));
@@ -582,7 +554,7 @@ namespace Comm_Abi3D
 					break;
 				case Keys.O:
 					string fn = Program.SelectSecFile();
-					if (fn != null)				
+					if (fn != null)
 					{
 						//从头创建所有的一切！
 						Cleanup();
@@ -599,13 +571,12 @@ namespace Comm_Abi3D
 
 		private void ResetAll(string filename)
 		{
-			//FSAA = false;
 			deviceLost = false;
 			DisplayWireFrame = 0;
 
 			middle_button_pressed = false;
 			right_button_pressed = false;
-			
+
 			onpaint_enabled = true;
 
 			abi = new ABI(filename);
@@ -616,7 +587,6 @@ namespace Comm_Abi3D
 
 			//设置标题栏
 			FileInfo fi = new FileInfo(filename);
-			//filename = fi.Name.ToLower();
 			Text = "3D .Abi Viewer - " + filename;
 
 			//背景色相关
@@ -709,7 +679,10 @@ namespace Comm_Abi3D
 		//计算某世界坐标投影之后的屏幕坐标
 		System.Drawing.Point ScreenPosistionFromWorld(Vector3 v)
 		{
-			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //常数提取
+			Matrix world = device.GetTransform(TransformState.World);
+			Matrix view = device.GetTransform(TransformState.View);
+			Matrix proj = device.GetTransform(TransformState.Projection);
+			Matrix trans = world * view * proj;
 			Vector3 t = Vector3.TransformCoordinate(v, trans);
 
 			t.X = (t.X + 1) * size.Width / 2;

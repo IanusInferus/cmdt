@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 using System.Drawing;
 
 namespace Comm_Abi3D
@@ -17,19 +17,19 @@ namespace Comm_Abi3D
 		bool[] boneused;		//骨骼是否使用的标记
 
 		CustomVertex.PositionColoredTextured[] vexarray;  //顶点集合
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public Texture[] texture;	//贴图数组
 		public VertexBuffer vexbuf; //顶点缓冲
 		public Vertex[] transv;		//存储所有最终变换后的节点坐标，而abi文件里面保存的则是参考姿势
-		public int[] txtoffset;		//顶点集合中需要切换texture的地方！		
+		public int[] txtoffset;		//顶点集合中需要切换texture的地方！
 
 		public float time;			//帧时间
 		public int model_idx;		//模型索引
 		public int animation_idx;	//动作索引
 
 		public float radius;		//Mesh包络球半径
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		public AnimatedModel(ABI abi)
 		{
@@ -79,7 +79,9 @@ namespace Comm_Abi3D
 				CalculateAll();
 
 				//无需重建顶点缓冲，直接设置顶点集合
-				vexbuf.SetData(vexarray, 0, LockFlags.Discard);
+				using (DataStream ds = vexbuf.Lock(0, 0, LockFlags.Discard))
+					ds.WriteRange(vexarray);
+				vexbuf.Unlock();
 			}
 		}
 
@@ -92,7 +94,9 @@ namespace Comm_Abi3D
 				CalculateAll();
 
 				//无需重建顶点缓冲，直接设置顶点集合
-				vexbuf.SetData(vexarray, 0, LockFlags.Discard);
+				using (DataStream ds = vexbuf.Lock(0, 0, LockFlags.Discard))
+					ds.WriteRange(vexarray);
+				vexbuf.Unlock();
 			}
 		}
 
@@ -114,11 +118,12 @@ namespace Comm_Abi3D
 		private unsafe void CreateSingleTextureFromPicInfo(Device device, int idx)
 		{
 			TextureInfo pic = abi.textureinfos[idx];
-			texture[idx] = new Texture(device, pic.width, pic.height, 0, 0, Format.A8R8G8B8, Pool.Managed);
+			texture[idx] = new Texture(device, pic.width, pic.height, 0, Usage.None, Format.A8R8G8B8, Pool.Managed);
 			Texture t = texture[idx];
 
 			SurfaceDescription s = t.GetLevelDescription(0);
-			uint* pData = (uint*)t.LockRectangle(0, LockFlags.None).InternalData.ToPointer();
+			DataRectangle dr = t.LockRectangle(0, LockFlags.None);
+			uint* pData = (uint*)dr.Data.DataPointer.ToPointer();
 
 			int pos = 0;
 			for (int i = 0; i < s.Width; i++)
@@ -186,8 +191,6 @@ namespace Comm_Abi3D
 					Debug.Assert(po.texture_id == i);
 					for (int j = 0; j < po.num_lines - 2; j++) //把多边形转换为三角形，放到顶点集合中
 					{
-						//注意!这里是根据变换后的模型来生成顶点集，而不是根据abi文件中的参考模型
-						//注意!计算所得的模型数据依然是右手系的!所以在画出来的时候，必须先转换成左手系的
 						int idx = po.map_points[0].vertex_id;
 						vexarray[pos].X = transv[idx].X;
 						vexarray[pos].Y = transv[idx].Y;
@@ -220,44 +223,18 @@ namespace Comm_Abi3D
 		}
 
 		bool first = true; //第一次创建标志
-		public unsafe void CreateVertexBuffer(Device device)
+		public void CreateVertexBuffer(Device device)
 		{
-
 			vexbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColoredTextured),	//顶点类型
-			   vexarray.Length,									//顶点个数
-			   device,
-			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColoredTextured.Format,		//顶点格式
-			   Pool.Default);
+				device,
+				vexarray.Length * CustomVertex.PositionColoredTextured.SizeBytes,
+				Usage.WriteOnly | Usage.Dynamic,
+				CustomVertex.PositionColoredTextured.Format,
+				Pool.Default);
 
-			#region unsafe版本
-			//int count = vexarray.Length;
-
-			//GraphicsStream vb = vexbuf.Lock(
-			//    0,
-			//    sizeof(CustomVertex.PositionColoredTextured) * count,
-			//    LockFlags.Discard);
-
-			//CustomVertex.PositionColoredTextured* pvb =
-			//    (CustomVertex.PositionColoredTextured*)vb.InternalDataPointer;
-
-			//for (int i = 0; i < count; i++)
-			//{
-			//    pvb->X = vexarray[i].X;
-			//    pvb->Y = vexarray[i].Y;
-			//    pvb->Z = vexarray[i].Z;
-			//    pvb->Tu = vexarray[i].Tu;
-			//    pvb->Tv = vexarray[i].Tv;
-			//    pvb++;
-			//}
-
-			//vexbuf.Unlock();
-			#endregion
-
-			#region 托管版本
-			vexbuf.SetData(vexarray, 0, LockFlags.Discard); //速度好像跟unsafe版本差不多，MDX中SetData实现本身似乎就是unsafe的
-			#endregion
+			using (DataStream ds = vexbuf.Lock(0, 0, LockFlags.Discard))
+				ds.WriteRange(vexarray);
+			vexbuf.Unlock();
 
 			if (first) //只有在第一次创建时，才计算模型的center和radius，即center/radius始终是参考模型的数据
 			{
@@ -268,15 +245,12 @@ namespace Comm_Abi3D
 
 		private void CaculateBoundSphere()
 		{
-			Vector3 center; //包络球体的中心位置将被抛弃
+			Vector3[] positions = new Vector3[vexarray.Length];
+			for (int i = 0; i < vexarray.Length; i++)
+				positions[i] = new Vector3(vexarray[i].X, vexarray[i].Y, vexarray[i].Z);
 
-			GraphicsStream vertexData = vexbuf.Lock(0, 0, LockFlags.NoOverwrite);
-			radius = Geometry.ComputeBoundingSphere(
-				vertexData,
-				vexarray.Length,
-				CustomVertex.PositionColoredTextured.Format,
-				out center);
-			vexbuf.Unlock();
+			BoundingSphere bs = BoundingSphere.FromPoints(positions);
+			radius = bs.Radius;
 		}
 		#endregion
 
@@ -312,9 +286,6 @@ namespace Comm_Abi3D
 					}
 				}
 
-				//无敌修改！将右手系的旋转数据转换成左手系的，以便于使用DX的左手系函数来进行计算
-				//左手系相关的主要函数：RotationQuaternion和Slerp，而矩阵乘法、平移变换是与左右手系无关的
-				//总之，这里的重点是：保持模型数据及其计算的右手系特性，利用DX的左手系函数来进行实质上的右手系计算
 				Quaternion fromq = Quaternion_RH_To_LH(fromrkf.rotate);
 				Quaternion toq = Quaternion_RH_To_LH(torkf.rotate);
 				q = Quaternion.Slerp(fromq, toq, scale); //!!
@@ -350,8 +321,7 @@ namespace Comm_Abi3D
 
 				Vector3 fromt = fromtkf.translate;
 				Vector3 tot = totkf.translate;
-				t = (1 - scale) * fromt + scale * tot;//?? 暂时以jsm的为准
-				//t = scale * fromt + (1-scale) * tot;//?? 居然两个效果都是一样的？
+				t = (1 - scale) * fromt + scale * tot;
 			}
 		}
 
@@ -360,7 +330,7 @@ namespace Comm_Abi3D
 			boneused = new bool[abi.num_bone];
 
 			local_transf = new Matrix[abi.num_bone]; //每根骨头有一个local_transf
-			global_tranf = new Matrix[abi.num_bone]; //每根骨头有一个global_tranf	
+			global_tranf = new Matrix[abi.num_bone]; //每根骨头有一个global_tranf
 
 			Animation ani = abi.animations[animation_idx];
 			for (int i = 0; i < ani.num_related_bone; i++)	//遍历所有相关的骨头
@@ -373,24 +343,15 @@ namespace Comm_Abi3D
 
 				InterpolationOfLocalTransformation(tta, time, out outq, out outv);
 
-				//注意：这里的左右手系相关的函数：RotationQuaternion
-				//注意：这里的outq已经转换至左手系了，可以利用DX的左手系函数来进行实质上的右手系计算了
-
-				#region 便于理解版本
-				//Matrix x = Matrix.RotationQuaternion(outq); //!!!
-				//Matrix y = Matrix.Translation(outv);
-				//local_transf[bidx] = x * y; //先旋转，后平移	
-				#endregion
-
 				#region 优化计算版本
 				Matrix x = Matrix.RotationQuaternion(outq); //!!!
 				x.M41 += outv.X; //等价于先转转、再平移
 				x.M42 += outv.Y; //等价于先转转、再平移
 				x.M43 += outv.Z; //等价于先转转、再平移
-				local_transf[bidx] = x; //先旋转，后平移	
+				local_transf[bidx] = x; //先旋转，后平移
 				#endregion
 
-				boneused[bidx] = true; //使用标记			
+				boneused[bidx] = true; //使用标记
 			}
 		}
 		#endregion
@@ -406,33 +367,21 @@ namespace Comm_Abi3D
 				BoneHierarchy bh = abi.hierarchy[i];
 				if (parent == -1) //root bone,无需更新
 				{
-					#region 便于理解版本
-					//global_tranf[i] = local_transf[i] * Matrix.Translation(bh.GlobalOffset);
-					#endregion
-
-					#region 优化计算版本
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += bh.GlobalOffset.X;
 					global_tranf[i].M42 += bh.GlobalOffset.Y;
 					global_tranf[i].M43 += bh.GlobalOffset.Z;
-					#endregion
 				}
 				else
 				{
 					BoneHierarchy bph = abi.hierarchy[parent];
 					Vector3 dt = bh.GlobalOffset - bph.GlobalOffset;
 
-					#region 便于理解版本
-					//global_tranf[i] = local_transf[i] * Matrix.Translation(dt) * global_tranf[parent];
-					#endregion
-
-					#region 优化计算版本
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += dt.X;
 					global_tranf[i].M42 += dt.Y;
 					global_tranf[i].M43 += dt.Z;
 					global_tranf[i] *= global_tranf[parent];
-					#endregion
 				}
 			}
 		}
@@ -454,7 +403,6 @@ namespace Comm_Abi3D
 				{
 					for (int j = entry.StartVidx; j < entry.EndVidx; j++) //遍历该骨头所影响顶点
 					{
-						//直接不画这些无关的点
 						transv[j] = new Vertex();
 						transv[j].X = 0;
 						transv[j].Y = 0;
@@ -479,9 +427,6 @@ namespace Comm_Abi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		Quaternion Quaternion_RH_To_LH(Quaternion q)
 		{
-			//无敌修改！将右手系的旋转数据转换成左手系的，以便于使用DX的左手系函数来进行计算
-			//左手系相关的主要函数：RotationQuaternion和Slerp，而矩阵乘法、平移变换是与左右手系无关的
-			//总之，这里的重点是：保持模型数据及其计算的右手系特性，利用DX的左手系函数来进行实质上的右手系计算
 			Quaternion ret = q;
 			ret.X = -q.X;
 			ret.Y = -q.Y;

@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Drawing;
 using System.Diagnostics;
-using Microsoft.DirectX;
+using SlimDX;
 
 namespace Comm_Sec_Astar
 {

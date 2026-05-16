@@ -4,7 +4,8 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Sec3D
 {
@@ -116,17 +117,14 @@ namespace Comm_Sec3D
 			}
 
 			vertexbuf = new VertexBuffer(
-				typeof(CustomVertex.PositionColored),
-				pvexs.Length,
 				device,
+				pvexs.Length * CustomVertex.PositionColored.SizeBytes,
 				Usage.WriteOnly,
 				CustomVertex.PositionColored.Format,
 				Pool.Default);
 
-			CustomVertex.PositionColored[] v = (CustomVertex.PositionColored[])vertexbuf.Lock(0, 0);
-			for (int i = 0; i < pvexs.Length; i++)
-				v[i] = pvexs[i];
-
+			using (DataStream ds = vertexbuf.Lock(0, 0, LockFlags.None))
+				ds.WriteRange(pvexs);
 			vertexbuf.Unlock();
 
 			string msg = String.Format("[WallLines] 没有优化\t v:{0}", pvexs.Length);

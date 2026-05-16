@@ -4,8 +4,6 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Threading;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
 
 namespace Comm_Sec3D
 {

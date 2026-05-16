@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Drawing;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Mbi3D
 {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////
 	public class CoordAxies
 	{
-		AxisArrow[] arrows;							//所有的坐标箭头	
+		AxisArrow[] arrows;							//所有的坐标箭头
 		VertexBuffer linebuf;						//坐标轴顶点
 		CustomVertex.PositionColored[] linearray;	//三根线
 
@@ -40,14 +40,12 @@ namespace Comm_Mbi3D
 				arrows[1].CreateAllBuffer(device, AxisArrow.Point_To_Y_Axis(center, radius, SCALE));
 				arrows[2].CreateAllBuffer(device, AxisArrow.Point_To_Z_Axis(center, radius, SCALE));
 
-				//只有第一次创建时才更新center,radius
 				this.center = center;
 				this.radius = radius;
 				this.first = false;
 			}
 			else
 			{
-				//非首次创建，则始终使用参考模型的center、radius
 				CreateAxieLinesBuffer(device, this.center, this.radius);
 
 				arrows[0].CreateAllBuffer(device, AxisArrow.Point_To_X_Axis(this.center, this.radius, SCALE));
@@ -68,15 +66,15 @@ namespace Comm_Mbi3D
 		public void Render(Device device)
 		{
 			device.VertexFormat = CustomVertex.PositionColored.Format;
-			device.RenderState.FillMode = FillMode.Solid;
+			device.SetRenderState(RenderState.FillMode, FillMode.Solid);
 			device.SetTexture(0, null);
 
-			device.SetStreamSource(0, linebuf, 0);
+			device.SetStreamSource(0, linebuf, 0, CustomVertex.PositionColored.SizeBytes);
 			device.DrawPrimitives(PrimitiveType.LineList, 0, 3);
 
 			for (int i = 0; i < 3; i++)
 			{
-				device.SetStreamSource(0, arrows[i].vexbuf, 0);
+				device.SetStreamSource(0, arrows[i].vexbuf, 0, CustomVertex.PositionColored.SizeBytes);
 				device.Indices = arrows[i].idxbuf;
 				device.DrawIndexedPrimitives(PrimitiveType.TriangleList, 0, 0, 5, 0, 6);
 			}
@@ -134,16 +132,16 @@ namespace Comm_Mbi3D
 					linearray[i].Z += center.Z;
 				}
 
-				//由于是一次性创建，并不是每一帧都修改，因此使用静态顶点缓冲
 				linebuf = new VertexBuffer(
-					   typeof(CustomVertex.PositionColored),	//顶点类型
-					   6,				   						//顶点个数
-					   device,
-					   Usage.WriteOnly,
-					   CustomVertex.PositionColored.Format,		//顶点格式
-					   Pool.Default);
+					device,
+					6 * CustomVertex.PositionColored.SizeBytes,
+					Usage.WriteOnly,
+					CustomVertex.PositionColored.Format,
+					Pool.Default);
 
-				linebuf.SetData(linearray, 0, LockFlags.None);
+				using (DataStream ds = linebuf.Lock(0, 0, LockFlags.None))
+					ds.WriteRange(linearray);
+				linebuf.Unlock();
 			}
 		}
 	}
@@ -193,23 +191,24 @@ namespace Comm_Mbi3D
 					v[i].Position = Vector3.TransformCoordinate(vex[i].Position, trans);
 				}
 
-				//由于是一次性创建，并不是每一帧都修改，因此使用静态顶点缓冲
 				vexbuf = new VertexBuffer(
-				   typeof(CustomVertex.PositionColored),	//顶点类型
-				   vex.Length,								//顶点个数
-				   device,
-				   Usage.WriteOnly,
-				   CustomVertex.PositionColored.Format,		//顶点格式
-				   Pool.Default);
+					device,
+					vex.Length * CustomVertex.PositionColored.SizeBytes,
+					Usage.WriteOnly,
+					CustomVertex.PositionColored.Format,
+					Pool.Default);
 
-				vexbuf.SetData(v, 0, LockFlags.None);
+				using (DataStream ds = vexbuf.Lock(0, 0, LockFlags.None))
+					ds.WriteRange(v);
+				vexbuf.Unlock();
 			}
 
 			if (idxbuf == null)
 			{
-				//由于是一次性创建，并不是每一帧都修改，因此使用静态索引缓冲
-				idxbuf = new IndexBuffer(typeof(short), idx.Length, device, Usage.WriteOnly, Pool.Default);
-				idxbuf.SetData(idx, 0, LockFlags.None);
+				idxbuf = new IndexBuffer(device, idx.Length * sizeof(short), Usage.WriteOnly, Pool.Default, true);
+				using (DataStream ds = idxbuf.Lock(0, 0, LockFlags.None))
+					ds.WriteRange(idx);
+				idxbuf.Unlock();
 			}
 		}
 

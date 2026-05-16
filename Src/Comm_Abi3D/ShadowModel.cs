@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 using System.Drawing;
 
 namespace Comm_Abi3D
@@ -70,7 +70,9 @@ namespace Comm_Abi3D
 				CalculateAll();
 
 				//无需重建，直接设置顶点缓冲
-				shadowbuf.SetData(shadowarray, 0, LockFlags.Discard);
+				using (DataStream ds = shadowbuf.Lock(0, 0, LockFlags.Discard))
+					ds.WriteRange(shadowarray);
+				shadowbuf.Unlock();
 			}
 		}
 
@@ -119,7 +121,7 @@ namespace Comm_Abi3D
 					shadowv[idx2].Y - shadowv[idx1].Y
 					);
 
-				if (Vector2.Ccw(b, a) < 0) continue;
+				if (MathHelpers.Ccw(b, a) < 0) continue;
 
 				//-------------------------------------------------------------------------------
 				for (int j = 0; j < po.num_lines - 2; j++) //把多边形转换为三角形，放到顶点集合中
@@ -156,14 +158,15 @@ namespace Comm_Abi3D
 		public void CreateVertexBuffer(Device device)
 		{
 			shadowbuf = new VertexBuffer(
-			   typeof(CustomVertex.PositionColored),	//顶点类型
-			   shadowarray.Length,						//注意！最大可能的顶点个数！！
-			   device,
-			   Usage.WriteOnly | Usage.Dynamic,
-			   CustomVertex.PositionColored.Format,		//顶点格式
-			   Pool.Default);
+				device,
+				shadowarray.Length * CustomVertex.PositionColored.SizeBytes,
+				Usage.WriteOnly | Usage.Dynamic,
+				CustomVertex.PositionColored.Format,
+				Pool.Default);
 
-			shadowbuf.SetData(shadowarray, 0, LockFlags.Discard);
+			using (DataStream ds = shadowbuf.Lock(0, 0, LockFlags.Discard))
+				ds.WriteRange(shadowarray);
+			shadowbuf.Unlock();
 		}
 	}
 }

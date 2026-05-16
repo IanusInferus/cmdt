@@ -4,8 +4,8 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 
-using Microsoft.DirectX.Direct3D;
-using Microsoft.DirectX;
+using SlimDX.Direct3D9;
+using SlimDX;
 
 namespace Comm_Sec3D
 {
@@ -201,19 +201,25 @@ namespace Comm_Sec3D
 			if (vexbuf == null)
 			{
 				Debug.WriteLine("[WallMesh] 空数据"); //此时根本无需存在任何垂直面需要绘制
-				mesh = null; 
+				mesh = null;
 				return;
 			}
-			
+
 			int totalf = vexbuf.Length / 4 * 2; //三角面总数
 			int totalv = vexbuf.Length;			//顶点总数
 
 			//创建网格对象
-			mesh = new Mesh(totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format, device);
+			mesh = new Mesh(device, totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format);
 
 			//设置mesh
-			mesh.SetVertexBufferData(vexbuf, LockFlags.None);
-			mesh.SetIndexBufferData(idxbuf, LockFlags.None);
+			using (DataStream vds = mesh.LockVertexBuffer(LockFlags.None))
+				vds.WriteRange(vexbuf);
+			mesh.UnlockVertexBuffer();
+
+			using (DataStream ids = mesh.LockIndexBuffer(LockFlags.None))
+				ids.WriteRange(idxbuf);
+			mesh.UnlockIndexBuffer();
+
 			DEBUG_PrintMeshInfo("[WallMesh] 没有优化");
 
 			//优化顶点数量，删除多余顶点，只有几乎绝对重复的顶点才进行融接
@@ -221,16 +227,15 @@ namespace Comm_Sec3D
 			epsilon.Diffuse = 0.01F;
 			epsilon.Position = 0.01F;
 			epsilon.Normal = 0.01F;
-			mesh.WeldVertices(WeldEpsilonsFlags.WeldPartialMatches, epsilon, null, null);
+			mesh.WeldVertices(WeldFlags.WeldPartialMatches, epsilon);
 			DEBUG_PrintMeshInfo("[WallMesh] 顶点优化");
 
 			//针对cache命中率进行优化排序
-			int[] adjacency = new int[mesh.NumberFaces * 3];
-			mesh.GenerateAdjacency(0.01F, adjacency);
-			mesh.OptimizeInPlace(MeshFlags.OptimizeVertexCache | MeshFlags.OptimizeCompact, adjacency);
+			mesh.GenerateAdjacency(0.01F);
+			mesh.OptimizeInPlace(MeshOptimizeFlags.VertexCache | MeshOptimizeFlags.Compact);
 
 			//将mesh变成是writeonly的，加快效率！
-			Mesh m = mesh.Clone(MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format, device);
+			Mesh m = mesh.Clone(device, MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format);
 			mesh.Dispose();
 			mesh = m;
 		}
@@ -238,7 +243,7 @@ namespace Comm_Sec3D
 		void DEBUG_PrintMeshInfo(string s)
 		{
 			Debug.Write(s);
-			string msg = string.Format("\t v:{0}\tf:{1}", mesh.NumberVertices, mesh.NumberFaces);
+			string msg = string.Format("\t v:{0}\tf:{1}", mesh.VertexCount, mesh.FaceCount);
 			Debug.WriteLine(msg);
 		}
 	}

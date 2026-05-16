@@ -5,7 +5,7 @@ using System.IO;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Diagnostics;
-using Microsoft.DirectX;
+using SlimDX;
 
 using Matrix2D = System.Drawing.Drawing2D.Matrix;
 
@@ -173,7 +173,7 @@ public class Polygon
 			Vector2 from = test_b.to.ToVector2() - test_b.from.ToVector2();
 			Vector2 to = test_p - test_b.from.ToVector2();
 
-			float test = Vector2.Ccw(from, to);
+			float test = MathHelpers.Ccw(from, to);
 			if (i == 0)
 			{
 				prior = test;

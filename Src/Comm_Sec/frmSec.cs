@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
-using Microsoft.DirectX;
+using SlimDX;
 
 using Matrix2D = System.Drawing.Drawing2D.Matrix;
 

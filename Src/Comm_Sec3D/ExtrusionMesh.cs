@@ -6,8 +6,8 @@ using System.Text;
 using System.Drawing;
 using System.Diagnostics;
 
-using Microsoft.DirectX.Direct3D;
-using Microsoft.DirectX;
+using SlimDX.Direct3D9;
+using SlimDX;
 
 namespace Comm_Sec3D
 {
@@ -336,28 +336,33 @@ namespace Comm_Sec3D
 			int totalv = vexbuf.Length;	//总顶点数
 
 			//创建网格对象
-			mesh = new Mesh(totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format, device);
+			mesh = new Mesh(device, totalf, totalv, MeshFlags.Dynamic, CustomVertex.PositionNormalColored.Format);
 
 			//设置mesh
-			mesh.SetVertexBufferData(vexbuf, LockFlags.None);
-			mesh.SetIndexBufferData(idxbuf, LockFlags.None);
+			using (DataStream vds = mesh.LockVertexBuffer(LockFlags.None))
+				vds.WriteRange(vexbuf);
+			mesh.UnlockVertexBuffer();
+
+			using (DataStream ids = mesh.LockIndexBuffer(LockFlags.None))
+				ids.WriteRange(idxbuf);
+			mesh.UnlockIndexBuffer();
+
 			DEBUG_PrintMeshInfo("[Mesh] 没有优化");
-			
+
 			//优化顶点数量，删除多余顶点，只有几乎绝对重复的点才删除
 			WeldEpsilons epsilon = new WeldEpsilons();
 			epsilon.Diffuse = 0.01F;
 			epsilon.Position = 0.01F;
 			epsilon.Normal = 0.01F;
-			mesh.WeldVertices(WeldEpsilonsFlags.WeldPartialMatches, epsilon, null, null);
+			mesh.WeldVertices(WeldFlags.WeldPartialMatches, epsilon);
 			DEBUG_PrintMeshInfo("[Mesh] 顶点优化");
-			
+
 			//优化mesh，并由OptimizeInPlace自动计算SubSet个数
-			int[] adjacency = new int[mesh.NumberFaces * 3];
-			mesh.GenerateAdjacency(0.01F, adjacency);
-			mesh.OptimizeInPlace(MeshFlags.OptimizeVertexCache | MeshFlags.OptimizeCompact, adjacency);
+			mesh.GenerateAdjacency(0.01F);
+			mesh.OptimizeInPlace(MeshOptimizeFlags.VertexCache | MeshOptimizeFlags.Compact);
 
 			//将mesh变成是writeonly的，加快效率！
-			Mesh m = mesh.Clone(MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format, device);
+			Mesh m = mesh.Clone(device, MeshFlags.WriteOnly, CustomVertex.PositionNormalColored.Format);
 			mesh.Dispose();
 			mesh = m;
 		}
@@ -365,7 +370,7 @@ namespace Comm_Sec3D
 		void DEBUG_PrintMeshInfo(string s)
 		{
 			Debug.Write(s);
-			string msg = string.Format("\t v:{0}\tf:{1}", mesh.NumberVertices, mesh.NumberFaces);
+			string msg = string.Format("\t v:{0}\tf:{1}", mesh.VertexCount, mesh.FaceCount);
 			Debug.WriteLine(msg);
 		}
 		#endregion
@@ -387,13 +392,16 @@ namespace Comm_Sec3D
 			int idx = -1; //-1代表没有匹配，否则，idx为匹配三角面编号
 			float min_z = float.PositiveInfinity; //用于比较多个匹配三角面的Z深度
 
-			Matrix trans = device.Transform.World * device.Transform.View * device.Transform.Projection; //常数提取
-			
+			Matrix world = device.GetTransform(TransformState.World);
+			Matrix view = device.GetTransform(TransformState.View);
+			Matrix proj = device.GetTransform(TransformState.Projection);
+			Matrix trans = world * view * proj; //常数提取
+
+			Ray ray = new Ray(raypos, raydir);
+
 			//遍历所有三角形...这里效率比较低，需要想想办法
 			for (int i = 0; i < idxbuf.Length / 3; i++)
 			{
-				IntersectInformation hitlocation;
-
 				int v0_idx = idxbuf[3 * i];
 				int v1_idx = idxbuf[3 * i + 1];
 				int v2_idx = idxbuf[3 * i + 2];
@@ -403,18 +411,15 @@ namespace Comm_Sec3D
 				Vector3 v2 = vexbuf[v2_idx].Position;
 
 				//测试picking ray与三角形的交点是否相交
-				bool result = Geometry.IntersectTri(
-					v0, v1, v2,
-					raypos,
-					raydir,
-					out hitlocation);
-				
+				float distance, u, v;
+				bool result = Ray.Intersects(ray, v0, v1, v2, out distance, out u, out v);
+
 				if (result) //线面是相交的
-				{				
+				{
 					//计算world下的交点，将其转换至projection windows，并测试其深度
-					Vector3 p = v0 + hitlocation.U * (v1 - v0) + hitlocation.V * (v2 - v0);
-					p.TransformCoordinate(trans);
-					
+					Vector3 p = v0 + u * (v1 - v0) + v * (v2 - v0);
+					p = Vector3.TransformCoordinate(p, trans);
+
 					if (p.Z < min_z) //比较Z depth，选取深度最小的三角形
 					{
 						idx = i;
@@ -425,31 +430,24 @@ namespace Comm_Sec3D
 
 			if (idx != -1) //如果存在着匹配
 			{
-				//idx为z深度最小的匹配三角面编号，根据其查出对应的多边形编号
 				int polyid = FindPolygonByTriangleIdx(idx);
-				
-				//返回查找到的多边形编号
-				Debug.Assert(polyid != -1);			
+				Debug.Assert(polyid != -1);
 				return polyid;
 			}
 			else
-				return -1; //否则，返回-1，不存在匹配多边形
+				return -1;
 		}
 		#endregion
 		////////////////////////////////////////////////////////////////////////////////////
 		public float CaculateBoundSphere(out Vector3 center)
 		{
-			GraphicsStream gs = mesh.LockVertexBuffer(LockFlags.None);
+			Vector3[] positions = new Vector3[vexbuf.Length];
+			for (int i = 0; i < vexbuf.Length; i++)
+				positions[i] = vexbuf[i].Position;
 
-			float radius = Geometry.ComputeBoundingSphere(
-				gs,
-				mesh.NumberVertices,
-				mesh.VertexFormat,
-				out center);
-
-			mesh.UnlockVertexBuffer();
-
-			return radius;
+			BoundingSphere bs = BoundingSphere.FromPoints(positions);
+			center = bs.Center;
+			return bs.Radius;
 		}
 	}
 }

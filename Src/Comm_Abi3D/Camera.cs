@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Abi3D
 {
@@ -45,10 +45,10 @@ namespace Comm_Abi3D
 			float z = (float)(t * Math.Cos(beta));
 			float x = (float)(t * Math.Sin(beta));
 
-			device.Transform.View = Matrix.LookAtLH(		//view变换
+			device.SetTransform(TransformState.View, Matrix.LookAtLH(		//view变换
 				new Vector3((float)x, (float)y, (float)z),	//camera所在的world位置
 				new Vector3(0, 0, 0),						//camera正对world原点
-				new Vector3(0, 1, 0));						//camera以+Y为正上方
+				new Vector3(0, 1, 0)));						//camera以+Y为正上方
 		}
 
 		////////////////////////////////////////////////////////////////////////////////////////

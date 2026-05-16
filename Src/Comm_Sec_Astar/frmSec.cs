@@ -6,7 +6,7 @@ using System.Drawing.Imaging;
 using System.Text;
 using System.Windows.Forms;
 using System.Diagnostics;
-using Microsoft.DirectX;
+using SlimDX;
 
 namespace Comm_Sec_Astar
 {

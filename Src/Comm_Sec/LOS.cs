@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.DirectX;
+using SlimDX;
 using System.Diagnostics;
 
 namespace Comm_Sec
@@ -141,7 +141,7 @@ namespace Comm_Sec
 							//判断Vector2.Ccw(b,n0)的符号，belong/neighbor得到polygon
 							Vector2 vb = GetV2FromBorder(b);						
 							int poly_idx;
-							if (Vector2.Ccw(vb, n0) > 0)
+							if (MathHelpers.Ccw(vb, n0) > 0)
 								poly_idx = b.belong_poly;
 							else
 								poly_idx = b.neighbor_poly;
@@ -271,8 +271,8 @@ namespace Comm_Sec
 					from.Normalize();
 					to.Normalize();
 
-					float ra = Vector2.Ccw(from, n0); //+Z轴面朝屏幕内
-					float rb = Vector2.Ccw(to, n0);
+					float ra = MathHelpers.Ccw(from, n0); //+Z轴面朝屏幕内
+					float rb = MathHelpers.Ccw(to, n0);
 
 					if (ra > 0 && rb < 0) //找到穿出边，该判断是正确的，看MSDN中的Vector2.Ccw释义
 					{
@@ -349,8 +349,8 @@ namespace Comm_Sec
 						vb1.Normalize();
 						vb2.Normalize();
 
-						float sb1 = Vector2.Ccw(n0, vb1);
-						float sb2 = Vector2.Ccw(n0, vb2);
+						float sb1 = MathHelpers.Ccw(n0, vb1);
+						float sb2 = MathHelpers.Ccw(n0, vb2);
 
 						if ((sb1 > 0 && sb2 < 0) || (sb1 < 0 && sb2 > 0))
 						{

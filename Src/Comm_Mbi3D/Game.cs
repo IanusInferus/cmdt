@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -8,8 +8,8 @@ using System.Diagnostics;
 using System.Threading;
 using System.IO;
 
-using Microsoft.DirectX;
-using Microsoft.DirectX.Direct3D;
+using SlimDX;
+using SlimDX.Direct3D9;
 
 namespace Comm_Mbi3D
 {
@@ -26,10 +26,10 @@ namespace Comm_Mbi3D
 		CoordAxies axises;				//坐标轴
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		bool deviceLost;				//设备丢失标志
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		FreeRotateCamera camera;		//镜头控制
-		
+
 		int DisplayWireFrame = 0;		//显示贴图(0)、贴图线框(1)、还是纯线框(2)
 		bool DrawBackground = false;	//黑色(false)、粉色(true)
 
@@ -54,7 +54,6 @@ namespace Comm_Mbi3D
 
 			//设置标题栏
 			FileInfo fi = new FileInfo(filename);
-			//filename = fi.Name.ToLower();
 			Text = "3D .Mbi Viewer - " + filename;
 
 			//背景色相关
@@ -67,15 +66,10 @@ namespace Comm_Mbi3D
 			//初始化设备参数
 			CreatePresentParameters(FSAA);
 
-			Device.IsUsingEventHandlers = false; //关闭MDX的自动事件布线机制!
-
-			if (D3DConfiguration.SupportsHardwareVertexProcessing())
-				device = new Device(0, DeviceType.Hardware, this,CreateFlags.HardwareVertexProcessing, present_params);
-			else
-				device = new Device(0, DeviceType.Hardware, this,CreateFlags.SoftwareVertexProcessing, present_params);
-
-			device.DeviceReset += new EventHandler(this.OnDeviceReset);
-			device.DeviceLost += new EventHandler(this.OnDeviceLost);
+			CreateFlags cf = D3DConfiguration.SupportsHardwareVertexProcessing()
+				? CreateFlags.HardwareVertexProcessing
+				: CreateFlags.SoftwareVertexProcessing;
+			device = new Device(D3DConfiguration.D3D, 0, DeviceType.Hardware, this.Handle, cf, present_params);
 
 			axises = new CoordAxies(); //初始化坐标轴
 
@@ -100,7 +94,7 @@ namespace Comm_Mbi3D
 			present_params.BackBufferFormat = Format.X8R8G8B8;
 			present_params.SwapEffect = SwapEffect.Flip;
 			present_params.EnableAutoDepthStencil = true;
-			present_params.AutoDepthStencilFormat = DepthFormat.D24X8;
+			present_params.AutoDepthStencilFormat = Format.D24X8;
 #else
 			//窗口
 			present_params.Windowed = true;
@@ -116,14 +110,14 @@ namespace Comm_Mbi3D
 			if (FSAA)
 			{
 				int quality;
-				MultiSampleType type;
+				MultisampleType type;
 
 				D3DConfiguration.GetAppropriateMultiSampleType(out type, out quality);
-				if (type == MultiSampleType.NonMaskable)
+				if (type == MultisampleType.NonMaskable)
 				{
 					present_params.SwapEffect = SwapEffect.Discard;	//必须!
-					present_params.MultiSample = type;				//开启全屏反锯齿FSAA
-					present_params.MultiSampleQuality = quality - 1;//容许的最高级别
+					present_params.Multisample = type;				//开启全屏反锯齿FSAA
+					present_params.MultisampleQuality = quality - 1;//容许的最高级别
 				}
 			}
 #endif
@@ -153,12 +147,12 @@ namespace Comm_Mbi3D
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
-		protected void OnDeviceReset(object sender, EventArgs e)
+		protected void OnDeviceReset()
 		{
 			SetupDevice(); //重建所有资源
 		}
 
-		protected void OnDeviceLost(object sender, EventArgs e)
+		protected void OnDeviceLost()
 		{
 			if (mm.vexbuf != null)
 			{
@@ -167,21 +161,13 @@ namespace Comm_Mbi3D
 			}
 
 			axises.DisposeAllBuffer();
-
-			/*
-			if (mm.texture != null) //因为texture的usage是managed，所以设备丢失时无需重建
-			{
-				mm.DisposeAllTextures();
-				mm.texture = null;
-			}
-			*/
 		}
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupDevice()
 		{
 			if (mm.vexbuf == null) { mm.CreateVertexBuffer(device); }
-			
+
 			if (MeshCenter)
 				axises.CreateAllBuffer(device, mm.center, mm.radius); //坐标轴以Mesh中心为原心
 			else
@@ -189,7 +175,7 @@ namespace Comm_Mbi3D
 
 			if (mm.texture == null) { mm.CreateAllTextures(device); }
 		}
-	
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupMatrices()
 		{
@@ -197,21 +183,18 @@ namespace Comm_Mbi3D
 			RHtoLH.M22 = 0; RHtoLH.M23 = 1;
 			RHtoLH.M32 = 1; RHtoLH.M33 = 0;
 
-			//由于模型数据是右手系的，所以这里我们互换模型Y/Z坐标，转换成显示所需的左手系
-			//然后在设置镜头时，以+Y为正上方，+X为正右方，镜头位于-Z轴上
-		
 			if (MeshCenter)
-				device.Transform.World = Matrix.Translation(-mm.center) * RHtoLH * camera.rotate; //以Mesh中心为坐标系原心
+				device.SetTransform(TransformState.World, Matrix.Translation(-mm.center) * RHtoLH * camera.rotate);
 			else
-				device.Transform.World = RHtoLH * camera.rotate; //以(0,0,0)为坐标系原心
+				device.SetTransform(TransformState.World, RHtoLH * camera.rotate);
 
-			device.Transform.View = camera.GetViewMatrix();
-				
-			device.Transform.Projection = Matrix.PerspectiveFovLH(
+			device.SetTransform(TransformState.View, camera.GetViewMatrix());
+
+			device.SetTransform(TransformState.Projection, Matrix.PerspectiveFovLH(
 				(float)Math.PI / 4.0F,
 				(float)ClientSize.Width / (float)ClientSize.Height, //保持正确的横纵比
 				20F,		//IMPORTANT!! 最重要的参数 about Hidden Lines Removal
-				12000.0F);	//IMPORTANT!! 最重要的参数
+				12000.0F));	//IMPORTANT!! 最重要的参数
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -220,50 +203,48 @@ namespace Comm_Mbi3D
 			if (deviceLost) AttemptRecovery();
 			if (deviceLost) return;
 
-			device.RenderState.Lighting = false;
-			device.RenderState.CullMode = Cull.CounterClockwise;//右手系拣选
+			device.SetRenderState(RenderState.Lighting, false);
+			device.SetRenderState(RenderState.CullMode, Cull.Counterclockwise);//右手系拣选
 
-			device.SamplerState[0].MagFilter = D3DConfiguration.GetAppropriateTextureMagFilter();//放大滤波
-			device.SamplerState[0].MinFilter = D3DConfiguration.GetAppropriateTextureMinFilter();//缩小滤波
+			device.SetSamplerState(0, SamplerState.MagFilter, D3DConfiguration.GetAppropriateTextureMagFilter());
+			device.SetSamplerState(0, SamplerState.MinFilter, D3DConfiguration.GetAppropriateTextureMinFilter());
 
 			if (DisplayWireFrame == 1 || DisplayWireFrame == 2) //显示贴图线框或纯线框
-				device.RenderState.FillMode = FillMode.WireFrame;
+				device.SetRenderState(RenderState.FillMode, FillMode.Wireframe);
 			else //显示贴图
-				device.RenderState.FillMode = FillMode.Solid;
+				device.SetRenderState(RenderState.FillMode, FillMode.Solid);
 
 			if (DrawBackground)
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.FromArgb(0xff,0x0,0xff), 1.0F, 0);
 			else
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.Black, 1.0F, 0);
 
-			device.RenderState.SlopeScaleDepthBias = 3F; //全局性的加大所有Z-Depth间隔值，防止Z-Fighting
-			//device.RenderState.DepthBias = 1F; //加性调整个别对象的Z-Depth值，其值因不同对象而异，因此效果远不及全局性调整SlopeScaleDepthBias好
+			device.SetRenderState(RenderState.SlopeScaleDepthBias, 3F);
 
 			//处理Transparent Color Key的关键点：
-			//只要alpha值大于等于1的点才显示并更新zbuf！即，alpha=0的点直接不画，也不会影响zbuf!
-			device.RenderState.AlphaTestEnable = true;
-			device.RenderState.AlphaFunction = Compare.GreaterEqual;
-			device.RenderState.ReferenceAlpha = 1;
+			device.SetRenderState(RenderState.AlphaTestEnable, true);
+			device.SetRenderState(RenderState.AlphaFunc, Compare.GreaterEqual);
+			device.SetRenderState(RenderState.AlphaRef, 1);
 
-			//用于AlphaBlend的贴图Alpha混合参数，注意，AlphaBlend与AlphaTest是完全不同的概念
-			device.RenderState.SourceBlend = Blend.SourceAlpha;
-			device.RenderState.DestinationBlend = Blend.InvSourceAlpha;
-			device.TextureState[0].ColorOperation = TextureOperation.Modulate;
-			device.TextureState[0].ColorArgument1 = TextureArgument.TextureColor;
-			device.TextureState[0].ColorArgument2 = TextureArgument.Diffuse;
-			device.TextureState[0].AlphaOperation = TextureOperation.Modulate;
-			device.TextureState[0].AlphaArgument1 = TextureArgument.TextureColor;
-			device.TextureState[0].AlphaArgument2 = TextureArgument.Diffuse;
-		
+			//用于AlphaBlend的贴图Alpha混合参数
+			device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
+			device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
+			device.SetTextureStageState(0, TextureStage.ColorOperation, TextureOperation.Modulate);
+			device.SetTextureStageState(0, TextureStage.ColorArg1, TextureArgument.Texture);
+			device.SetTextureStageState(0, TextureStage.ColorArg2, TextureArgument.Diffuse);
+			device.SetTextureStageState(0, TextureStage.AlphaOperation, TextureOperation.Modulate);
+			device.SetTextureStageState(0, TextureStage.AlphaArg1, TextureArgument.Texture);
+			device.SetTextureStageState(0, TextureStage.AlphaArg2, TextureArgument.Diffuse);
+
 			device.BeginScene();
 			{
 				SetupMatrices();
 				device.VertexFormat = CustomVertex.PositionColoredTextured.Format;
 
-				device.SetStreamSource(0, mm.vexbuf, 0);
+				device.SetStreamSource(0, mm.vexbuf, 0, CustomVertex.PositionColoredTextured.SizeBytes);
 
 				//以下是无需alpha混合的贴图处理过程
-				device.RenderState.AlphaBlendEnable = false;
+				device.SetRenderState(RenderState.AlphaBlendEnable, false);
 				for (int i = 0; i < mm.texture.Length; i++)
 				{
 					if (DisplayWireFrame == 2)//纯线框
@@ -271,17 +252,16 @@ namespace Comm_Mbi3D
 					else //贴图线框或者是贴图
 						device.SetTexture(0, mm.texture[i]);
 
-					//必须首先绘制无Alpha混合的贴图(包括未知类型的贴图)，否则将导致后继Alpha混合不正确
 					if (mbi.texturetype[i] != 2 && mbi.texturetype[i] != 4)
 					{
 						int count = (mm.txtoffset[i + 1] - mm.txtoffset[i]) / 3;
 						if (count != 0)
-							device.DrawPrimitives(PrimitiveType.TriangleList, mm.txtoffset[i], count);		
+							device.DrawPrimitives(PrimitiveType.TriangleList, mm.txtoffset[i], count);
 					}
 				}
 
 				//以下是需要alpha混合的贴图处理过程
-				device.RenderState.AlphaBlendEnable = true;
+				device.SetRenderState(RenderState.AlphaBlendEnable, true);
 				for (int i = 0; i < mm.texture.Length; i++)
 				{
 					if (DisplayWireFrame == 2) //纯线框
@@ -289,9 +269,6 @@ namespace Comm_Mbi3D
 					else //贴图线框或者是贴图
 						device.SetTexture(0, mm.texture[i]);
 
-					//然后再绘制贴图类型为2,4的区域，因为这些区域需要Alpha混合
-					//贴图的索引顺序其实部分决定了Alpha混合的顺序，所以值得特别注意！
-					//这里，无需担心光晕贴图和反射贴图会发生混合错误，因为前者永远是最后一个贴图
 					if (mbi.texturetype[i] == 2 || mbi.texturetype[i] == 4)
 					{
 						int count = (mm.txtoffset[i + 1] - mm.txtoffset[i]) / 3;
@@ -301,18 +278,15 @@ namespace Comm_Mbi3D
 				}
 
 				//画其他东西之前，先把Alpha混合关了!
-				device.RenderState.AlphaBlendEnable = false; 
-	
+				device.SetRenderState(RenderState.AlphaBlendEnable, false);
+
 				if (DrawCoordinateAxies)
 					axises.Render(device);
-			}	
+			}
 			device.EndScene();
 
-			try
-			{
-				device.Present();
-			}
-			catch (DeviceLostException)
+			Result presentResult = device.Present();
+			if (presentResult.Code == ResultCode.DeviceLost.Code)
 			{
 				deviceLost = true;
 			}
@@ -320,24 +294,25 @@ namespace Comm_Mbi3D
 
 		protected void AttemptRecovery()
 		{
-			int ret;
-			device.CheckCooperativeLevel(out ret);
+			Result r = device.TestCooperativeLevel();
 
-			switch (ret)
+			if (r.Code == ResultCode.DeviceLost.Code)
 			{
-				case (int)ResultCode.DeviceLost:
-					break;
-				case (int)ResultCode.DeviceNotReset:
-					try
-					{
-						device.Reset(present_params);
-						deviceLost = false;
-					}
-					catch (DeviceLostException)
-					{
-						Thread.Sleep(50);
-					}
-					break;
+				return;
+			}
+			if (r.Code == ResultCode.DeviceNotReset.Code)
+			{
+				try
+				{
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
+					deviceLost = false;
+				}
+				catch (Direct3D9Exception)
+				{
+					Thread.Sleep(50);
+				}
 			}
 		}
 
@@ -363,16 +338,18 @@ namespace Comm_Mbi3D
 
                 try
                 {
-					device.Reset(present_params);
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
                 }
-                catch (DeviceLostException)
+                catch (Direct3D9Exception)
                 {
                     deviceLost = true;
                 }
 
                 size = ClientSize;
             }
-			
+
 			onpaint_enabled = true; //拉伸窗口完毕，可以触发OnPaint事件了
         }
 
@@ -389,9 +366,11 @@ namespace Comm_Mbi3D
 
 					try
 					{
-						device.Reset(present_params);
+						OnDeviceLost();
+						device.Reset(new[] { present_params });
+						OnDeviceReset();
 					}
-					catch (DeviceLostException)
+					catch (Direct3D9Exception)
 					{
 						deviceLost = true;
 						Debug.WriteLine("Device was lost during Resize");
@@ -407,7 +386,7 @@ namespace Comm_Mbi3D
 			}
 		}
 #endregion
-		
+
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		private void Game_KeyDown(object sender, KeyEventArgs e)
 		{
@@ -432,7 +411,9 @@ namespace Comm_Mbi3D
 					//开启或者关闭FSAA
 					FSAA = !FSAA;
 					CreatePresentParameters(FSAA);
-					device.Reset(present_params);
+					OnDeviceLost();
+					device.Reset(new[] { present_params });
+					OnDeviceReset();
 					break;
 				case Keys.Escape:
 				case Keys.Q:
@@ -452,7 +433,7 @@ namespace Comm_Mbi3D
 					break;
 				case Keys.O:
 					string fn = Program.SelectSecFile();
-					if (fn != null)				
+					if (fn != null)
 					{
 						//从头创建所有的一切！
 						Cleanup();
@@ -476,7 +457,6 @@ namespace Comm_Mbi3D
 
 		private void ResetAll(string filename)
 		{
-			//FSAA = false;
 			deviceLost = false;
 			DisplayWireFrame = 0;
 
@@ -491,13 +471,9 @@ namespace Comm_Mbi3D
 			FileInfo fi = new FileInfo(filename);
 			filename = fi.Name.ToLower();
 			Text = "3D .Mbi Viewer - " + filename;
-
-			//背景色相关
-			//DrawBackground = false;
-			//BackColor = Color.Black;
 		}
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////	
+		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		private void Game_MouseWheel(object sender,MouseEventArgs e)
 		{
 			float d;
