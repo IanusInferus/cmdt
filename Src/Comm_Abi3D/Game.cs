@@ -200,8 +200,16 @@ namespace Comm_Abi3D
 			}
 
 			axises.DisposeAllBuffer();
-		}
 
+			/*
+			if (mm.texture != null) //因为texture的usage是managed，所以设备丢失时无需重建
+			{
+				mm.DisposeAllTextures();
+				mm.texture = null;
+			}
+			*/
+		}
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupDevice()
 		{
@@ -217,6 +225,9 @@ namespace Comm_Abi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupMatrices()
 		{
+			//float angle = Environment.TickCount / 2000.0F; //自动旋转
+			//device.Transform.World = Matrix.Translation(-am.center) *Matrix.RotationZ(angle);//先平移到包络球心、然后在沿着Z轴旋转
+
 			//交换y轴和z轴，将右手系数据转换到左手系里面来画
 			Matrix RHtoLH = Matrix.Identity;
 			RHtoLH.M22 = 0; RHtoLH.M23 = 1;
@@ -258,6 +269,12 @@ namespace Comm_Abi3D
 			else
 				device.Clear(ClearFlags.Target | ClearFlags.ZBuffer, Color.DarkGray, 1.0F, 0);
 
+			//关键：只要alpha值大于等于1的点才显示并更新zbuf！即，alpha=0的点直接不画，也不会影响zbuf!
+			//注意：盟2的abi里面没有透明色的概念，不知道盟3有没有
+			//device.RenderState.AlphaTestEnable = true;
+			//device.RenderState.AlphaFunction = Compare.GreaterEqual;
+			//device.RenderState.ReferenceAlpha = 1;
+
 			device.BeginScene();
 			{
 				SetupMatrices();
@@ -272,6 +289,11 @@ namespace Comm_Abi3D
 						device.SetTexture(0, null);
 					else //贴图线框或者是贴图
 						device.SetTexture(0, am.texture[i]);
+
+					//注意：无需Alpha贴图功能，盟2的abi里面没有Alpha贴图的概念，不知道盟3有没有
+					//device.RenderState.SourceBlend = Blend.One;
+					//device.RenderState.DestinationBlend = Blend.Zero;
+					//device.RenderState.AlphaBlendEnable = false;
 
 					int count = (am.txtoffset[i + 1] - am.txtoffset[i]) / 3;
 					if (count != 0)

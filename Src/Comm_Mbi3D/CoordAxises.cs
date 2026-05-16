@@ -40,12 +40,14 @@ namespace Comm_Mbi3D
 				arrows[1].CreateAllBuffer(device, AxisArrow.Point_To_Y_Axis(center, radius, SCALE));
 				arrows[2].CreateAllBuffer(device, AxisArrow.Point_To_Z_Axis(center, radius, SCALE));
 
+				//只有第一次创建时才更新center,radius
 				this.center = center;
 				this.radius = radius;
 				this.first = false;
 			}
 			else
 			{
+				//非首次创建，则始终使用参考模型的center、radius
 				CreateAxieLinesBuffer(device, this.center, this.radius);
 
 				arrows[0].CreateAllBuffer(device, AxisArrow.Point_To_X_Axis(this.center, this.radius, SCALE));
@@ -132,6 +134,7 @@ namespace Comm_Mbi3D
 					linearray[i].Z += center.Z;
 				}
 
+				//由于是一次性创建，并不是每一帧都修改，因此使用静态顶点缓冲
 				linebuf = new VertexBuffer(
 					device,
 					6 * CustomVertex.PositionColored.SizeBytes,
@@ -191,6 +194,7 @@ namespace Comm_Mbi3D
 					v[i].Position = Vector3.TransformCoordinate(vex[i].Position, trans);
 				}
 
+				//由于是一次性创建，并不是每一帧都修改，因此使用静态顶点缓冲
 				vexbuf = new VertexBuffer(
 					device,
 					vex.Length * CustomVertex.PositionColored.SizeBytes,
@@ -205,6 +209,7 @@ namespace Comm_Mbi3D
 
 			if (idxbuf == null)
 			{
+				//由于是一次性创建，并不是每一帧都修改，因此使用静态索引缓冲
 				idxbuf = new IndexBuffer(device, idx.Length * sizeof(short), Usage.WriteOnly, Pool.Default, true);
 				using (DataStream ds = idxbuf.Lock(0, 0, LockFlags.None))
 					ds.WriteRange(idx);

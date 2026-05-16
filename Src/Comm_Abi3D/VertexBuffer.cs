@@ -191,6 +191,8 @@ namespace Comm_Abi3D
 					Debug.Assert(po.texture_id == i);
 					for (int j = 0; j < po.num_lines - 2; j++) //把多边形转换为三角形，放到顶点集合中
 					{
+						//注意!这里是根据变换后的模型来生成顶点集，而不是根据abi文件中的参考模型
+						//注意!计算所得的模型数据依然是右手系的!所以在画出来的时候，必须先转换成左手系的
 						int idx = po.map_points[0].vertex_id;
 						vexarray[pos].X = transv[idx].X;
 						vexarray[pos].Y = transv[idx].Y;
@@ -286,6 +288,9 @@ namespace Comm_Abi3D
 					}
 				}
 
+				//无敌修改！将右手系的旋转数据转换成左手系的，以便于使用DX的左手系函数来进行计算
+				//左手系相关的主要函数：RotationQuaternion和Slerp，而矩阵乘法、平移变换是与左右手系无关的
+				//总之，这里的重点是：保持模型数据及其计算的右手系特性，利用DX的左手系函数来进行实质上的右手系计算
 				Quaternion fromq = Quaternion_RH_To_LH(fromrkf.rotate);
 				Quaternion toq = Quaternion_RH_To_LH(torkf.rotate);
 				q = Quaternion.Slerp(fromq, toq, scale); //!!
@@ -321,7 +326,8 @@ namespace Comm_Abi3D
 
 				Vector3 fromt = fromtkf.translate;
 				Vector3 tot = totkf.translate;
-				t = (1 - scale) * fromt + scale * tot;
+				t = (1 - scale) * fromt + scale * tot;//?? 暂时以jsm的为准
+				//t = scale * fromt + (1-scale) * tot;//?? 居然两个效果都是一样的？
 			}
 		}
 
@@ -342,6 +348,15 @@ namespace Comm_Abi3D
 				Vector3 outv;
 
 				InterpolationOfLocalTransformation(tta, time, out outq, out outv);
+
+				//注意：这里的左右手系相关的函数：RotationQuaternion
+				//注意：这里的outq已经转换至左手系了，可以利用DX的左手系函数来进行实质上的右手系计算了
+
+				#region 便于理解版本
+				//Matrix x = Matrix.RotationQuaternion(outq); //!!!
+				//Matrix y = Matrix.Translation(outv);
+				//local_transf[bidx] = x * y; //先旋转，后平移	
+				#endregion
 
 				#region 优化计算版本
 				Matrix x = Matrix.RotationQuaternion(outq); //!!!
@@ -367,21 +382,33 @@ namespace Comm_Abi3D
 				BoneHierarchy bh = abi.hierarchy[i];
 				if (parent == -1) //root bone,无需更新
 				{
+					#region 便于理解版本
+					//global_tranf[i] = local_transf[i] * Matrix.Translation(bh.GlobalOffset);
+					#endregion
+
+					#region 优化计算版本
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += bh.GlobalOffset.X;
 					global_tranf[i].M42 += bh.GlobalOffset.Y;
 					global_tranf[i].M43 += bh.GlobalOffset.Z;
+					#endregion
 				}
 				else
 				{
 					BoneHierarchy bph = abi.hierarchy[parent];
 					Vector3 dt = bh.GlobalOffset - bph.GlobalOffset;
 
+					#region 便于理解版本
+					//global_tranf[i] = local_transf[i] * Matrix.Translation(dt) * global_tranf[parent];
+					#endregion
+
+					#region 优化计算版本
 					global_tranf[i] = local_transf[i];
 					global_tranf[i].M41 += dt.X;
 					global_tranf[i].M42 += dt.Y;
 					global_tranf[i].M43 += dt.Z;
 					global_tranf[i] *= global_tranf[parent];
+					#endregion
 				}
 			}
 		}
@@ -403,6 +430,7 @@ namespace Comm_Abi3D
 				{
 					for (int j = entry.StartVidx; j < entry.EndVidx; j++) //遍历该骨头所影响顶点
 					{
+						//直接不画这些无关的点
 						transv[j] = new Vertex();
 						transv[j].X = 0;
 						transv[j].Y = 0;
@@ -427,6 +455,9 @@ namespace Comm_Abi3D
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		Quaternion Quaternion_RH_To_LH(Quaternion q)
 		{
+			//无敌修改！将右手系的旋转数据转换成左手系的，以便于使用DX的左手系函数来进行计算
+			//左手系相关的主要函数：RotationQuaternion和Slerp，而矩阵乘法、平移变换是与左右手系无关的
+			//总之，这里的重点是：保持模型数据及其计算的右手系特性，利用DX的左手系函数来进行实质上的右手系计算
 			Quaternion ret = q;
 			ret.X = -q.X;
 			ret.Y = -q.Y;

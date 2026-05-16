@@ -161,8 +161,16 @@ namespace Comm_Mbi3D
 			}
 
 			axises.DisposeAllBuffer();
-		}
 
+			/*
+			if (mm.texture != null) //因为texture的usage是managed，所以设备丢失时无需重建
+			{
+				mm.DisposeAllTextures();
+				mm.texture = null;
+			}
+			*/
+		}
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////
 		protected void SetupDevice()
 		{
@@ -183,6 +191,9 @@ namespace Comm_Mbi3D
 			RHtoLH.M22 = 0; RHtoLH.M23 = 1;
 			RHtoLH.M32 = 1; RHtoLH.M33 = 0;
 
+			//由于模型数据是右手系的，所以这里我们互换模型Y/Z坐标，转换成显示所需的左手系
+			//然后在设置镜头时，以+Y为正上方，+X为正右方，镜头位于-Z轴上
+		
 			if (MeshCenter)
 				device.SetTransform(TransformState.World, Matrix.Translation(-mm.center) * RHtoLH * camera.rotate);
 			else
@@ -222,11 +233,12 @@ namespace Comm_Mbi3D
 			device.SetRenderState(RenderState.SlopeScaleDepthBias, 3F);
 
 			//处理Transparent Color Key的关键点：
+			//只要alpha值大于等于1的点才显示并更新zbuf！即，alpha=0的点直接不画，也不会影响zbuf!
 			device.SetRenderState(RenderState.AlphaTestEnable, true);
 			device.SetRenderState(RenderState.AlphaFunc, Compare.GreaterEqual);
 			device.SetRenderState(RenderState.AlphaRef, 1);
 
-			//用于AlphaBlend的贴图Alpha混合参数
+			//用于AlphaBlend的贴图Alpha混合参数，注意，AlphaBlend与AlphaTest是完全不同的概念
 			device.SetRenderState(RenderState.SourceBlend, Blend.SourceAlpha);
 			device.SetRenderState(RenderState.DestinationBlend, Blend.InverseSourceAlpha);
 			device.SetTextureStageState(0, TextureStage.ColorOperation, TextureOperation.Modulate);
@@ -252,6 +264,7 @@ namespace Comm_Mbi3D
 					else //贴图线框或者是贴图
 						device.SetTexture(0, mm.texture[i]);
 
+					//必须首先绘制无Alpha混合的贴图(包括未知类型的贴图)，否则将导致后继Alpha混合不正确
 					if (mbi.texturetype[i] != 2 && mbi.texturetype[i] != 4)
 					{
 						int count = (mm.txtoffset[i + 1] - mm.txtoffset[i]) / 3;
@@ -269,6 +282,9 @@ namespace Comm_Mbi3D
 					else //贴图线框或者是贴图
 						device.SetTexture(0, mm.texture[i]);
 
+					//然后再绘制贴图类型为2,4的区域，因为这些区域需要Alpha混合
+					//贴图的索引顺序其实部分决定了Alpha混合的顺序，所以值得特别注意！
+					//这里，无需担心光晕贴图和反射贴图会发生混合错误，因为前者永远是最后一个贴图
 					if (mbi.texturetype[i] == 2 || mbi.texturetype[i] == 4)
 					{
 						int count = (mm.txtoffset[i + 1] - mm.txtoffset[i]) / 3;
@@ -471,6 +487,10 @@ namespace Comm_Mbi3D
 			FileInfo fi = new FileInfo(filename);
 			filename = fi.Name.ToLower();
 			Text = "3D .Mbi Viewer - " + filename;
+
+			//背景色相关
+			//DrawBackground = false;
+			//BackColor = Color.Black;
 		}
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -430,7 +430,10 @@ namespace Comm_Sec3D
 
 			if (idx != -1) //如果存在着匹配
 			{
+				//idx为z深度最小的匹配三角面编号，根据其查出对应的多边形编号
 				int polyid = FindPolygonByTriangleIdx(idx);
+				
+				//返回查找到的多边形编号
 				Debug.Assert(polyid != -1);
 				return polyid;
 			}
