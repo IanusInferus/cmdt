@@ -1,0 +1,29 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Comm_ABI/Comm_ABI.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Abi3D/Comm_Abi3D.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_MBI/Comm_MBI.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Mbi3D/Comm_Mbi3D.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Sec/Comm_Sec.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Sec3D/Comm_Sec3D.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Sec_Astar/Comm_Sec_Astar.csproj">
+    <Platform Project="x86" />
+  </Project>
+  <Project Path="Comm_Y64/Comm_Y64.csproj">
+    <Platform Project="x86" />
+  </Project>
+</Solution>

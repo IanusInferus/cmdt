@@ -1,28 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project>
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9CCFBF4E-AC81-47FD-98CF-FBBBE21D074F}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <StartupObject>MultiConverter.My.MyApplication</StartupObject>
     <RootNamespace>MultiConverter</RootNamespace>
     <AssemblyName>MultiConverter</AssemblyName>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>net48</TargetFramework>
     <ApplicationIcon>6.ico</ApplicationIcon>
     <OptionInfer>On</OptionInfer>
+    <OutputPath>..\..\Bin\</OutputPath>
+    <BaseIntermediateOutputPath>..\..\Obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
   </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\..\Bin\</OutputPath>
     <DocumentationFile>MultiConverter.xml</DocumentationFile>
-    <BaseIntermediateOutputPath>..\..\Obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -30,9 +28,7 @@
     <DefineDebug>false</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\</OutputPath>
     <DocumentationFile>MultiConverter.xml</DocumentationFile>
-    <BaseIntermediateOutputPath>..\..\Obj\$(MSBuildProjectName)</BaseIntermediateOutputPath>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <ItemGroup>
@@ -42,49 +38,33 @@
     <Reference Include="Firefly.GUI">
       <HintPath>..\Lib\Firefly\Firefly.GUI.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="My Project\Application.Designer.vb">
+    <Compile Update="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
     </Compile>
-    <Compile Include="MultiConverter.vb">
+    <Compile Update="MultiConverter.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MultiConverter.Designer.vb">
+    <Compile Update="MultiConverter.Designer.vb">
       <DependentUpon>MultiConverter.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AssemblyInfo.vb" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FileSystem\FileSystem.vbproj">
-      <Project>{AB9A5E96-6F8E-4EFF-8DA0-8793B0C5613E}</Project>
-      <Name>FileSystem</Name>
-    </ProjectReference>
+    <ProjectReference Include="..\FileSystem\FileSystem.vbproj" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="6.ico" />
-    <Content Include="My Project\Application.myapp">
+    <None Update="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
-    </Content>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="MultiConverter.resx">
+    <EmbeddedResource Update="MultiConverter.resx">
       <SubType>Designer</SubType>
       <DependentUpon>MultiConverter.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

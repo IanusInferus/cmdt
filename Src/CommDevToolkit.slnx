@@ -1,0 +1,19 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="Doc/Architecture.zh.txt" />
+  </Folder>
+  <Project Path="DeBsmb/DeBsmb.vbproj" />
+  <Project Path="FileSystem/FileSystem.vbproj" />
+  <Project Path="GraphD3D/GraphD3D.vbproj" />
+  <Project Path="GraphSystem/GraphSystem.vbproj" />
+  <Project Path="ImageConverter/ImageConverter.vbproj" />
+  <Project Path="MA2Handler/MA2Handler.vbproj" />
+  <Project Path="MultiConverter/MultiConverter.vbproj" />
+  <Project Path="PCKManager/PCKManager.vbproj" />
+  <Project Path="PCKManagerHD/PCKManagerHD.vbproj" />
+  <Project Path="Scaler/Scaler.vbproj" />
+  <Project Path="SECEditor/SECEditor.vbproj" />
+  <Project Path="SingleInt/SingleInt.vbproj" />
+  <Project Path="XmlConverter/XmlConverter.vbproj" />
+  <Project Path="Y64Manager/Y64Manager.vbproj" />
+</Solution>
