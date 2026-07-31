@@ -624,9 +624,9 @@ MA = Mask?
 </table>
 <p>&nbsp;</p>
 
-<span style="color: #008080">渲染子数据(Render Data)格式：</span>
+渲染子数据(Render Data)格式：
 
-<span style="color: #008080">按 首字节分为两种格式  
+按 首字节分为两种格式  
   
   
 当首字节最低位为1时：  
@@ -649,43 +649,47 @@ MA = Mask?
 两种数据均记作32位有符号整数Data。  
 修正数据不能位于数据流的最前面，属于修正前一数据的数据。  
   
-每一个数据的状态由行内块描述符（共20字节）进行描述  
-record SpanDescriptor  
-  IsLineStart : Boolean //占用字节0，置位表示整行的开始像素索引在该行内块中，且StartIndex为半透明  
-  IsLineEnd : Boolean //占用字节1，置位表示整行的结束像素索引在该行内块中，且EndIndex-1为半透明  
-  StartIndex : Int32 //占用字节4-7，开始像素索引  
-  EndIndex : Int32 //占用字节8-11，结束像素索引  
-  StartAddition : Int32 //占用字节12-15，开始像素索引增量  
-  EndAddition : Int32 //占用字节16-19，结束像素索引增量  
+每一个数据的状态由行内块描述符（共20字节）进行描述
+
+    record SpanDescriptor  
+      IsLineStart : Boolean //占用字节0，置位表示整行的开始像素索引在该行内块中，且StartIndex为半透明  
+      IsLineEnd : Boolean //占用字节1，置位表示整行的结束像素索引在该行内块中，且EndIndex-1为半透明  
+      StartIndex : Int32 //占用字节4-7，开始像素索引  
+      EndIndex : Int32 //占用字节8-11，结束像素索引  
+      StartAddition : Int32 //占用字节12-15，开始像素索引增量  
+      EndAddition : Int32 //占用字节16-19，结束像素索引增量  
   
 标准数据  
 表示  
-new SpanDescriptor  
-  IsLineStart = Data\[3\]  
-  IsLineEnd = Data\[2\]  
-  StartIndex = Data\[31..22\]  
-  EndIndex = Data\[21..12\]  
-  StartAddition : Data\[11..8\] - 7  
-  EndAddition : Data\[7..4\] - 7  
+
+    new SpanDescriptor  
+      IsLineStart = Data\[3\]  
+      IsLineEnd = Data\[2\]  
+      StartIndex = Data\[31..22\]  
+      EndIndex = Data\[21..12\]  
+      StartAddition : Data\[11..8\] - 7  
+      EndAddition : Data\[7..4\] - 7  
   
 修正数据  
 记上一行对应块为SpanInPrevLine，则修正数据表示  
-new SpanDescriptor  
-  IsLineStart = Data\[3\]  
-  IsLineEnd = Data\[2\]  
-  StartIndex = SpanInPrevLine.StartIndex + SpanInPrevLine.StartAddition  
-  EndIndex = SpanInPrevLine.EndIndex + SpanInPrevLine.EndAddition  
-  StartAddition = SpanInPrevLine.StartAddition + Data\[7..6\] - 1  
-  EndAddition = SpanInPrevLine.EndAddition + Data\[5..4\] - 1  
+
+    new SpanDescriptor  
+      IsLineStart = Data\[3\]  
+      IsLineEnd = Data\[2\]  
+      StartIndex = SpanInPrevLine.StartIndex + SpanInPrevLine.StartAddition  
+      EndIndex = SpanInPrevLine.EndIndex + SpanInPrevLine.EndAddition  
+      StartAddition = SpanInPrevLine.StartAddition + Data\[7..6\] - 1  
+      EndAddition = SpanInPrevLine.EndAddition + Data\[5..4\] - 1  
   
 如果某个行标志字节中没有修正数据，则表示  
-new SpanDescriptor  
-  IsLineStart = SpanInPrevLine.IsLineStart  
-  IsLineEnd = SpanInPrevLine.IsLineEnd  
-  StartIndex = SpanInPrevLine.StartIndex + SpanInPrevLine.StartAddition  
-  EndIndex = SpanInPrevLine.EndIndex + SpanInPrevLine.EndAddition  
-  StartAddition = SpanInPrevLine.StartAddition  
-  EndAddition = SpanInPrevLine.EndAddition  
+
+    new SpanDescriptor
+      IsLineStart = SpanInPrevLine.IsLineStart  
+      IsLineEnd = SpanInPrevLine.IsLineEnd  
+      StartIndex = SpanInPrevLine.StartIndex + SpanInPrevLine.StartAddition  
+      EndIndex = SpanInPrevLine.EndIndex + SpanInPrevLine.EndAddition  
+      StartAddition = SpanInPrevLine.StartAddition  
+      EndAddition = SpanInPrevLine.EndAddition  
   
 如果开始像素索引和结束像素索引超过范围，应该使其在两端点上。  
   
@@ -782,7 +786,6 @@ FE FF FF FFh
   
 最终数据  
 最终数据是由字节组成，每个字节和一个像素对应。其中0表示透明，1表示半透明，2表示不透明。  
- </span>
 
 参考：
 

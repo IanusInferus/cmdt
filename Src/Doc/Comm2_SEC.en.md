@@ -588,12 +588,7 @@ A Special District is a District. One or more of its side planes are not solid, 
 
 These names are not exact, but to avoid big changes, we still use these names.
 
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-
 4\. The total model use right-hand world coordinate system: x, y represent two horizontal directions, z represents height with the positive direction to the top.
-
-<p>&nbsp;</p>
 
 5\. Viewing in a look-down coordinate system, districts with anticlockwise points show the front face.
 
